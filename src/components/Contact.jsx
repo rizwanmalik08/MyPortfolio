@@ -1,6 +1,39 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 
 function Contact() {
+  const [result, setResult] = useState("");
+
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    setResult("Sending....");
+    const formData = new FormData(event.target);
+
+    try {
+      // Replace YOUR_FORMSPREE_ENDPOINT_URL with your actual Formspree endpoint (e.g., https://formspree.io/f/xxxxxxxx)
+      const response = await fetch("https://formspree.io/f/maewpjpp", {
+        method: "POST",
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        setResult("Message sent successfully!");
+        event.target.reset();
+        setTimeout(() => setResult(""), 5000); // Clear message after 5 seconds
+      } else {
+        const data = await response.json();
+        console.log("Error", data);
+        setResult(data.error || "Failed to send message. Please try again later.");
+      }
+    } catch (error) {
+      console.error("Fetch error:", error);
+      setResult("Error: Please replace YOUR_FORMSPREE_ENDPOINT_URL with your actual Formspree URL.");
+    }
+  };
+
   return (
     <section id="contact" className="section">
       <div className="container">
@@ -11,7 +44,7 @@ function Contact() {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.6 }}
         >
-          <form className="space-y-4">
+          <form onSubmit={onSubmit} className="space-y-4">
             <div>
               <p className="section-kicker">Get in touch</p>
               <h2 className="section-title">Let us build something together</h2>
@@ -26,6 +59,8 @@ function Contact() {
               </label>
               <input
                 type="text"
+                name="name"
+                required
                 placeholder="Your name"
                 className="mt-2 w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-white/40 focus:outline-none"
               />
@@ -36,6 +71,8 @@ function Contact() {
               </label>
               <input
                 type="email"
+                name="email"
+                required
                 placeholder="you@example.com"
                 className="mt-2 w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-white/40 focus:outline-none"
               />
@@ -45,6 +82,8 @@ function Contact() {
                 Your Message
               </label>
               <textarea
+                name="message"
+                required
                 rows="4"
                 placeholder="Tell me about your project"
                 className="mt-2 w-full rounded-2xl border border-white/10 bg-slate-950/60 px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:border-white/40 focus:outline-none"
@@ -56,6 +95,11 @@ function Contact() {
             >
               Send Message
             </button>
+            {result && (
+              <p className="mt-4 text-center text-sm text-slate-300">
+                {result}
+              </p>
+            )}
           </form>
           <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-8 text-sm text-slate-300">
             <p className="text-sm uppercase tracking-[0.25em] text-slate-400">
@@ -108,6 +152,14 @@ function Contact() {
               </div>
             </div>
             <div className="mt-6 flex gap-3">
+              <a
+                href="https://x.com/Rizwanmalik_0"
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-full border border-white/20 px-4 py-2 text-xs font-semibold text-white transition hover:border-white/50 hover:bg-white/10"
+              >
+                X
+              </a>
               <a
                 href="https://github.com/rizwanmalik08"
                 target="_blank"
