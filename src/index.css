@@ -4,13 +4,13 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    background-color: #0a0a12;
+    background-color: #05060f;
     color: #e2e8f0;
   }
 
   body {
     font-family: "Space Grotesk", "Inter", system-ui, -apple-system, sans-serif;
-    background-color: #0a0a12;
+    background-color: #05060f;
     overflow-x: hidden;
   }
 
@@ -20,7 +20,7 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #0a0a12;
+    background: #05060f;
   }
 
   ::-webkit-scrollbar-thumb {
@@ -29,11 +29,17 @@
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: #7c3aed;
+    background: #6366f1;
   }
 }
 
-/* GPU Compositor-Accelerated Infinite Marquees (0 CPU / 0 Layout Reflows) */
+/* Linear / Vercel-Style Architectural Dot Grid */
+.bg-dot-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* GPU Compositor-Accelerated Infinite Marquees */
 @keyframes marquee-left {
   0% { transform: translate3d(0, 0, 0); }
   100% { transform: translate3d(-50%, 0, 0); }
@@ -65,16 +71,7 @@
 
 /* Cyber Cursor Hover Glow State */
 .cursor-hovered {
-  border-color: #22d3ee !important;
-  background-color: rgba(34, 211, 238, 0.15) !important;
-  box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
-}
-
-/* Neon Glow Shimmer utilities */
-.glow-text-cyan {
-  text-shadow: 0 0 15px rgba(34, 211, 238, 0.5), 0 0 30px rgba(34, 211, 238, 0.2);
-}
-
-.glow-text-violet {
-  text-shadow: 0 0 15px rgba(124, 58, 237, 0.5), 0 0 30px rgba(124, 58, 237, 0.2);
+  border-color: #38bdf8 !important;
+  background-color: rgba(56, 189, 248, 0.15) !important;
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.35);
 }

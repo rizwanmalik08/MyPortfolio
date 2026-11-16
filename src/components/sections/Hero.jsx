@@ -1,110 +1,203 @@
-import { motion } from 'framer-motion';
-import { Sparkles, Mail, ChevronRight, Terminal, ArrowDown } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Sparkles, Mail, ChevronRight, Terminal, ArrowDown, Code2, Palette, Globe, TrendingUp, Cpu } from 'lucide-react';
 import { personalInfo } from '../../data/portfolioData';
 import { soundManager } from '../../utils/audioFX';
 import rizwanPhoto from '../../assets/rizwan.jpg.png';
 
+// Dynamic rotating roles with distinct gradient colors
+const ROLES = [
+  { title: 'Visual Designer', gradient: 'from-violet-400 via-purple-300 to-indigo-300' },
+  { title: 'Full-Stack Developer', gradient: 'from-cyan-300 via-sky-300 to-teal-200' },
+  { title: '3D Web Experience Architect', gradient: 'from-pink-400 via-rose-300 to-amber-300' },
+  { title: 'Digital Growth Marketer', gradient: 'from-emerald-300 via-teal-300 to-cyan-300' },
+];
+
 export function Hero() {
+  const [roleIndex, setRoleIndex] = useState(0);
+
+  // Cycle roles every 3 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % ROLES.length);
+    }, 3200);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-28 pb-16 overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center pt-28 pb-20 overflow-hidden">
+      
+      {/* Ambient Cyber Grid & Glow Orbs */}
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="absolute top-1/4 -left-20 h-96 w-96 rounded-full bg-violet-600/15 blur-[120px]" />
+        <div className="absolute top-1/3 -right-20 h-96 w-96 rounded-full bg-cyan-500/15 blur-[120px]" />
+        <div className="absolute -bottom-20 left-1/3 h-80 w-80 rounded-full bg-pink-500/10 blur-[100px]" />
+      </div>
+
       <div className="container mx-auto max-w-7xl px-6">
         <div className="grid items-center gap-12 lg:grid-cols-12">
           
           {/* Left Text Column */}
-          <div className="lg:col-span-7 space-y-6 text-left">
-            {/* Cyber Status Online Ticker */}
+          <div className="lg:col-span-7 space-y-7 text-left">
+            
+            {/* Cyber Status Ticker & Terminal Initializer */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2.5 rounded-full border border-cyan-500/30 bg-cyan-950/20 px-4 py-1.5 text-xs font-mono uppercase tracking-[0.2em] text-cyan-300 backdrop-blur-md shadow-[0_0_15px_rgba(34,211,238,0.2)]"
+              className="flex flex-wrap items-center gap-3"
             >
-              <span className="flex h-2 w-2 relative">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
-              </span>
-              <span>SYSTEM ONLINE // AVAILABLE 2026</span>
+              {/* Live Status Badge */}
+              <div className="inline-flex items-center gap-2.5 rounded-full border border-cyan-500/40 bg-cyan-950/30 px-4 py-1.5 text-xs font-mono uppercase tracking-[0.2em] text-cyan-300 backdrop-blur-md shadow-[0_0_20px_rgba(34,211,238,0.25)]">
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
+                </span>
+                <span>SYSTEM ONLINE // AVAILABLE 2026</span>
+              </div>
+
+              {/* Terminal Code Command */}
+              <div className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-mono text-slate-400">
+                <Terminal className="h-3.5 w-3.5 text-violet-400" />
+                <span>rizwan.init(--interactive)</span>
+              </div>
             </motion.div>
 
-            {/* Main Headline with Neon Shimmer */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              className="space-y-2"
-            >
-              <div className="flex items-center gap-2 text-sm sm:text-base font-mono text-slate-400">
-                <Terminal className="h-4 w-4 text-violet-400" />
-                <span>visual_designer_and_developer.init()</span>
-              </div>
-              <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight text-white leading-none">
-                Hi, I am{' '}
-                <span className="bg-gradient-to-r from-white via-cyan-200 to-white bg-clip-text text-transparent">
+            {/* Main Headline with Neon Kinetics */}
+            <div className="space-y-3">
+              <motion.h2
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="text-lg sm:text-2xl font-light text-slate-300 tracking-wide flex items-center gap-3"
+              >
+                <span>Hi, I am</span>
+                <span className="h-px flex-1 max-w-[60px] bg-gradient-to-r from-violet-500 to-transparent"></span>
+              </motion.h2>
+
+              <motion.h1
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.15 }}
+                className="text-5xl sm:text-7xl lg:text-8xl font-black tracking-tight text-white leading-none"
+              >
+                <span className="relative inline-block">
                   {personalInfo.name}
+                  {/* Subtle neon glow text reflection */}
+                  <span className="absolute -inset-1 blur-2xl opacity-30 bg-gradient-to-r from-violet-600 via-cyan-400 to-pink-500 -z-10"></span>
                 </span>
-              </h1>
-              <span className="block text-2xl sm:text-4xl font-bold bg-gradient-to-r from-violet-400 via-cyan-300 to-pink-400 bg-clip-text text-transparent">
-                {personalInfo.role}
-              </span>
-            </motion.div>
+              </motion.h1>
+
+              {/* Dynamic Rotating Role Switcher */}
+              <div className="h-12 sm:h-14 overflow-hidden flex items-center">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={ROLES[roleIndex].title}
+                    initial={{ y: 24, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    exit={{ y: -24, opacity: 0 }}
+                    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                    className={`text-2xl sm:text-4xl lg:text-5xl font-extrabold bg-gradient-to-r ${ROLES[roleIndex].gradient} bg-clip-text text-transparent flex items-center gap-2`}
+                  >
+                    <span>{ROLES[roleIndex].title}</span>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            </div>
 
             {/* Short Bio */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.6, delay: 0.25 }}
               className="text-base sm:text-lg text-slate-300 max-w-xl leading-relaxed"
             >
               {personalInfo.shortBio}
             </motion.p>
 
-            {/* CTA Buttons with Audio Micro-interactions */}
+            {/* Action Buttons with Animated Border-Beam & Micro-Sounds */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
+              transition={{ duration: 0.6, delay: 0.35 }}
               className="flex flex-wrap items-center gap-4 pt-2"
             >
+              {/* Primary Glowing Action Button */}
               <a
                 href="#projects"
                 onMouseEnter={() => soundManager.playHover()}
-                onClick={() => soundManager.playClick()}
-                className="group relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-600 via-indigo-600 to-cyan-500 px-7 py-3.5 text-sm font-bold text-white shadow-[0_0_30px_rgba(124,58,237,0.4)] transition hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)] active:scale-[0.98]"
+                onClick={() => soundManager.playWarp()}
+                className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full p-[2px] shadow-[0_0_35px_rgba(124,58,237,0.45)] transition hover:scale-[1.03] active:scale-[0.98]"
               >
-                <span>Explore 3D Projects</span>
-                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                {/* Rotating Animated Gradient Border Beam */}
+                <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#7c3aed_0%,#22d3ee_50%,#f43f5e_100%)]" />
+
+                {/* Inner Button Surface */}
+                <span className="inline-flex h-full w-full items-center gap-2 rounded-full bg-slate-950 px-7 py-3.5 text-sm font-bold text-white backdrop-blur-3xl transition duration-300 group-hover:bg-slate-900/90">
+                  <Sparkles className="h-4 w-4 text-cyan-400 transition-transform group-hover:rotate-12" />
+                  <span>Explore 3D Projects</span>
+                  <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </span>
               </a>
 
+              {/* Secondary Glassmorphism Button */}
               <a
                 href="#contact"
                 onMouseEnter={() => soundManager.playHover()}
                 onClick={() => soundManager.playClick()}
-                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition hover:border-cyan-400/50 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]"
+                className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition hover:border-cyan-400/50 hover:bg-cyan-500/10 hover:shadow-[0_0_25px_rgba(34,211,238,0.25)] active:scale-[0.98]"
               >
                 <Mail className="h-4 w-4 text-cyan-400" />
                 <span>Get in Touch</span>
               </a>
             </motion.div>
 
-            {/* Pills / Quick Tags */}
+            {/* Interactive Tech Capability Badges */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.6, delay: 0.45 }}
               className="flex flex-wrap items-center gap-2.5 pt-4 text-xs font-mono"
             >
-              <span className="rounded-full border border-white/10 bg-slate-900/60 px-3.5 py-1.5 font-medium text-slate-300 backdrop-blur-sm">
-                Graphic Design
-              </span>
-              <span className="rounded-full border border-white/10 bg-slate-900/60 px-3.5 py-1.5 font-medium text-slate-300 backdrop-blur-sm">
-                Digital Marketing
-              </span>
-              <span className="rounded-full border border-cyan-500/20 bg-cyan-950/30 px-3.5 py-1.5 font-medium text-cyan-300 backdrop-blur-sm">
-                Full-Stack Dev
-              </span>
-              <span className="rounded-full border border-violet-500/20 bg-violet-950/30 px-3.5 py-1.5 font-medium text-violet-300 backdrop-blur-sm">
-                4+ Years Exp
-              </span>
+              <div
+                onMouseEnter={() => soundManager.playHover()}
+                className="flex items-center gap-1.5 rounded-full border border-white/10 bg-slate-900/70 px-3.5 py-1.5 text-slate-300 backdrop-blur-sm transition-all hover:border-cyan-400/40 hover:text-cyan-300 hover:scale-105 cursor-default"
+              >
+                <Palette className="h-3.5 w-3.5 text-pink-400" />
+                <span>Graphic & UI/UX</span>
+              </div>
+
+              <div
+                onMouseEnter={() => soundManager.playHover()}
+                className="flex items-center gap-1.5 rounded-full border border-white/10 bg-slate-900/70 px-3.5 py-1.5 text-slate-300 backdrop-blur-sm transition-all hover:border-cyan-400/40 hover:text-cyan-300 hover:scale-105 cursor-default"
+              >
+                <Code2 className="h-3.5 w-3.5 text-cyan-400" />
+                <span>Full-Stack Web</span>
+              </div>
+
+              <div
+                onMouseEnter={() => soundManager.playHover()}
+                className="flex items-center gap-1.5 rounded-full border border-white/10 bg-slate-900/70 px-3.5 py-1.5 text-slate-300 backdrop-blur-sm transition-all hover:border-cyan-400/40 hover:text-cyan-300 hover:scale-105 cursor-default"
+              >
+                <Globe className="h-3.5 w-3.5 text-violet-400" />
+                <span>3D WebGL / Three.js</span>
+              </div>
+
+              <div
+                onMouseEnter={() => soundManager.playHover()}
+                className="flex items-center gap-1.5 rounded-full border border-white/10 bg-slate-900/70 px-3.5 py-1.5 text-slate-300 backdrop-blur-sm transition-all hover:border-cyan-400/40 hover:text-cyan-300 hover:scale-105 cursor-default"
+              >
+                <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
+                <span>SEO & Digital Growth</span>
+              </div>
+
+              <div
+                onMouseEnter={() => soundManager.playHover()}
+                className="flex items-center gap-1.5 rounded-full border border-white/10 bg-slate-900/70 px-3.5 py-1.5 text-slate-300 backdrop-blur-sm transition-all hover:border-cyan-400/40 hover:text-cyan-300 hover:scale-105 cursor-default"
+              >
+                <Cpu className="h-3.5 w-3.5 text-amber-400" />
+                <span>4+ Years Exp</span>
+              </div>
             </motion.div>
 
             {/* Scroll Indicator */}
@@ -112,7 +205,7 @@ export function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="pt-4 flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-slate-400"
+              className="pt-2 flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-slate-400"
             >
               <div className="relative flex h-8 w-5 items-start justify-center rounded-full border border-white/30 p-1">
                 <motion.div
@@ -121,66 +214,107 @@ export function Hero() {
                   transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
                 />
               </div>
-              <span>Scroll to navigate 3D space</span>
+              <span className="font-mono text-[11px]">SCROLL TO NAVIGATE 3D SPACE</span>
             </motion.div>
           </div>
 
-          {/* Right Column: Hero Portrait Hologram with Cyber Brackets */}
+          {/* Right Column: Holographic Cyber Avatar Console */}
           <div className="lg:col-span-5 relative flex items-center justify-center">
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.88 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.25 }}
-              className="relative w-72 h-72 sm:w-80 sm:h-80 lg:w-96 lg:h-96"
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative w-80 h-80 sm:w-96 sm:h-96"
             >
-              {/* Outer Ambient Glow Rings */}
-              <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-violet-600/30 via-cyan-500/20 to-pink-500/20 blur-2xl animate-pulse" />
-              <div className="absolute inset-0 rounded-full border border-cyan-400/30 shadow-[0_0_50px_rgba(34,211,238,0.2)] animate-spin" style={{ animationDuration: '30s' }} />
+              {/* Concentric Rotating HUD Radar Rings */}
+              <div
+                className="pointer-events-none absolute -inset-6 rounded-full border border-cyan-400/20 border-dashed animate-spin"
+                style={{ animationDuration: '45s' }}
+              />
+              <div
+                className="pointer-events-none absolute -inset-12 rounded-full border border-violet-500/20 border-dotted animate-spin"
+                style={{ animationDuration: '60s', animationDirection: 'reverse' }}
+              />
 
-              {/* Portrait Image Container */}
-              <div className="relative h-full w-full overflow-hidden rounded-full border-2 border-white/20 bg-slate-900/60 p-2 backdrop-blur-md shadow-2xl">
-                <img
-                  src={rizwanPhoto}
-                  alt="Rizwan portrait"
-                  className="h-full w-full rounded-full object-cover shadow-inner"
-                  width="600"
-                  height="600"
-                  loading="eager"
-                />
-                <div className="absolute inset-0 rounded-full bg-gradient-to-t from-[#0a0a14]/60 via-transparent to-transparent pointer-events-none" />
+              {/* Holographic Radar Degree Markers */}
+              <div className="pointer-events-none absolute inset-0 flex items-center justify-between text-[9px] font-mono text-cyan-400/40 px-1">
+                <span>[000°]</span>
+                <span>[180°]</span>
+              </div>
+              <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-between text-[9px] font-mono text-cyan-400/40 py-1">
+                <span>[090°]</span>
+                <span>[270°]</span>
               </div>
 
-              {/* Floating Status Glass Badge */}
+              {/* Pulsing Ambient Core Aura */}
+              <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-violet-600/35 via-cyan-500/25 to-pink-500/25 blur-3xl animate-pulse" />
+
+              {/* Main Avatar Container with 3D Bevel */}
+              <div className="relative h-full w-full overflow-hidden rounded-full border-2 border-cyan-400/50 bg-[#0c0e1c] p-2.5 shadow-[0_0_60px_rgba(34,211,238,0.25)] backdrop-blur-md">
+                
+                {/* Portrait Image */}
+                <div className="relative h-full w-full overflow-hidden rounded-full bg-slate-950">
+                  <img
+                    src={rizwanPhoto}
+                    alt="Rizwan portrait"
+                    className="h-full w-full rounded-full object-cover transition-transform duration-700 hover:scale-105"
+                    width="600"
+                    height="600"
+                    loading="eager"
+                  />
+                  
+                  {/* Subtle Holographic Grid Scanline Overlay */}
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/10 to-transparent opacity-40 animate-pulse" />
+                  <div className="pointer-events-none absolute inset-0 rounded-full shadow-inner" />
+                </div>
+              </div>
+
+              {/* Floating Telemetry Chip 1: Experience */}
               <motion.div
-                className="absolute -bottom-2 -left-2 sm:bottom-4 sm:-left-4 rounded-2xl border border-white/20 bg-slate-900/85 p-3.5 backdrop-blur-xl shadow-xl flex items-center gap-3"
+                className="absolute -top-3 -right-3 sm:top-2 sm:-right-4 rounded-2xl border border-cyan-400/40 bg-slate-900/90 p-3.5 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.6)] text-center min-w-[90px]"
                 animate={{ y: [0, -6, 0] }}
-                transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
+                transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut' }}
+              >
+                <span className="block text-xl font-black text-cyan-300 font-mono">4+</span>
+                <span className="text-[9px] uppercase tracking-widest text-slate-400 font-mono">
+                  YEARS EXP
+                </span>
+                <div className="mt-1.5 h-1 w-full rounded-full bg-white/10 overflow-hidden">
+                  <div className="h-full rounded-full bg-cyan-400 w-4/5"></div>
+                </div>
+              </motion.div>
+
+              {/* Floating Telemetry Chip 2: Available Status */}
+              <motion.div
+                className="absolute -bottom-3 -left-3 sm:bottom-2 sm:-left-4 rounded-2xl border border-emerald-400/40 bg-slate-900/90 p-3.5 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.6)] flex items-center gap-3"
+                animate={{ y: [0, 6, 0] }}
+                transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 0.3 }}
               >
                 <div className="flex h-3 w-3 relative">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                 </div>
                 <div>
-                  <p className="text-[11px] font-bold text-white uppercase tracking-wider">
-                    Available for Work
+                  <p className="text-[11px] font-bold text-white uppercase tracking-wider font-mono">
+                    AVAILABLE FOR WORK
                   </p>
-                  <p className="text-[10px] text-slate-400 font-mono">
+                  <p className="text-[10px] text-cyan-400 font-mono">
                     Full-Stack & Design
                   </p>
                 </div>
               </motion.div>
 
-              {/* Floating Stat Badge */}
+              {/* Floating Telemetry Chip 3: Technology Core */}
               <motion.div
-                className="absolute -top-2 -right-2 sm:top-4 sm:-right-4 rounded-2xl border border-white/20 bg-slate-900/85 p-3.5 backdrop-blur-xl shadow-xl text-center"
-                animate={{ y: [0, 6, 0] }}
-                transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut', delay: 0.5 }}
+                className="absolute -bottom-4 right-6 rounded-xl border border-violet-500/30 bg-slate-950/90 px-3 py-1.5 backdrop-blur-md shadow-lg"
+                animate={{ y: [0, -4, 0] }}
+                transition={{ repeat: Infinity, duration: 3.8, ease: 'easeInOut', delay: 0.7 }}
               >
-                <span className="block text-lg font-bold text-cyan-400">4+</span>
-                <span className="text-[10px] uppercase tracking-wider text-slate-400 font-mono">
-                  Years Exp
+                <span className="text-[10px] font-mono text-violet-300">
+                  REACT • THREE.JS • C++
                 </span>
               </motion.div>
+
             </motion.div>
           </div>
 

@@ -17,7 +17,7 @@ import { useScrollProgress } from './hooks/useScrollProgress';
 import { soundManager } from './utils/audioFX';
 import { ArrowUp } from 'lucide-react';
 
-// Lazy load the 3D scene so initial DOM paints instantly
+// Lazy load the 3D scene
 const Scene = lazy(() =>
   import('./components/canvas/Scene').then((mod) => ({ default: mod.Scene }))
 );
@@ -35,7 +35,7 @@ export default function App() {
       smoothWheel: true,
       wheelMultiplier: 1.1,
       touchMultiplier: 1.0,
-      syncTouch: false, // Let mobile touch scroll natively for maximum responsiveness
+      syncTouch: false,
     });
 
     let animId;
@@ -64,17 +64,20 @@ export default function App() {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#0a0a12] text-slate-100 selection:bg-cyan-500 selection:text-black">
+    <div className="relative min-h-screen bg-[#05060f] text-slate-100 selection:bg-cyan-500 selection:text-black">
       {/* Fast Preloader Screen */}
       <Preloader onComplete={() => setLoading(false)} />
 
       {/* 120 FPS Magnetic Cursor */}
       <CustomCursor />
 
+      {/* Architectural Dot Grid Overlay */}
+      <div className="fixed inset-0 pointer-events-none z-0 bg-dot-grid opacity-60" aria-hidden="true" />
+
       {/* Fixed Persistent 3D Canvas */}
       <Suspense
         fallback={
-          <div className="fixed inset-0 pointer-events-none -z-10 bg-gradient-to-b from-[#0a0a12] via-[#0e1022] to-[#0a0a12]" />
+          <div className="fixed inset-0 pointer-events-none z-0 bg-gradient-to-b from-[#05060f] via-[#0b0d1e] to-[#05060f]" />
         }
       >
         <Scene scrollProgress={progress} />
