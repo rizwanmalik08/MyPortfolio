@@ -10,6 +10,49 @@ import { CanvasErrorBoundary } from './CanvasErrorBoundary';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 /**
+ * Click Shockwave Ripple Effect in 3D Space
+ */
+function ClickShockwave() {
+  const meshRef = useRef();
+  const [active, setActive] = useState(false);
+  const scaleRef = useRef(0.1);
+
+  useEffect(() => {
+    const handleClick = () => {
+      scaleRef.current = 0.1;
+      setActive(true);
+    };
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
+  }, []);
+
+  useFrame((state, delta) => {
+    if (!active || !meshRef.current) return;
+    scaleRef.current += delta * 6;
+    meshRef.current.scale.setScalar(scaleRef.current);
+    meshRef.current.material.opacity = Math.max(0, 1 - scaleRef.current / 4);
+
+    if (scaleRef.current > 4) {
+      setActive(false);
+    }
+  });
+
+  if (!active) return null;
+
+  return (
+    <mesh ref={meshRef} position={[0, 0, 1]}>
+      <ringGeometry args={[0.9, 0.96, 32]} />
+      <meshBasicMaterial
+        color="#22d3ee"
+        transparent
+        opacity={0.8}
+        side={THREE.DoubleSide}
+      />
+    </mesh>
+  );
+}
+
+/**
  * Camera Controller
  * Glides smoothly through 3D space linked to user scroll progress
  */
@@ -17,88 +60,85 @@ function CameraController({ scrollProgress, prefersReducedMotion }) {
   const currentLookAt = useRef(new THREE.Vector3(0, 0, 0));
 
   useFrame((state, delta) => {
+    const clampedDelta = Math.min(delta, 0.05);
+
     if (prefersReducedMotion) {
-      // Gentle, stationary view with minimal scroll drift
-      const targetY = -scrollProgress * 2.5;
-      state.camera.position.x = THREE.MathUtils.damp(state.camera.position.x, 0, 2, delta);
-      state.camera.position.y = THREE.MathUtils.damp(state.camera.position.y, targetY, 2, delta);
-      state.camera.position.z = THREE.MathUtils.damp(state.camera.position.z, 6, 2, delta);
+      const targetY = -scrollProgress * 2.2;
+      state.camera.position.x = THREE.MathUtils.damp(state.camera.position.x, 0, 2, clampedDelta);
+      state.camera.position.y = THREE.MathUtils.damp(state.camera.position.y, targetY, 2, clampedDelta);
+      state.camera.position.z = THREE.MathUtils.damp(state.camera.position.z, 5.8, 2, clampedDelta);
       state.camera.lookAt(0, targetY, 0);
       return;
     }
 
-    // Dynamic cinematic camera flight path
     let targetX = 0;
     let targetY = 0;
     let targetZ = 5.5;
     let lookX = 0;
     let lookY = 0;
-    let lookZ = 0;
 
     const p = scrollProgress;
 
     if (p < 0.18) {
-      // Hero: centered, head-on view
+      // Hero
       const t = p / 0.18;
-      targetX = THREE.MathUtils.lerp(0, 0.8, t);
+      targetX = THREE.MathUtils.lerp(0, 0.7, t);
       targetY = THREE.MathUtils.lerp(0, -0.6, t);
       targetZ = THREE.MathUtils.lerp(5.5, 5.2, t);
       lookY = targetY;
     } else if (p < 0.36) {
-      // About: shifted right, inspecting profile
+      // About
       const t = (p - 0.18) / 0.18;
-      targetX = THREE.MathUtils.lerp(0.8, 1.4, t);
+      targetX = THREE.MathUtils.lerp(0.7, 1.2, t);
       targetY = THREE.MathUtils.lerp(-0.6, -1.8, t);
       targetZ = THREE.MathUtils.lerp(5.2, 5.0, t);
-      lookX = 0.4;
+      lookX = 0.3;
       lookY = targetY;
     } else if (p < 0.54) {
-      // Skills: sweep left, angled upward toward floating badges
+      // Skills
       const t = (p - 0.36) / 0.18;
-      targetX = THREE.MathUtils.lerp(1.4, -1.2, t);
+      targetX = THREE.MathUtils.lerp(1.2, -1.0, t);
       targetY = THREE.MathUtils.lerp(-1.8, -3.2, t);
       targetZ = THREE.MathUtils.lerp(5.0, 4.8, t);
-      lookX = -0.3;
+      lookX = -0.2;
       lookY = targetY;
     } else if (p < 0.72) {
-      // Projects: center high-angle looking down at horizon grid
+      // Projects
       const t = (p - 0.54) / 0.18;
-      targetX = THREE.MathUtils.lerp(-1.2, 0, t);
+      targetX = THREE.MathUtils.lerp(-1.0, 0, t);
       targetY = THREE.MathUtils.lerp(-3.2, -5.2, t);
-      targetZ = THREE.MathUtils.lerp(4.8, 5.4, t);
+      targetZ = THREE.MathUtils.lerp(4.8, 5.3, t);
       lookX = 0;
-      lookY = targetY - 0.4;
+      lookY = targetY - 0.3;
     } else if (p < 0.86) {
-      // Services & Certs: subtle pan
+      // Services & Certs
       const t = (p - 0.72) / 0.14;
-      targetX = THREE.MathUtils.lerp(0, 0.7, t);
+      targetX = THREE.MathUtils.lerp(0, 0.6, t);
       targetY = THREE.MathUtils.lerp(-5.2, -6.8, t);
-      targetZ = THREE.MathUtils.lerp(5.4, 5.0, t);
-      lookX = 0.2;
+      targetZ = THREE.MathUtils.lerp(5.3, 5.0, t);
+      lookX = 0.15;
       lookY = targetY;
     } else {
-      // Contact: framed directly on glowing energy portal
+      // Contact
       const t = (p - 0.86) / 0.14;
-      targetX = THREE.MathUtils.lerp(0.7, 0, t);
+      targetX = THREE.MathUtils.lerp(0.6, 0, t);
       targetY = THREE.MathUtils.lerp(-6.8, -8.0, t);
       targetZ = THREE.MathUtils.lerp(5.0, 5.2, t);
       lookX = 0;
       lookY = -8.0;
     }
 
-    // Add mouse parallax to camera
-    targetX += state.pointer.x * 0.25;
-    targetY += state.pointer.y * 0.18;
+    // Parallax damping
+    targetX += state.pointer.x * 0.2;
+    targetY += state.pointer.y * 0.15;
 
-    // Smoothly damp camera position
-    state.camera.position.x = THREE.MathUtils.damp(state.camera.position.x, targetX, 2.5, delta);
-    state.camera.position.y = THREE.MathUtils.damp(state.camera.position.y, targetY, 2.5, delta);
-    state.camera.position.z = THREE.MathUtils.damp(state.camera.position.z, targetZ, 2.5, delta);
+    state.camera.position.x = THREE.MathUtils.damp(state.camera.position.x, targetX, 2.8, clampedDelta);
+    state.camera.position.y = THREE.MathUtils.damp(state.camera.position.y, targetY, 2.8, clampedDelta);
+    state.camera.position.z = THREE.MathUtils.damp(state.camera.position.z, targetZ, 2.8, clampedDelta);
 
-    // Smoothly damp lookAt target
-    currentLookAt.current.x = THREE.MathUtils.damp(currentLookAt.current.x, lookX, 2.5, delta);
-    currentLookAt.current.y = THREE.MathUtils.damp(currentLookAt.current.y, lookY, 2.5, delta);
-    currentLookAt.current.z = THREE.MathUtils.damp(currentLookAt.current.z, lookZ, 2.5, delta);
+    currentLookAt.current.x = THREE.MathUtils.damp(currentLookAt.current.x, lookX, 2.8, clampedDelta);
+    currentLookAt.current.y = THREE.MathUtils.damp(currentLookAt.current.y, lookY, 2.8, clampedDelta);
+    currentLookAt.current.z = THREE.MathUtils.damp(currentLookAt.current.z, 0, 2.8, clampedDelta);
 
     state.camera.lookAt(currentLookAt.current);
   });
@@ -108,7 +148,6 @@ function CameraController({ scrollProgress, prefersReducedMotion }) {
 
 /**
  * Main 3D Canvas Scene
- * Persistent backdrop with zero scroll hijacking
  */
 export function Scene({ scrollProgress = 0 }) {
   const prefersReducedMotion = useReducedMotion();
@@ -131,22 +170,23 @@ export function Scene({ scrollProgress = 0 }) {
       <CanvasErrorBoundary>
         <Canvas
           dpr={[1, 1.5]}
-          camera={{ position: [0, 0, 5.5], fov: 45, near: 0.1, far: 50 }}
+          camera={{ position: [0, 0, 5.5], fov: 45, near: 0.1, far: 45 }}
           gl={{
             antialias: true,
             powerPreference: 'high-performance',
             alpha: true,
+            depth: true,
+            stencil: false,
           }}
           fallback={
             <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a12] via-[#0f1123] to-[#0a0a12]" />
           }
         >
-          {/* Subtle Studio Lighting */}
-          <ambientLight intensity={0.65} />
-          <directionalLight position={[5, 8, 5]} intensity={1.2} color="#ffffff" />
-          <pointLight position={[-4, 2, 3]} intensity={2.2} color="#7c3aed" distance={10} />
-          <pointLight position={[4, -3, 2]} intensity={2.0} color="#22d3ee" distance={10} />
-          <pointLight position={[0, -7, 3]} intensity={2.5} color="#ec4899" distance={8} />
+          {/* Studio Lighting */}
+          <ambientLight intensity={0.7} />
+          <directionalLight position={[5, 7, 5]} intensity={1.1} color="#ffffff" />
+          <pointLight position={[-3, 2, 3]} intensity={1.8} color="#7c3aed" distance={8} />
+          <pointLight position={[3, -3, 2]} intensity={1.6} color="#22d3ee" distance={8} />
 
           {/* Camera Motion */}
           <CameraController
@@ -159,7 +199,8 @@ export function Scene({ scrollProgress = 0 }) {
           <SkillsCloud scrollProgress={scrollProgress} />
           <ProjectsBackground scrollProgress={scrollProgress} />
           <ContactPortal scrollProgress={scrollProgress} isMobile={isMobile} />
-          <Particles count={isMobile ? 200 : 550} isMobile={isMobile} />
+          <Particles count={isMobile ? 120 : 320} isMobile={isMobile} />
+          <ClickShockwave />
         </Canvas>
       </CanvasErrorBoundary>
     </div>

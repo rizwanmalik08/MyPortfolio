@@ -1,18 +1,28 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { navLinks, personalInfo } from '../../data/portfolioData';
-import { Menu, X, Download, Sparkles } from 'lucide-react';
+import { soundManager } from '../../utils/audioFX';
+import { Menu, X, Download, Sparkles, Volume2, VolumeX } from 'lucide-react';
 
 export function Navbar({ activeSection = 'home' }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [soundActive, setSoundActive] = useState(soundManager.isSoundEnabled());
+
+  const handleToggleSound = () => {
+    const newState = soundManager.toggleSound();
+    setSoundActive(newState);
+    if (newState) soundManager.playHover();
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-40 px-4 py-3 transition-all duration-300">
       <div className="mx-auto max-w-7xl">
-        <nav className="flex items-center justify-between rounded-full border border-white/10 bg-[#0a0a14]/75 px-5 py-2.5 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+        <nav className="flex items-center justify-between rounded-full border border-white/10 bg-[#0a0a14]/80 px-5 py-2.5 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
           {/* Logo */}
           <a
             href="#home"
+            onMouseEnter={() => soundManager.playHover()}
+            onClick={() => soundManager.playClick()}
             className="group flex items-center gap-2 text-base font-bold tracking-tight text-white"
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-600 to-cyan-400 text-white shadow-[0_0_15px_rgba(124,58,237,0.5)] transition group-hover:scale-105">
@@ -34,6 +44,8 @@ export function Navbar({ activeSection = 'home' }) {
                 <a
                   key={link.href}
                   href={link.href}
+                  onMouseEnter={() => soundManager.playHover()}
+                  onClick={() => soundManager.playClick()}
                   className={`relative px-3.5 py-1.5 rounded-full transition-all duration-200 ${
                     isActive
                       ? 'text-white'
@@ -53,19 +65,39 @@ export function Navbar({ activeSection = 'home' }) {
             })}
           </div>
 
-          {/* Right Action CTA */}
+          {/* Right Action Controls */}
           <div className="flex items-center gap-2 sm:gap-3">
+            {/* Audio FX Toggle */}
+            <button
+              onClick={handleToggleSound}
+              className={`flex h-8 w-8 items-center justify-center rounded-full border transition-all ${
+                soundActive
+                  ? 'border-cyan-400/40 bg-cyan-500/10 text-cyan-300 shadow-[0_0_10px_rgba(34,211,238,0.2)]'
+                  : 'border-white/10 bg-white/5 text-slate-500 hover:text-white'
+              }`}
+              title={soundActive ? 'Mute Sound FX' : 'Enable Sound FX'}
+              aria-label="Toggle Sound Effects"
+            >
+              {soundActive ? <Volume2 className="h-3.5 w-3.5" /> : <VolumeX className="h-3.5 w-3.5" />}
+            </button>
+
+            {/* CV Download Button */}
             <a
               href={personalInfo.cvUrl}
               download="Rizwan_Malik_CV.pdf"
+              onMouseEnter={() => soundManager.playHover()}
+              onClick={() => soundManager.playClick()}
               className="hidden sm:inline-flex items-center gap-1.5 rounded-full border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-semibold text-white shadow-sm transition hover:border-cyan-400/50 hover:bg-white/10 hover:shadow-[0_0_15px_rgba(34,211,238,0.2)]"
             >
               <Download className="h-3.5 w-3.5 text-cyan-400" />
               <span>CV</span>
             </a>
 
+            {/* Contact CTA */}
             <a
               href="#contact"
+              onMouseEnter={() => soundManager.playHover()}
+              onClick={() => soundManager.playClick()}
               className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-violet-600 to-cyan-500 px-4 py-1.5 text-xs font-semibold text-white shadow-[0_0_20px_rgba(124,58,237,0.35)] transition hover:opacity-95 hover:scale-[1.02]"
             >
               <Sparkles className="h-3 w-3" />
@@ -74,7 +106,10 @@ export function Navbar({ activeSection = 'home' }) {
 
             {/* Mobile Menu Button */}
             <button
-              onClick={() => setMobileOpen(!mobileOpen)}
+              onClick={() => {
+                soundManager.playClick();
+                setMobileOpen(!mobileOpen);
+              }}
               className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition hover:bg-white/10 lg:hidden"
               aria-label="Toggle menu"
             >
@@ -101,7 +136,10 @@ export function Navbar({ activeSection = 'home' }) {
                   <a
                     key={link.href}
                     href={link.href}
-                    onClick={() => setMobileOpen(false)}
+                    onClick={() => {
+                      soundManager.playClick();
+                      setMobileOpen(false);
+                    }}
                     className={`flex items-center justify-between rounded-xl px-4 py-2.5 text-sm font-medium transition ${
                       isActive
                         ? 'bg-gradient-to-r from-violet-600/20 to-cyan-500/20 text-cyan-300 border border-cyan-500/30'

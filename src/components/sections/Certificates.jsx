@@ -1,11 +1,16 @@
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { certificates } from '../../data/portfolioData';
 import { CertificateModal } from '../ui/CertificateModal';
+import { soundManager } from '../../utils/audioFX';
 import { Award, ZoomIn, CheckCircle } from 'lucide-react';
 
 export function Certificates() {
   const [selectedCert, setSelectedCert] = useState(null);
+
+  const handleOpenCert = (cert) => {
+    soundManager.playClick();
+    setSelectedCert(cert);
+  };
 
   return (
     <section id="certificates" className="relative py-24 z-10 overflow-hidden">
@@ -25,20 +30,16 @@ export function Certificates() {
           </p>
         </div>
 
-        {/* Continuous Animated Marquee Slider */}
+        {/* GPU-Accelerated Marquee Slider (0 CPU thread cost) */}
         <div className="relative w-full overflow-hidden py-4">
-          <motion.div
-            className="flex gap-6 w-max"
-            animate={{ x: ['0%', '-50%'] }}
-            transition={{ ease: 'linear', duration: 28, repeat: Infinity }}
-          >
+          <div className="animate-marquee-left flex gap-6">
             {[...certificates, ...certificates].map((cert, index) => (
               <div
                 key={`${cert.id}-${index}`}
                 className="w-[280px] sm:w-[360px] flex-shrink-0"
               >
                 <div
-                  onClick={() => setSelectedCert(cert)}
+                  onClick={() => handleOpenCert(cert)}
                   className="group relative aspect-[4/3] w-full cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-[#0c0d18]/90 p-2.5 backdrop-blur-xl shadow-xl transition-all duration-300 hover:border-cyan-400/50 hover:scale-[1.03] hover:shadow-[0_15px_40px_rgba(34,211,238,0.2)]"
                 >
                   <div className="relative h-full w-full overflow-hidden rounded-xl bg-slate-900">
@@ -46,6 +47,7 @@ export function Certificates() {
                       src={cert.image}
                       alt={cert.title}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
                     />
                     
                     {/* Hover Glow & Zoom Cue */}
@@ -75,7 +77,7 @@ export function Certificates() {
                 </div>
               </div>
             ))}
-          </motion.div>
+          </div>
         </div>
 
         {/* Modal Lightbox */}

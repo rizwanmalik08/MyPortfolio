@@ -1,103 +1,118 @@
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 
 /**
- * Custom Futuristic Magnetic Cursor
- * Dot + trailing ring that reacts to links and interactive buttons.
- * Automatically disabled on touch screens.
+ * High-Performance 120 FPS Magnetic Cursor
+ * Uses direct DOM manipulation via requestAnimationFrame and transforms.
+ * ZERO React re-renders during mouse movement, eliminating CPU/GPU scroll lag.
  */
 export function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: -100, y: -100 });
-  const [cursorState, setCursorState] = useState('default'); // 'default' | 'hover' | 'text' | 'hidden'
-  const [isVisible, setIsVisible] = useState(false);
+  const dotRef = useRef(null);
+  const ringRef = useRef(null);
+  const posRef = useRef({ x: -100, y: -100, targetX: -100, targetY: -100 });
+  const isHoveredRef = useRef(false);
+  const isClickingRef = useRef(false);
 
   useEffect(() => {
-    // Only enable custom cursor on devices that support true hover
+    // Disable completely on touch devices
     if (window.matchMedia('(pointer: coarse)').matches) {
       return;
     }
 
-    const onMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-      if (!isVisible) setIsVisible(true);
+    const dot = dotRef.current;
+    const ring = ringRef.current;
+    if (!dot || !ring) return;
+
+    let animId;
+
+    const handleMouseMove = (e) => {
+      posRef.current.targetX = e.clientX;
+      posRef.current.targetY = e.clientY;
+
+      // First move: snap to cursor
+      if (posRef.current.x < 0) {
+        posRef.current.x = e.clientX;
+        posRef.current.y = e.clientY;
+      }
     };
 
-    const onMouseEnter = () => setIsVisible(true);
-    const onMouseLeave = () => setIsVisible(false);
+    const handleMouseDown = () => {
+      isClickingRef.current = true;
+    };
 
-    // Detect hover over interactive elements
+    const handleMouseUp = () => {
+      isClickingRef.current = false;
+    };
+
     const handleMouseOver = (e) => {
       const target = e.target;
       if (
         target.closest('a') ||
         target.closest('button') ||
         target.closest('[role="button"]') ||
-        target.closest('.interactive-hover')
+        target.closest('.interactive') ||
+        target.closest('input') ||
+        target.closest('textarea')
       ) {
-        setCursorState('hover');
-      } else if (
-        target.tagName === 'INPUT' ||
-        target.tagName === 'TEXTAREA'
-      ) {
-        setCursorState('text');
+        isHoveredRef.current = true;
       } else {
-        setCursorState('default');
+        isHoveredRef.current = false;
       }
     };
 
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
-    document.addEventListener('mouseenter', onMouseEnter);
-    document.addEventListener('mouseleave', onMouseLeave);
-    document.addEventListener('mouseover', handleMouseOver);
+    window.addEventListener('mousemove', handleMouseMove, { passive: true });
+    window.addEventListener('mousedown', handleMouseDown, { passive: true });
+    window.addEventListener('mouseup', handleMouseUp, { passive: true });
+    document.addEventListener('mouseover', handleMouseOver, { passive: true });
+
+    // Smooth physics loop with RAF
+    const updateCursor = () => {
+      const pos = posRef.current;
+
+      // Center dot follows instantly
+      dot.style.transform = `translate3d(${pos.targetX}px, ${pos.targetY}px, 0)`;
+
+      // Trailing ring lerps smoothly
+      const speed = 0.18;
+      pos.x += (pos.targetX - pos.x) * speed;
+      pos.y += (pos.targetY - pos.y) * speed;
+
+      const scale = isClickingRef.current ? 0.75 : isHoveredRef.current ? 1.5 : 1;
+      ring.style.transform = `translate3d(${pos.x}px, ${pos.y}px, 0) scale(${scale})`;
+
+      if (isHoveredRef.current) {
+        ring.classList.add('cursor-hovered');
+      } else {
+        ring.classList.remove('cursor-hovered');
+      }
+
+      animId = requestAnimationFrame(updateCursor);
+    };
+
+    animId = requestAnimationFrame(updateCursor);
 
     return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseenter', onMouseEnter);
-      document.removeEventListener('mouseleave', onMouseLeave);
+      cancelAnimationFrame(animId);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('mouseover', handleMouseOver);
     };
-  }, [isVisible]);
-
-  if (!isVisible) return null;
-
-  const isHovered = cursorState === 'hover';
-  const isText = cursorState === 'text';
+  }, []);
 
   return (
     <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden" aria-hidden="true">
       {/* Outer Follower Ring */}
-      <motion.div
-        className="absolute top-0 left-0 rounded-full border border-cyan-400/60"
-        animate={{
-          x: mousePosition.x - (isHovered ? 24 : isText ? 12 : 16),
-          y: mousePosition.y - (isHovered ? 24 : isText ? 12 : 16),
-          width: isHovered ? 48 : isText ? 24 : 32,
-          height: isHovered ? 48 : isText ? 24 : 32,
-          backgroundColor: isHovered ? 'rgba(34, 211, 238, 0.15)' : 'transparent',
-          borderColor: isHovered ? '#22d3ee' : 'rgba(168, 85, 247, 0.5)',
-          scale: isHovered ? 1.2 : 1,
-        }}
-        transition={{
-          type: 'spring',
-          damping: 25,
-          stiffness: 300,
-          mass: 0.5,
-        }}
+      <div
+        ref={ringRef}
+        className="absolute -top-4 -left-4 h-8 w-8 rounded-full border border-cyan-400/50 transition-colors duration-200 will-change-transform"
+        style={{ transform: 'translate3d(-100px, -100px, 0)' }}
       />
 
       {/* Center Precise Dot */}
-      <motion.div
-        className="absolute top-0 left-0 h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_8px_#22d3ee]"
-        animate={{
-          x: mousePosition.x - 4,
-          y: mousePosition.y - 4,
-          scale: isHovered ? 0 : 1,
-        }}
-        transition={{
-          type: 'spring',
-          damping: 35,
-          stiffness: 600,
-        }}
+      <div
+        ref={dotRef}
+        className="absolute -top-1 -left-1 h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_10px_#22d3ee] will-change-transform"
+        style={{ transform: 'translate3d(-100px, -100px, 0)' }}
       />
     </div>
   );

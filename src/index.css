@@ -16,7 +16,7 @@
 
   /* Custom Neon Scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 7px;
   }
 
   ::-webkit-scrollbar-track {
@@ -24,9 +24,8 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #1e1e38;
+    background: #1c1d30;
     border-radius: 9999px;
-    border: 2px solid #0a0a12;
   }
 
   ::-webkit-scrollbar-thumb:hover {
@@ -34,27 +33,48 @@
   }
 }
 
-/* Custom Glass & Glow Utilities */
-.glass-panel {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* GPU Compositor-Accelerated Infinite Marquees (0 CPU / 0 Layout Reflows) */
+@keyframes marquee-left {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
-.neon-border-cyan {
-  box-shadow: 0 0 20px rgba(34, 211, 238, 0.25);
-  border-color: rgba(34, 211, 238, 0.4);
+@keyframes marquee-right {
+  0% { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
 }
 
-.neon-border-violet {
-  box-shadow: 0 0 20px rgba(124, 58, 237, 0.25);
-  border-color: rgba(124, 58, 237, 0.4);
+.animate-marquee-left {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 28s linear infinite;
+  will-change: transform;
 }
 
-/* Subtle Animated Mesh Background */
-.bg-mesh {
-  background-image: 
-    radial-gradient(circle at 15% 20%, rgba(124, 58, 237, 0.08) 0%, transparent 40%),
-    radial-gradient(circle at 85% 80%, rgba(34, 211, 238, 0.06) 0%, transparent 45%);
+.animate-marquee-right {
+  display: flex;
+  width: max-content;
+  animation: marquee-right 32s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-left:hover,
+.animate-marquee-right:hover {
+  animation-play-state: paused;
+}
+
+/* Cyber Cursor Hover Glow State */
+.cursor-hovered {
+  border-color: #22d3ee !important;
+  background-color: rgba(34, 211, 238, 0.15) !important;
+  box-shadow: 0 0 15px rgba(34, 211, 238, 0.4);
+}
+
+/* Neon Glow Shimmer utilities */
+.glow-text-cyan {
+  text-shadow: 0 0 15px rgba(34, 211, 238, 0.5), 0 0 30px rgba(34, 211, 238, 0.2);
+}
+
+.glow-text-violet {
+  text-shadow: 0 0 15px rgba(124, 58, 237, 0.5), 0 0 30px rgba(124, 58, 237, 0.2);
 }

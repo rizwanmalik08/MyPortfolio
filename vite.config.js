@@ -6,6 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   build: {
+    emptyOutDir: true,
     chunkSizeWarningLimit: 1200,
     rollupOptions: {
       output: {

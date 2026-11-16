@@ -14,9 +14,10 @@ import { Testimonials } from './components/sections/Testimonials';
 import { Contact } from './components/sections/Contact';
 import { Footer } from './components/sections/Footer';
 import { useScrollProgress } from './hooks/useScrollProgress';
+import { soundManager } from './utils/audioFX';
 import { ArrowUp } from 'lucide-react';
 
-// Lazy load the 3D scene so initial DOM paints immediately
+// Lazy load the 3D scene so initial DOM paints instantly
 const Scene = lazy(() =>
   import('./components/canvas/Scene').then((mod) => ({ default: mod.Scene }))
 );
@@ -26,22 +27,23 @@ export default function App() {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const { progress, activeSection } = useScrollProgress();
 
-  // Initialize Lenis smooth scroll
+  // High-performance Lenis Smooth Scroll
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.0,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 1,
-      touchMultiplier: 1.5,
+      wheelMultiplier: 1.1,
+      touchMultiplier: 1.0,
+      syncTouch: false, // Let mobile touch scroll natively for maximum responsiveness
     });
 
+    let animId;
     function raf(time) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      animId = requestAnimationFrame(raf);
     }
-
-    const animId = requestAnimationFrame(raf);
+    animId = requestAnimationFrame(raf);
 
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 400);
@@ -57,18 +59,19 @@ export default function App() {
   }, []);
 
   const handleScrollTop = () => {
+    soundManager.playClick();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
     <div className="relative min-h-screen bg-[#0a0a12] text-slate-100 selection:bg-cyan-500 selection:text-black">
-      {/* Preloader Screen */}
+      {/* Fast Preloader Screen */}
       <Preloader onComplete={() => setLoading(false)} />
 
-      {/* Custom Magnetic Cursor */}
+      {/* 120 FPS Magnetic Cursor */}
       <CustomCursor />
 
-      {/* Fixed Persistent 3D Three.js Canvas */}
+      {/* Fixed Persistent 3D Canvas */}
       <Suspense
         fallback={
           <div className="fixed inset-0 pointer-events-none -z-10 bg-gradient-to-b from-[#0a0a12] via-[#0e1022] to-[#0a0a12]" />
@@ -77,7 +80,7 @@ export default function App() {
         <Scene scrollProgress={progress} />
       </Suspense>
 
-      {/* Navigation Header */}
+      {/* Navigation Header with Sound FX toggle */}
       <Navbar activeSection={activeSection} />
 
       {/* Main Accessible DOM Content */}

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
-import { ArrowDown, Sparkles, ExternalLink, Mail, Phone, ChevronRight } from 'lucide-react';
+import { Sparkles, Mail, ChevronRight, Terminal, ArrowDown } from 'lucide-react';
 import { personalInfo } from '../../data/portfolioData';
+import { soundManager } from '../../utils/audioFX';
 import rizwanPhoto from '../../assets/rizwan.jpg.png';
 
 export function Hero() {
@@ -11,31 +12,38 @@ export function Hero() {
           
           {/* Left Text Column */}
           <div className="lg:col-span-7 space-y-6 text-left">
-            {/* Section Kicker Badge */}
+            {/* Cyber Status Online Ticker */}
             <motion.div
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-4 py-1.5 text-xs font-mono uppercase tracking-[0.2em] text-violet-300 backdrop-blur-md shadow-[0_0_15px_rgba(124,58,237,0.2)]"
+              className="inline-flex items-center gap-2.5 rounded-full border border-cyan-500/30 bg-cyan-950/20 px-4 py-1.5 text-xs font-mono uppercase tracking-[0.2em] text-cyan-300 backdrop-blur-md shadow-[0_0_15px_rgba(34,211,238,0.2)]"
             >
-              <Sparkles className="h-3.5 w-3.5 text-cyan-400" />
-              <span>{personalInfo.kicker}</span>
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
+              </span>
+              <span>SYSTEM ONLINE // AVAILABLE 2026</span>
             </motion.div>
 
-            {/* Main Headline */}
+            {/* Main Headline with Neon Shimmer */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               className="space-y-2"
             >
-              <h2 className="text-xl sm:text-2xl font-light text-slate-300 tracking-wide">
-                Hi, I am
-              </h2>
+              <div className="flex items-center gap-2 text-sm sm:text-base font-mono text-slate-400">
+                <Terminal className="h-4 w-4 text-violet-400" />
+                <span>visual_designer_and_developer.init()</span>
+              </div>
               <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tight text-white leading-none">
-                {personalInfo.name}
+                Hi, I am{' '}
+                <span className="bg-gradient-to-r from-white via-cyan-200 to-white bg-clip-text text-transparent">
+                  {personalInfo.name}
+                </span>
               </h1>
-              <span className="block text-3xl sm:text-5xl font-bold bg-gradient-to-r from-violet-400 via-cyan-300 to-white bg-clip-text text-transparent">
+              <span className="block text-2xl sm:text-4xl font-bold bg-gradient-to-r from-violet-400 via-cyan-300 to-pink-400 bg-clip-text text-transparent">
                 {personalInfo.role}
               </span>
             </motion.div>
@@ -50,7 +58,7 @@ export function Hero() {
               {personalInfo.shortBio}
             </motion.p>
 
-            {/* CTA Buttons */}
+            {/* CTA Buttons with Audio Micro-interactions */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -59,18 +67,22 @@ export function Hero() {
             >
               <a
                 href="#projects"
+                onMouseEnter={() => soundManager.playHover()}
+                onClick={() => soundManager.playClick()}
                 className="group relative inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-violet-600 via-indigo-600 to-cyan-500 px-7 py-3.5 text-sm font-bold text-white shadow-[0_0_30px_rgba(124,58,237,0.4)] transition hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(34,211,238,0.5)] active:scale-[0.98]"
               >
-                <span>View Projects</span>
+                <span>Explore 3D Projects</span>
                 <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </a>
 
               <a
                 href="#contact"
+                onMouseEnter={() => soundManager.playHover()}
+                onClick={() => soundManager.playClick()}
                 className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition hover:border-cyan-400/50 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(34,211,238,0.2)]"
               >
                 <Mail className="h-4 w-4 text-cyan-400" />
-                <span>Contact Me</span>
+                <span>Get in Touch</span>
               </a>
             </motion.div>
 
@@ -79,7 +91,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-wrap items-center gap-2.5 pt-4 text-xs"
+              className="flex flex-wrap items-center gap-2.5 pt-4 text-xs font-mono"
             >
               <span className="rounded-full border border-white/10 bg-slate-900/60 px-3.5 py-1.5 font-medium text-slate-300 backdrop-blur-sm">
                 Graphic Design
@@ -91,7 +103,7 @@ export function Hero() {
                 Full-Stack Dev
               </span>
               <span className="rounded-full border border-violet-500/20 bg-violet-950/30 px-3.5 py-1.5 font-medium text-violet-300 backdrop-blur-sm">
-                4+ Years Experience
+                4+ Years Exp
               </span>
             </motion.div>
 
@@ -100,7 +112,7 @@ export function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
-              className="pt-6 flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-slate-400"
+              className="pt-4 flex items-center gap-3 text-xs uppercase tracking-[0.25em] text-slate-400"
             >
               <div className="relative flex h-8 w-5 items-start justify-center rounded-full border border-white/30 p-1">
                 <motion.div
@@ -109,11 +121,11 @@ export function Hero() {
                   transition={{ repeat: Infinity, duration: 1.6, ease: 'easeInOut' }}
                 />
               </div>
-              <span>Scroll to explore 3D world</span>
+              <span>Scroll to navigate 3D space</span>
             </motion.div>
           </div>
 
-          {/* Right Column: Hero Portrait Hologram */}
+          {/* Right Column: Hero Portrait Hologram with Cyber Brackets */}
           <div className="lg:col-span-5 relative flex items-center justify-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
@@ -131,6 +143,9 @@ export function Hero() {
                   src={rizwanPhoto}
                   alt="Rizwan portrait"
                   className="h-full w-full rounded-full object-cover shadow-inner"
+                  width="600"
+                  height="600"
+                  loading="eager"
                 />
                 <div className="absolute inset-0 rounded-full bg-gradient-to-t from-[#0a0a14]/60 via-transparent to-transparent pointer-events-none" />
               </div>
@@ -149,7 +164,7 @@ export function Hero() {
                   <p className="text-[11px] font-bold text-white uppercase tracking-wider">
                     Available for Work
                   </p>
-                  <p className="text-[10px] text-slate-400">
+                  <p className="text-[10px] text-slate-400 font-mono">
                     Full-Stack & Design
                   </p>
                 </div>
@@ -162,7 +177,7 @@ export function Hero() {
                 transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut', delay: 0.5 }}
               >
                 <span className="block text-lg font-bold text-cyan-400">4+</span>
-                <span className="text-[10px] uppercase tracking-wider text-slate-400">
+                <span className="text-[10px] uppercase tracking-wider text-slate-400 font-mono">
                   Years Exp
                 </span>
               </motion.div>
