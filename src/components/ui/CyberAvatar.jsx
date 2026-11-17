@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
-import { Sparkles, Activity, CheckCircle2, Zap, Bot, User, Eye, RotateCcw, Move3d } from 'lucide-react';
+import { Sparkles, Activity, CheckCircle2, Zap, Bot, User, Eye } from 'lucide-react';
 import { soundManager } from '../../utils/audioFX';
 import { CyberCharacter } from '../canvas/CyberCharacter';
 import rizwanPhoto from '../../assets/rizwan.jpg.png';
@@ -53,9 +53,6 @@ export function CyberAvatar() {
   const containerRef = useRef(null);
   const [viewMode, setViewMode] = useState('character'); // 'character' | 'portrait'
   const [themeKey, setThemeKey] = useState('cyber');
-  const [autoRotate, setAutoRotate] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [mouseNorm, setMouseNorm] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [ping, setPing] = useState(16);
@@ -70,7 +67,7 @@ export function CyberAvatar() {
     return () => clearInterval(interval);
   }, []);
 
-  // 3D Parallax Mouse Tracking
+  // Mouse Tracking on the Avatar Console
   const handleMouseMove = (e) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
@@ -83,14 +80,6 @@ export function CyberAvatar() {
     const normY = (y - centerY) / centerY;
 
     setMouseNorm({ x: normX, y: -normY });
-    
-    // Only apply card tilt when user is not directly dragging the 3D model
-    if (!isDragging) {
-      setTilt({
-        x: normY * -8,
-        y: normX * 8,
-      });
-    }
   };
 
   const handleMouseEnter = () => {
@@ -100,7 +89,6 @@ export function CyberAvatar() {
 
   const handleMouseLeave = () => {
     setIsHovered(false);
-    setTilt({ x: 0, y: 0 });
     setMouseNorm({ x: 0, y: 0 });
   };
 
@@ -117,7 +105,7 @@ export function CyberAvatar() {
   return (
     <div className="relative flex flex-col items-center justify-center">
 
-      {/* MODE SELECTOR TOGGLE (3D Character vs Real Portrait) */}
+      {/* MODE SELECTOR TOGGLE (3D Avatar vs Real Portrait) */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
@@ -148,52 +136,40 @@ export function CyberAvatar() {
         </button>
       </motion.div>
 
-      {/* 3D INTERACTION CONTROLS BAR (DRAG TO ROTATE & 360 SPIN) */}
+      {/* LIFELIKE STATUS BADGE: AUTONOMOUS IDLE vs CURSOR TRACKING */}
       {viewMode === 'character' && (
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           className="mb-3 flex items-center gap-2 z-20"
         >
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/30 text-[10px] font-mono text-cyan-300 backdrop-blur-md shadow-sm">
-            <Move3d className="h-3 w-3 text-cyan-400 animate-pulse" />
-            <span>DRAG TO ROTATE 3D</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/35 text-[10px] font-mono text-cyan-300 backdrop-blur-md shadow-sm">
+            <span className="flex h-2 w-2 relative">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
+            </span>
+            <span>{isHovered ? 'GAZE LOCKED // FOLLOWING YOUR MOUSE' : 'AUTONOMOUS IDLE // OBSERVING SCENE'}</span>
           </div>
-
-          <button
-            onClick={() => {
-              soundManager.playClick();
-              setAutoRotate((prev) => !prev);
-            }}
-            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono font-bold transition-all duration-300 ${
-              autoRotate
-                ? 'bg-gradient-to-r from-cyan-500 to-violet-600 text-white shadow-md shadow-cyan-500/30'
-                : 'bg-slate-900/80 border border-white/15 text-slate-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            <RotateCcw className={`h-3 w-3 ${autoRotate ? 'animate-spin' : ''}`} />
-            <span>360° SPIN</span>
-          </button>
         </motion.div>
       )}
       
-      {/* 3D PERSPECTIVE WRAPPER */}
+      {/* 3D FIXED CONSOLE WRAPPER */}
       <div
         ref={containerRef}
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className="relative w-80 h-80 sm:w-96 sm:h-96 select-none cursor-grab active:cursor-grabbing"
+        className="relative w-80 h-80 sm:w-96 sm:h-96 select-none"
         style={{
           perspective: '1200px',
         }}
       >
-        {/* INTERACTIVE 3D GIMBAL LAYER */}
+        {/* FIXED GIMBAL LAYER (STABLE & CONCENTRIC) */}
         <div
           className="relative w-full h-full transition-transform duration-300 ease-out"
           style={{
             transformStyle: 'preserve-3d',
-            transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${isHovered ? 1.02 : 1})`,
+            transform: `scale(${isHovered ? 1.02 : 1})`,
           }}
         >
 
@@ -258,13 +234,13 @@ export function CyberAvatar() {
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 
-                {/* MODE A: MOVABLE 3D AVATAR MODEL (Interactive OrbitControls & Depth Mesh) */}
+                {/* MODE A: 3D AVATAR MODEL (FIXED, MOVES FACE LEFT-RIGHT UP-DOWN NATURALLY + TRACKS MOUSE) */}
                 {viewMode === 'character' ? (
-                  <div className="relative w-full h-full cursor-grab active:cursor-grabbing">
+                  <div className="relative w-full h-full">
                     {/* Background Tech Grid */}
                     <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(56,189,248,0.12)_1px,transparent_1px)] [background-size:18px_18px]" />
 
-                    {/* Dedicated Three.js 3D Avatar Canvas with OrbitControls */}
+                    {/* Dedicated Three.js 3D Avatar Canvas */}
                     <Canvas
                       camera={{ position: [0, 0, 3.1], fov: 44 }}
                       gl={{
@@ -278,9 +254,7 @@ export function CyberAvatar() {
                         <CyberCharacter
                           mouseNorm={mouseNorm}
                           theme={themeKey}
-                          autoRotate={autoRotate}
-                          isDragging={isDragging}
-                          onDragChange={setIsDragging}
+                          isHovered={isHovered}
                         />
                       </Suspense>
                     </Canvas>
@@ -288,7 +262,7 @@ export function CyberAvatar() {
                     {/* Model Telemetry Footer */}
                     <div className="pointer-events-none absolute bottom-2.5 inset-x-0 flex items-center justify-between px-6 text-[8px] font-mono text-cyan-300/70 uppercase tracking-widest">
                       <span>3D MODEL: RIZWAN</span>
-                      <span>ORBIT: ACTIVE</span>
+                      <span>{isHovered ? 'TRACKING: MOUSE' : 'STATUS: ALIVE'}</span>
                     </div>
                   </div>
                 ) : (
