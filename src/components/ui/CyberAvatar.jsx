@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
 import { Sparkles, Activity, CheckCircle2, Zap, Bot, User, Eye } from 'lucide-react';
@@ -239,7 +239,9 @@ export function CyberAvatar() {
                       }}
                       className="w-full h-full"
                     >
-                      <CyberCharacter mouseNorm={mouseNorm} theme={themeKey} />
+                      <Suspense fallback={null}>
+                        <CyberCharacter mouseNorm={mouseNorm} theme={themeKey} />
+                      </Suspense>
                     </Canvas>
 
                     {/* Character Telemetry Footer */}

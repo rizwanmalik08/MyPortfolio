@@ -1,446 +1,205 @@
-import { useRef, useMemo, useState } from 'react';
+import { useRef, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Float } from '@react-three/drei';
+import { Float, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
+import rizwan3dAvatarImg from '../../assets/rizwan-3d-avatar.jpg';
 
 /**
- * High-End Interactive 3D Cyber Character / Developer Avatar
- * Fully procedural, stylized 3D android developer bust with:
- * - Dynamic mouse head-tracking & eye focus
- * - Blinking cybernetic visor & glowing power core
- * - Articulated neck pistons & futuristic carbon armor
- * - Floating holographic code deck & orbiting data particles
- * - Zero external model downloads: 100% instant load, 60/120 FPS
+ * 3D Avatar Model of Rizwan
+ * Rendered in WebGL with:
+ * - High-detail stylized 3D character texture of Rizwan
+ * - Interactive 3D mouse tracking & gimbal tilt
+ * - Dynamic 3D cursor point light casting specular highlights
+ * - Concentric 3D holographic orbit rings with traveling satellite nodes
+ * - Floating 3D luminous data particles & holographic projector pedestal
  */
 export function CyberCharacter({ mouseNorm = { x: 0, y: 0 }, theme = 'cyber' }) {
-  const rootGroupRef = useRef();
-  const headGroupRef = useRef();
-  const leftEyeRef = useRef();
-  const rightEyeRef = useRef();
-  const coreLightRef = useRef();
-  const holoDeckRef = useRef();
-  const [blink, setBlink] = useState(false);
+  const rootRef = useRef();
+  const avatarMeshRef = useRef();
+  const ring1Ref = useRef();
+  const ring2Ref = useRef();
+  const lightRef = useRef();
 
-  // Periodic eye blink simulation
-  useFrame((state) => {
-    const t = state.clock.elapsedTime;
-    // Blink every ~4 seconds for 150ms
-    const isBlinking = (Math.sin(t * 1.5) > 0.96) && (Math.cos(t * 3) > 0.5);
-    if (isBlinking !== blink) setBlink(isBlinking);
-  });
+  // Load the generated 3D avatar texture
+  const texture = useTexture(rizwan3dAvatarImg);
 
-  // Palette selection based on active theme
+  // Palette based on theme
   const colors = useMemo(() => {
     if (theme === 'studio') {
       return {
-        armor: '#0a0d18',
         accent1: '#38bdf8', // Sky Cyan
         accent2: '#818cf8', // Indigo
         core: '#38bdf8',
-        metal: '#1e2438',
-        glow: '#38bdf8',
       };
     }
     if (theme === 'matrix') {
       return {
-        armor: '#07120e',
         accent1: '#10b981', // Emerald
         accent2: '#06b6d4', // Cyan
         core: '#10b981',
-        metal: '#132820',
-        glow: '#10b981',
       };
     }
-    // Default Cyber Neon
     return {
-      armor: '#0b0c1c',
       accent1: '#22d3ee', // Cyan
       accent2: '#7c3aed', // Violet
       core: '#06b6d4',
-      metal: '#181b33',
-      glow: '#22d3ee',
     };
   }, [theme]);
 
-  // Floating ambient code bits / bits particles in 3D
-  const particles = useMemo(() => {
-    const count = 35;
+  // Floating particles in 3D volume
+  const [particlesPos, particlesColor] = useMemo(() => {
+    const count = 40;
     const pos = new Float32Array(count * 3);
+    const col = new Float32Array(count * 3);
+    const c1 = new THREE.Color(colors.accent1);
+    const c2 = new THREE.Color(colors.accent2);
+
     for (let i = 0; i < count; i++) {
       const angle = (i / count) * Math.PI * 2;
-      const radius = 1.1 + (i % 3) * 0.35;
+      const radius = 1.1 + (i % 4) * 0.25;
       pos[i * 3] = Math.cos(angle) * radius;
-      pos[i * 3 + 1] = -0.5 + (i % 7) * 0.25;
+      pos[i * 3 + 1] = -0.7 + (i % 8) * 0.22;
       pos[i * 3 + 2] = Math.sin(angle) * radius * 0.7;
+
+      const c = i % 2 === 0 ? c1 : c2;
+      col[i * 3] = c.r;
+      col[i * 3 + 1] = c.g;
+      col[i * 3 + 2] = c.b;
     }
-    return pos;
-  }, []);
+    return [pos, col];
+  }, [colors]);
 
   useFrame((state, delta) => {
     const clampedDelta = Math.min(delta, 0.05);
 
-    // 1. Interactive Head & Neck Rotation (Tracks cursor in real 3D)
-    if (headGroupRef.current) {
-      const targetRotX = mouseNorm.y * -0.45;
-      const targetRotY = mouseNorm.x * 0.6;
-      const targetRotZ = mouseNorm.x * -0.12;
-
-      headGroupRef.current.rotation.x = THREE.MathUtils.damp(headGroupRef.current.rotation.x, targetRotX, 3.5, clampedDelta);
-      headGroupRef.current.rotation.y = THREE.MathUtils.damp(headGroupRef.current.rotation.y, targetRotY, 3.5, clampedDelta);
-      headGroupRef.current.rotation.z = THREE.MathUtils.damp(headGroupRef.current.rotation.z, targetRotZ, 3.5, clampedDelta);
+    // 1. Interactive 3D Model Tilt (Smooth damping towards mouse)
+    if (avatarMeshRef.current) {
+      const targetRotY = mouseNorm.x * 0.35;
+      const targetRotX = mouseNorm.y * -0.25;
+      avatarMeshRef.current.rotation.y = THREE.MathUtils.damp(avatarMeshRef.current.rotation.y, targetRotY, 3.5, clampedDelta);
+      avatarMeshRef.current.rotation.x = THREE.MathUtils.damp(avatarMeshRef.current.rotation.x, targetRotX, 3.5, clampedDelta);
     }
 
-    // 2. Subtle Body Lean
-    if (rootGroupRef.current) {
-      const bodyRotY = mouseNorm.x * 0.25;
-      const bodyRotX = mouseNorm.y * -0.15;
-      rootGroupRef.current.rotation.y = THREE.MathUtils.damp(rootGroupRef.current.rotation.y, bodyRotY, 2.5, clampedDelta);
-      rootGroupRef.current.rotation.x = THREE.MathUtils.damp(rootGroupRef.current.rotation.x, bodyRotX, 2.5, clampedDelta);
+    // 2. Cursor Point Light Position (Casts dynamic 3D specular glare)
+    if (lightRef.current) {
+      lightRef.current.position.x = mouseNorm.x * 2.2;
+      lightRef.current.position.y = mouseNorm.y * 2.2;
     }
 
-    // 3. Heartbeat / Core Pulse
-    if (coreLightRef.current) {
-      const pulse = 1.8 + Math.sin(state.clock.elapsedTime * 3) * 0.6;
-      coreLightRef.current.intensity = pulse;
+    // 3. Orbiting Gyro Ring 1
+    if (ring1Ref.current) {
+      ring1Ref.current.rotation.z += clampedDelta * 0.3;
+      ring1Ref.current.rotation.x = THREE.MathUtils.damp(ring1Ref.current.rotation.x, 1.2 + mouseNorm.y * -0.3, 3, clampedDelta);
+      ring1Ref.current.rotation.y = THREE.MathUtils.damp(ring1Ref.current.rotation.y, mouseNorm.x * 0.3, 3, clampedDelta);
     }
 
-    // 4. Floating Holographic Deck Hover
-    if (holoDeckRef.current) {
-      holoDeckRef.current.position.y = -0.85 + Math.sin(state.clock.elapsedTime * 1.8) * 0.03;
-      holoDeckRef.current.rotation.z = mouseNorm.x * -0.08;
+    // 4. Orbiting Gyro Ring 2
+    if (ring2Ref.current) {
+      ring2Ref.current.rotation.z -= clampedDelta * 0.25;
+      ring2Ref.current.rotation.x = THREE.MathUtils.damp(ring2Ref.current.rotation.x, -0.9 + mouseNorm.y * -0.2, 3, clampedDelta);
+      ring2Ref.current.rotation.y = THREE.MathUtils.damp(ring2Ref.current.rotation.y, mouseNorm.x * 0.2, 3, clampedDelta);
     }
   });
 
   return (
-    <group ref={rootGroupRef} position={[0, -0.15, 0]}>
+    <group ref={rootRef} position={[0, -0.05, 0]}>
       
-      {/* Dynamic Lighting framing the character */}
-      <pointLight position={[2, 2, 2.5]} intensity={2.2} color="#ffffff" />
-      <pointLight position={[-2, 1, 2]} intensity={2.5} color={colors.accent1} distance={6} />
-      <pointLight position={[0, -1, 2]} intensity={2.0} color={colors.accent2} distance={5} />
-      <pointLight position={[0, 2.5, -1.5]} intensity={2.8} color={colors.accent1} distance={5} />
+      {/* Dynamic 3D Studio Lights */}
+      <ambientLight intensity={0.9} />
+      <directionalLight position={[3, 4, 3]} intensity={1.8} color="#ffffff" />
+      <directionalLight position={[-3, 2, -1]} intensity={1.5} color={colors.accent2} />
 
-      {/* FLOAT ANIMATION WRAPPER */}
-      <Float speed={2.2} rotationIntensity={0.15} floatIntensity={0.35}>
+      {/* Interactive Cursor Light */}
+      <pointLight
+        ref={lightRef}
+        position={[0, 0, 2.2]}
+        intensity={2.8}
+        color={colors.accent1}
+        distance={5}
+      />
 
-        {/* ======================================================== */}
-        {/* 1. HEAD & HELMET ASSEMBLY (TRACKS MOUSE)                 */}
-        {/* ======================================================== */}
-        <group ref={headGroupRef} position={[0, 0.52, 0]}>
+      {/* GENTLE FLOATING ANIMATION */}
+      <Float speed={2.0} rotationIntensity={0.12} floatIntensity={0.3}>
 
-          {/* Cranium / Main Helmet Shell */}
-          <mesh position={[0, 0, 0]}>
-            <sphereGeometry args={[0.52, 32, 32]} />
-            <meshStandardMaterial
-              color={colors.armor}
-              roughness={0.2}
-              metalness={0.85}
-              envMapIntensity={1.5}
-            />
-          </mesh>
+        {/* 1. 3D AVATAR MODEL DISC MESH (RIZWAN 3D CHARACTER) */}
+        <mesh ref={avatarMeshRef} position={[0, 0.05, 0]}>
+          <circleGeometry args={[1.22, 64]} />
+          <meshStandardMaterial
+            map={texture}
+            roughness={0.25}
+            metalness={0.4}
+            envMapIntensity={1.2}
+            side={THREE.DoubleSide}
+          />
+        </mesh>
 
-          {/* Carbon Fiber Chin / Jaw Guard */}
-          <mesh position={[0, -0.22, 0.22]} rotation={[0.3, 0, 0]}>
-            <boxGeometry args={[0.42, 0.32, 0.38]} />
-            <meshStandardMaterial
-              color={colors.metal}
-              roughness={0.3}
-              metalness={0.9}
-            />
-          </mesh>
+        {/* 2. 3D GYROSCOPIC HOLOGRAPHIC RING 1 */}
+        <mesh ref={ring1Ref} position={[0, 0, 0.12]}>
+          <torusGeometry args={[1.32, 0.008, 16, 64]} />
+          <meshStandardMaterial
+            color={colors.accent1}
+            emissive={colors.accent1}
+            emissiveIntensity={2.2}
+            transparent
+            opacity={0.65}
+          />
+        </mesh>
 
-          {/* Glowing Respirator Intake Vents */}
-          <mesh position={[-0.1, -0.28, 0.38]} rotation={[0.2, -0.3, 0]}>
-            <boxGeometry args={[0.08, 0.05, 0.06]} />
-            <meshBasicMaterial color={colors.accent1} />
-          </mesh>
-          <mesh position={[0.1, -0.28, 0.38]} rotation={[0.2, 0.3, 0]}>
-            <boxGeometry args={[0.08, 0.05, 0.06]} />
-            <meshBasicMaterial color={colors.accent1} />
-          </mesh>
+        {/* Satellite Node on Ring 1 */}
+        <mesh position={[1.32, 0, 0.12]}>
+          <sphereGeometry args={[0.032, 16, 16]} />
+          <meshBasicMaterial color="#ffffff" />
+        </mesh>
 
-          {/* ======================================================== */}
-          {/* CYBER VISOR & EYES                                       */}
-          {/* ======================================================== */}
-          {/* Dark Glass Visor Shield */}
-          <mesh position={[0, 0.04, 0.38]} rotation={[-0.05, 0, 0]}>
-            <boxGeometry args={[0.62, 0.24, 0.28]} />
-            <meshStandardMaterial
-              color="#04060d"
-              roughness={0.1}
-              metalness={0.95}
-              transparent
-              opacity={0.88}
-            />
-          </mesh>
+        {/* 3. 3D GYROSCOPIC HOLOGRAPHIC RING 2 */}
+        <mesh ref={ring2Ref} position={[0, 0, 0.06]}>
+          <torusGeometry args={[1.2, 0.006, 16, 64]} />
+          <meshStandardMaterial
+            color={colors.accent2}
+            emissive={colors.accent2}
+            emissiveIntensity={1.8}
+            transparent
+            opacity={0.5}
+          />
+        </mesh>
 
-          {/* Visor Neon Frame Bevel */}
-          <mesh position={[0, 0.16, 0.44]}>
-            <boxGeometry args={[0.64, 0.02, 0.1]} />
-            <meshBasicMaterial color={colors.accent1} />
-          </mesh>
-
-          {/* Left Glowing Cyber Eye */}
-          <mesh
-            ref={leftEyeRef}
-            position={[-0.15, 0.04, 0.48]}
-            scale={[1, blink ? 0.1 : 1, 1]}
-          >
-            <capsuleGeometry args={[0.035, 0.08, 8, 16]} />
-            <meshBasicMaterial color={colors.accent1} />
-          </mesh>
-
-          {/* Right Glowing Cyber Eye */}
-          <mesh
-            ref={rightEyeRef}
-            position={[0.15, 0.04, 0.48]}
-            scale={[1, blink ? 0.1 : 1, 1]}
-          >
-            <capsuleGeometry args={[0.035, 0.08, 8, 16]} />
-            <meshBasicMaterial color={colors.accent1} />
-          </mesh>
-
-          {/* Eye Reticle Pupils */}
-          {!blink && (
-            <>
-              <mesh position={[-0.15 + mouseNorm.x * 0.02, 0.04 + mouseNorm.y * 0.015, 0.52]}>
-                <sphereGeometry args={[0.016, 16, 16]} />
-                <meshBasicMaterial color="#ffffff" />
-              </mesh>
-              <mesh position={[0.15 + mouseNorm.x * 0.02, 0.04 + mouseNorm.y * 0.015, 0.52]}>
-                <sphereGeometry args={[0.016, 16, 16]} />
-                <meshBasicMaterial color="#ffffff" />
-              </mesh>
-            </>
-          )}
-
-          {/* ======================================================== */}
-          {/* CYBER HEADPHONES / AUDIO CANS                           */}
-          {/* ======================================================== */}
-          {/* Left Earphone Can */}
-          <group position={[-0.52, 0, 0]}>
-            <mesh rotation={[0, 0, Math.PI / 2]}>
-              <cylinderGeometry args={[0.18, 0.2, 0.14, 24]} />
-              <meshStandardMaterial color={colors.metal} metalness={0.9} roughness={0.2} />
-            </mesh>
-            {/* Pulsing Ear Neon Ring */}
-            <mesh position={[-0.08, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
-              <ringGeometry args={[0.1, 0.13, 24]} />
-              <meshBasicMaterial color={colors.accent1} side={THREE.DoubleSide} />
-            </mesh>
-          </group>
-
-          {/* Right Earphone Can */}
-          <group position={[0.52, 0, 0]}>
-            <mesh rotation={[0, 0, Math.PI / 2]}>
-              <cylinderGeometry args={[0.18, 0.2, 0.14, 24]} />
-              <meshStandardMaterial color={colors.metal} metalness={0.9} roughness={0.2} />
-            </mesh>
-            {/* Pulsing Ear Neon Ring */}
-            <mesh position={[0.08, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
-              <ringGeometry args={[0.1, 0.13, 24]} />
-              <meshBasicMaterial color={colors.accent2} side={THREE.DoubleSide} />
-            </mesh>
-          </group>
-
-          {/* Comms Antenna Fin */}
-          <mesh position={[-0.52, 0.25, -0.05]} rotation={[0.4, 0, 0.2]}>
-            <cylinderGeometry args={[0.01, 0.02, 0.35, 12]} />
-            <meshStandardMaterial color={colors.metal} metalness={0.8} />
-          </mesh>
-          <mesh position={[-0.56, 0.42, 0.02]}>
-            <sphereGeometry args={[0.022, 12, 12]} />
-            <meshBasicMaterial color={colors.accent1} />
-          </mesh>
-
-          {/* Top Head Aerodynamic Crest */}
-          <mesh position={[0, 0.52, -0.05]} rotation={[-0.2, 0, 0]}>
-            <boxGeometry args={[0.1, 0.08, 0.45]} />
-            <meshStandardMaterial color={colors.metal} metalness={0.9} />
-          </mesh>
-          <mesh position={[0, 0.56, -0.05]} rotation={[-0.2, 0, 0]}>
-            <boxGeometry args={[0.03, 0.02, 0.42]} />
-            <meshBasicMaterial color={colors.accent2} />
-          </mesh>
-
-          {/* Segmented Hydraulic Neck */}
-          <group position={[0, -0.42, 0]}>
-            <mesh>
-              <cylinderGeometry args={[0.2, 0.24, 0.22, 20]} />
-              <meshStandardMaterial color="#05070e" metalness={0.9} roughness={0.3} />
-            </mesh>
-            {/* Neck Rings */}
-            <mesh position={[0, 0.04, 0]}>
-              <torusGeometry args={[0.22, 0.018, 12, 32]} />
-              <meshStandardMaterial color={colors.metal} metalness={0.9} />
-            </mesh>
-            <mesh position={[0, -0.05, 0]}>
-              <torusGeometry args={[0.23, 0.016, 12, 32]} />
-              <meshBasicMaterial color={colors.accent2} />
-            </mesh>
-          </group>
-
-        </group>
-
-        {/* ======================================================== */}
-        {/* 2. TORSO & CYBERNETIC ARMOR SUIT                         */}
-        {/* ======================================================== */}
-        <group position={[0, -0.45, 0]}>
-
-          {/* Main Chest Armor Core Block */}
-          <mesh position={[0, 0.05, 0]}>
-            <boxGeometry args={[0.95, 0.75, 0.58]} />
-            <meshStandardMaterial
-              color={colors.armor}
-              roughness={0.25}
-              metalness={0.85}
-            />
-          </mesh>
-
-          {/* Angular Chest Plates (Pectoral Armor) */}
-          <mesh position={[-0.26, 0.16, 0.26]} rotation={[0.1, 0.2, -0.08]}>
-            <boxGeometry args={[0.38, 0.32, 0.12]} />
-            <meshStandardMaterial color={colors.metal} metalness={0.9} roughness={0.2} />
-          </mesh>
-          <mesh position={[0.26, 0.16, 0.26]} rotation={[0.1, -0.2, 0.08]}>
-            <boxGeometry args={[0.38, 0.32, 0.12]} />
-            <meshStandardMaterial color={colors.metal} metalness={0.9} roughness={0.2} />
-          </mesh>
-
-          {/* ======================================================== */}
-          {/* HEART ARC REACTOR / POWER CORE                          */}
-          {/* ======================================================== */}
-          <group position={[0, 0.14, 0.31]}>
-            {/* Outer Core Rim */}
-            <mesh>
-              <ringGeometry args={[0.08, 0.12, 32]} />
-              <meshStandardMaterial color={colors.metal} metalness={0.95} />
-            </mesh>
-            {/* Inner Glowing Arc Crystal */}
-            <mesh>
-              <circleGeometry args={[0.075, 32]} />
-              <meshBasicMaterial color={colors.core} />
-            </mesh>
-            {/* Internal Core Point Light */}
-            <pointLight ref={coreLightRef} color={colors.core} intensity={2.2} distance={3} />
-          </group>
-
-          {/* Left Shoulder Pauldron */}
-          <group position={[-0.64, 0.28, 0]}>
-            <mesh rotation={[0, 0, -0.3]}>
-              <boxGeometry args={[0.36, 0.24, 0.44]} />
-              <meshStandardMaterial color={colors.armor} metalness={0.85} roughness={0.2} />
-            </mesh>
-            {/* Shoulder Edge Light */}
-            <mesh position={[-0.14, 0.08, 0]} rotation={[0, 0, -0.3]}>
-              <boxGeometry args={[0.04, 0.02, 0.42]} />
-              <meshBasicMaterial color={colors.accent1} />
-            </mesh>
-          </group>
-
-          {/* Right Shoulder Pauldron */}
-          <group position={[0.64, 0.28, 0]}>
-            <mesh rotation={[0, 0, 0.3]}>
-              <boxGeometry args={[0.36, 0.24, 0.44]} />
-              <meshStandardMaterial color={colors.armor} metalness={0.85} roughness={0.2} />
-            </mesh>
-            {/* Shoulder Edge Light */}
-            <mesh position={[0.14, 0.08, 0]} rotation={[0, 0, 0.3]}>
-              <boxGeometry args={[0.04, 0.02, 0.42]} />
-              <meshBasicMaterial color={colors.accent2} />
-            </mesh>
-          </group>
-
-          {/* Spine & Back Heat Vents */}
-          <mesh position={[0, 0.08, -0.32]}>
-            <boxGeometry args={[0.32, 0.65, 0.08]} />
-            <meshStandardMaterial color={colors.metal} metalness={0.9} />
-          </mesh>
-          <mesh position={[0, 0.22, -0.36]}>
-            <boxGeometry args={[0.22, 0.04, 0.02]} />
-            <meshBasicMaterial color={colors.accent2} />
-          </mesh>
-          <mesh position={[0, 0.08, -0.36]}>
-            <boxGeometry args={[0.22, 0.04, 0.02]} />
-            <meshBasicMaterial color={colors.accent1} />
-          </mesh>
-
-        </group>
-
-        {/* ======================================================== */}
-        {/* 3. FLOATING HOLOGRAPHIC CODE DECK (DEVELOPER MOTIF)      */}
-        {/* ======================================================== */}
-        <group ref={holoDeckRef} position={[0, -0.85, 0.55]} rotation={[-0.45, 0, 0]}>
-          {/* Hologram Glass Console Surface */}
+        {/* 4. BASE HOLOGRAPHIC PROJECTOR PEDESTAL */}
+        <group position={[0, -1.25, 0]} rotation={[-Math.PI / 2.2, 0, 0]}>
           <mesh>
-            <planeGeometry args={[1.25, 0.45]} />
-            <meshStandardMaterial
-              color="#040816"
-              roughness={0.1}
-              metalness={0.95}
-              transparent
-              opacity={0.7}
-              side={THREE.DoubleSide}
-            />
+            <ringGeometry args={[1.1, 1.25, 48]} />
+            <meshBasicMaterial color={colors.accent1} transparent opacity={0.6} side={THREE.DoubleSide} />
           </mesh>
-
-          {/* Neon Perimeter Rim */}
-          <mesh position={[0, 0, 0.01]}>
-            <planeGeometry args={[1.27, 0.47]} />
-            <meshBasicMaterial color={colors.accent1} wireframe />
-          </mesh>
-
-          {/* Floating Neon Key Grid Rows */}
-          {[-0.12, -0.04, 0.04, 0.12].map((y, rowIdx) => (
-            <mesh key={rowIdx} position={[0, y, 0.02]}>
-              <planeGeometry args={[1.05, 0.045]} />
-              <meshBasicMaterial
-                color={rowIdx % 2 === 0 ? colors.accent1 : colors.accent2}
-                transparent
-                opacity={0.4}
-              />
-            </mesh>
-          ))}
-        </group>
-
-        {/* ======================================================== */}
-        {/* 4. HOLOGRAPHIC PEDESTAL / BASE PROJECTOR                */}
-        {/* ======================================================== */}
-        <group position={[0, -1.15, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          {/* Outer Ring */}
           <mesh>
-            <ringGeometry args={[0.95, 1.05, 48]} />
-            <meshBasicMaterial color={colors.accent1} transparent opacity={0.65} side={THREE.DoubleSide} />
+            <ringGeometry args={[0.8, 0.9, 36]} />
+            <meshBasicMaterial color={colors.accent2} transparent opacity={0.45} side={THREE.DoubleSide} />
           </mesh>
-          {/* Inner Counter Ring */}
-          <mesh>
-            <ringGeometry args={[0.7, 0.78, 36]} />
-            <meshBasicMaterial color={colors.accent2} transparent opacity={0.5} side={THREE.DoubleSide} />
-          </mesh>
-          {/* Base Glow Disc */}
           <mesh position={[0, 0, -0.05]}>
-            <circleGeometry args={[1.1, 32]} />
-            <meshBasicMaterial color="#040714" transparent opacity={0.75} side={THREE.DoubleSide} />
+            <circleGeometry args={[1.28, 32]} />
+            <meshBasicMaterial color="#040714" transparent opacity={0.8} side={THREE.DoubleSide} />
           </mesh>
         </group>
 
-        {/* ======================================================== */}
-        {/* 5. FLOATING 3D DATA PARTICLES                           */}
-        {/* ======================================================== */}
+        {/* 5. FLOATING 3D DATA PARTICLES */}
         <points>
           <bufferGeometry>
             <bufferAttribute
               attach="attributes-position"
-              count={35}
-              array={particles}
+              count={40}
+              array={particlesPos}
+              itemSize={3}
+            />
+            <bufferAttribute
+              attach="attributes-color"
+              count={40}
+              array={particlesColor}
               itemSize={3}
             />
           </bufferGeometry>
           <pointsMaterial
             size={0.038}
-            color={colors.accent1}
+            vertexColors
             transparent
-            opacity={0.75}
+            opacity={0.8}
             blending={THREE.AdditiveBlending}
             depthWrite={false}
           />
