@@ -1,6 +1,8 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sparkles, Terminal, Activity, CheckCircle2, ShieldCheck, Zap } from 'lucide-react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import * as THREE from 'three';
+import { Sparkles, Activity, CheckCircle2, Zap, Target, Eye } from 'lucide-react';
 import { soundManager } from '../../utils/audioFX';
 import rizwanPhoto from '../../assets/rizwan.jpg.png';
 
@@ -47,10 +49,185 @@ const THEMES = {
   },
 };
 
+/**
+ * 3D Scene Running INSIDE the Image Frame Lens
+ * Renders an interactive 3D Gyroscopic Halo Ring, 3D Orbiting Stardust,
+ * and a 3D Cursor Tracking Target Reticle right inside the portrait portal!
+ */
+function InsidePortal3D({ mouseNorm, theme }) {
+  const ringRef = useRef();
+  const ring2Ref = useRef();
+  const targetRef = useRef();
+  const particlesRef = useRef();
+
+  // Generate 42 floating stardust particles in 3D volume
+  const [particlePos, particleColors] = useMemo(() => {
+    const count = 42;
+    const pos = new Float32Array(count * 3);
+    const col = new Float32Array(count * 3);
+    const c1 = new THREE.Color(theme.accent2);
+    const c2 = new THREE.Color(theme.accent1);
+
+    for (let i = 0; i < count; i++) {
+      // Cylindrical/spherical distribution inside the circular frame
+      const radius = 0.2 + Math.random() * 0.95;
+      const angle = Math.random() * Math.PI * 2;
+      pos[i * 3] = Math.cos(angle) * radius;
+      pos[i * 3 + 1] = Math.sin(angle) * radius;
+      pos[i * 3 + 2] = -0.3 + Math.random() * 0.9; // Z depth: some behind (z<0), some in front (z>0)
+
+      const c = Math.random() > 0.4 ? c1 : c2;
+      col[i * 3] = c.r;
+      col[i * 3 + 1] = c.g;
+      col[i * 3 + 2] = c.b;
+    }
+    return [pos, col];
+  }, [theme]);
+
+  useFrame((state, delta) => {
+    const clampedDelta = Math.min(delta, 0.05);
+
+    // 1. Smooth 3D tilt reaction from mouse
+    const targetRotX = mouseNorm.y * -0.55;
+    const targetRotY = mouseNorm.x * 0.55;
+
+    // 2. Gyroscopic 3D Ring 1 (Electric Cyan / Accent 2)
+    if (ringRef.current) {
+      ringRef.current.rotation.z += clampedDelta * 0.35;
+      ringRef.current.rotation.x = THREE.MathUtils.damp(ringRef.current.rotation.x, 1.1 + targetRotX, 3, clampedDelta);
+      ringRef.current.rotation.y = THREE.MathUtils.damp(ringRef.current.rotation.y, targetRotY, 3, clampedDelta);
+    }
+
+    // 3. Gyroscopic 3D Ring 2 (Violet / Accent 1)
+    if (ring2Ref.current) {
+      ring2Ref.current.rotation.z -= clampedDelta * 0.25;
+      ring2Ref.current.rotation.x = THREE.MathUtils.damp(ring2Ref.current.rotation.x, -0.8 + targetRotX, 3, clampedDelta);
+      ring2Ref.current.rotation.y = THREE.MathUtils.damp(ring2Ref.current.rotation.y, targetRotY, 3, clampedDelta);
+    }
+
+    // 4. 3D Floating Target Reticle: Tracks mouse inside lens with spring lag
+    if (targetRef.current) {
+      const tx = mouseNorm.x * 0.85;
+      const ty = mouseNorm.y * 0.85;
+      targetRef.current.position.x = THREE.MathUtils.damp(targetRef.current.position.x, tx, 4, clampedDelta);
+      targetRef.current.position.y = THREE.MathUtils.damp(targetRef.current.position.y, ty, 4, clampedDelta);
+      targetRef.current.rotation.z += clampedDelta * 0.8;
+    }
+
+    // 5. Floating 3D Stardust Drift
+    if (particlesRef.current) {
+      particlesRef.current.rotation.z += clampedDelta * 0.05;
+      particlesRef.current.rotation.x = THREE.MathUtils.damp(particlesRef.current.rotation.x, targetRotX * 0.5, 2, clampedDelta);
+      particlesRef.current.rotation.y = THREE.MathUtils.damp(particlesRef.current.rotation.y, targetRotY * 0.5, 2, clampedDelta);
+    }
+  });
+
+  return (
+    <group position={[0, 0, 0]}>
+      {/* 3D Dynamic Point Light: Moves with cursor and casts real specular glow inside lens */}
+      <pointLight
+        position={[mouseNorm.x * 1.5, mouseNorm.y * 1.5, 1.2]}
+        intensity={2.8}
+        color={theme.accent2}
+        distance={4}
+      />
+      <ambientLight intensity={0.5} />
+
+      {/* 3D Primary Hologram Halo Ring (Orbiting inside the frame) */}
+      <mesh ref={ringRef} position={[0, 0, 0.15]}>
+        <torusGeometry args={[0.92, 0.007, 16, 64]} />
+        <meshStandardMaterial
+          color={theme.accent2}
+          emissive={theme.accent2}
+          emissiveIntensity={2.0}
+          transparent
+          opacity={0.65}
+        />
+      </mesh>
+
+      {/* 3D Secondary Tilted Ring */}
+      <mesh ref={ring2Ref} position={[0, 0, 0.05]}>
+        <torusGeometry args={[0.82, 0.005, 16, 64]} />
+        <meshStandardMaterial
+          color={theme.accent1}
+          emissive={theme.accent1}
+          emissiveIntensity={1.8}
+          transparent
+          opacity={0.5}
+        />
+      </mesh>
+
+      {/* 3D Orbiting Satellite Node on Ring 1 */}
+      <mesh position={[0.92, 0, 0.15]}>
+        <sphereGeometry args={[0.028, 16, 16]} />
+        <meshBasicMaterial color="#ffffff" />
+      </mesh>
+
+      {/* 3D Cursor Target Reticle floating at depth */}
+      <group ref={targetRef} position={[0.2, 0.3, 0.4]}>
+        {/* Reticle Outer Ring */}
+        <mesh>
+          <ringGeometry args={[0.075, 0.09, 32]} />
+          <meshBasicMaterial color={theme.accent2} transparent opacity={0.8} side={THREE.DoubleSide} />
+        </mesh>
+        {/* Reticle Center Dot */}
+        <mesh>
+          <circleGeometry args={[0.02, 16]} />
+          <meshBasicMaterial color="#ffffff" />
+        </mesh>
+        {/* Reticle Crosshair Ticks */}
+        <mesh position={[0.11, 0, 0]}>
+          <planeGeometry args={[0.04, 0.008]} />
+          <meshBasicMaterial color={theme.accent2} />
+        </mesh>
+        <mesh position={[-0.11, 0, 0]}>
+          <planeGeometry args={[0.04, 0.008]} />
+          <meshBasicMaterial color={theme.accent2} />
+        </mesh>
+        <mesh position={[0, 0.11, 0]}>
+          <planeGeometry args={[0.008, 0.04]} />
+          <meshBasicMaterial color={theme.accent2} />
+        </mesh>
+        <mesh position={[0, -0.11, 0]}>
+          <planeGeometry args={[0.008, 0.04]} />
+          <meshBasicMaterial color={theme.accent2} />
+        </mesh>
+      </group>
+
+      {/* 3D Floating Stardust Particles */}
+      <points ref={particlesRef}>
+        <bufferGeometry>
+          <bufferAttribute
+            attach="attributes-position"
+            count={42}
+            array={particlePos}
+            itemSize={3}
+          />
+          <bufferAttribute
+            attach="attributes-color"
+            count={42}
+            array={particleColors}
+            itemSize={3}
+          />
+        </bufferGeometry>
+        <pointsMaterial
+          size={0.038}
+          vertexColors
+          transparent
+          opacity={0.75}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+        />
+      </points>
+    </group>
+  );
+}
+
 export function CyberAvatar() {
   const containerRef = useRef(null);
   const [themeKey, setThemeKey] = useState('cyber');
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [mouseNorm, setMouseNorm] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
   const [ping, setPing] = useState(16);
 
@@ -77,9 +254,10 @@ export function CyberAvatar() {
     const normX = (x - centerX) / centerX;
     const normY = (y - centerY) / centerY;
 
+    setMouseNorm({ x: normX, y: -normY });
     setTilt({
-      x: normY * -14, // Tilt up/down
-      y: normX * 14,  // Tilt left/right
+      x: normY * -15, // Tilt up/down
+      y: normX * 15,  // Tilt left/right
     });
   };
 
@@ -91,6 +269,7 @@ export function CyberAvatar() {
   const handleMouseLeave = () => {
     setIsHovered(false);
     setTilt({ x: 0, y: 0 });
+    setMouseNorm({ x: 0, y: 0 });
   };
 
   const handleThemeChange = (key) => {
@@ -167,7 +346,7 @@ export function CyberAvatar() {
 
           {/* 4. MAIN AVATAR CONTAINER WITH CONIC GRADIENT BORDER BEAM */}
           <div
-            className="relative h-full w-full rounded-full p-[3px] overflow-hidden shadow-[0_0_60px_rgba(0,0,0,0.8)]"
+            className="relative h-full w-full rounded-full p-[3px] overflow-hidden shadow-[0_0_60px_rgba(0,0,0,0.85)]"
             style={{ transform: 'translateZ(0px)' }}
           >
             {/* Animated Conic Gradient Beam */}
@@ -178,51 +357,97 @@ export function CyberAvatar() {
             {/* Inner Dark Bevel Disc */}
             <div className="relative h-full w-full rounded-full bg-[#0a0c1a] p-2 overflow-hidden backdrop-blur-2xl">
               
-              {/* IMAGE WRAPPER WITH CYBERNETIC COLOR GRADING */}
-              <div className="relative h-full w-full rounded-full overflow-hidden bg-slate-950">
+              {/* IMAGE PORTAL: MULTI-PLANE 3D CONTAINER */}
+              <div
+                className="relative h-full w-full rounded-full overflow-hidden bg-slate-950"
+                style={{ transformStyle: 'preserve-3d' }}
+              >
                 
-                {/* Real User Photo */}
-                <img
-                  src={rizwanPhoto}
-                  alt="Rizwan"
-                  className="h-full w-full rounded-full object-cover transition-all duration-700"
+                {/* A. DEEP 3D BACKGROUND VOID MATRIX (Shifts opposite to mouse for depth) */}
+                <div
+                  className="pointer-events-none absolute inset-[-15%] bg-[radial-gradient(rgba(56,189,248,0.12)_1px,transparent_1px)] [background-size:20px_20px] transition-transform duration-200"
                   style={{
-                    filter: theme.photoFilter,
+                    transform: `translate3d(${mouseNorm.x * -14}px, ${mouseNorm.y * 14}px, -20px)`,
                   }}
-                  width="600"
-                  height="600"
-                  loading="eager"
                 />
 
-                {/* THEME GRADING LAYER (Blends image seamlessly into dark theme!) */}
+                {/* B. REAL USER PHOTO (Layer 0 on Z-axis with subtle parallax) */}
+                <div
+                  className="relative h-full w-full transition-transform duration-200"
+                  style={{
+                    transform: `translate3d(${mouseNorm.x * 6}px, ${mouseNorm.y * -6}px, 0px) scale(1.05)`,
+                  }}
+                >
+                  <img
+                    src={rizwanPhoto}
+                    alt="Rizwan"
+                    className="h-full w-full rounded-full object-cover transition-all duration-700"
+                    style={{
+                      filter: theme.photoFilter,
+                    }}
+                    width="600"
+                    height="600"
+                    loading="eager"
+                  />
+                </div>
+
+                {/* C. THEME GRADING LAYER (Blends image seamlessly into dark theme) */}
                 <div
                   className={`pointer-events-none absolute inset-0 bg-gradient-to-tr ${theme.overlayGrad} mix-blend-soft-light transition-all duration-700`}
                 />
 
-                {/* SPECULAR RIM LIGHTING (Gives photo high-end specular contour) */}
+                {/* D. SPECULAR RIM LIGHTING CONTOUR */}
                 <div
-                  className="pointer-events-none absolute inset-0 rounded-full"
+                  className="pointer-events-none absolute inset-0 rounded-full transition-transform duration-200"
                   style={{
-                    background: `radial-gradient(circle at 65% 30%, ${theme.specular} 0%, transparent 65%)`,
+                    background: `radial-gradient(circle at ${50 + mouseNorm.x * 20}% ${40 - mouseNorm.y * 20}%, ${theme.specular} 0%, transparent 65%)`,
                     mixBlendMode: 'screen',
                   }}
                 />
 
-                {/* VIGNETTE EDGE FALLOFF (Melts outer edge into background) */}
+                {/* E. VIGNETTE EDGE FALLOFF */}
                 <div
                   className="pointer-events-none absolute inset-0 rounded-full"
                   style={{
-                    background: 'radial-gradient(circle at center, transparent 60%, rgba(5, 6, 15, 0.8) 100%)',
+                    background: 'radial-gradient(circle at center, transparent 58%, rgba(5, 6, 15, 0.85) 100%)',
                   }}
                 />
 
-                {/* HOLOGRAPHIC LIGHT SHIMMER SCAN (Sweeps across photo every 5s) */}
+                {/* F. GENUINE 3D THREE.JS WEBGL CANVAS RUNNING INSIDE THE LENS */}
+                <div className="pointer-events-none absolute inset-0 rounded-full overflow-hidden">
+                  <Canvas
+                    camera={{ position: [0, 0, 2.5], fov: 45 }}
+                    gl={{
+                      alpha: true,
+                      antialias: true,
+                      powerPreference: 'high-performance',
+                    }}
+                    className="w-full h-full"
+                  >
+                    <InsidePortal3D mouseNorm={mouseNorm} theme={theme} />
+                  </Canvas>
+                </div>
+
+                {/* G. HOLOGRAPHIC LIGHT SHIMMER SCAN (Sweeps across photo every 5s) */}
                 <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-full">
                   <div className="h-full w-full bg-gradient-to-r from-transparent via-cyan-400/25 to-transparent animate-shimmer" />
                 </div>
 
-                {/* Subtle Scanline Texture */}
-                <div className="pointer-events-none absolute inset-0 opacity-15 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
+                {/* H. 3D CONVEX GLASS LENS SPECULAR GLARE (Moves dynamically with cursor) */}
+                <div
+                  className="pointer-events-none absolute inset-0 rounded-full transition-opacity duration-300"
+                  style={{
+                    background: `linear-gradient(${125 + mouseNorm.x * 30}deg, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.03) 40%, transparent 60%)`,
+                    opacity: isHovered ? 0.9 : 0.45,
+                  }}
+                />
+
+                {/* I. HUD TELEMETRY METERS INSIDE LENS */}
+                <div className="pointer-events-none absolute bottom-3 inset-x-0 flex items-center justify-between px-6 text-[8px] font-mono text-cyan-300/60 uppercase tracking-widest">
+                  <span>DEPTH: 3D PORTAL</span>
+                  <span>Z: +{(32 + mouseNorm.x * 8).toFixed(1)}mm</span>
+                </div>
+
               </div>
 
             </div>
@@ -231,7 +456,7 @@ export function CyberAvatar() {
           {/* 5. FLOATING TELEMETRY CHIP 1: EXPERIENCE MATRIX */}
           <motion.div
             className="absolute -top-3 -right-3 sm:top-2 sm:-right-4 rounded-2xl border border-cyan-400/40 bg-slate-900/90 p-3.5 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.7)] text-center min-w-[96px] transition-all duration-300 hover:border-cyan-300 hover:scale-105"
-            style={{ transform: 'translateZ(50px)' }}
+            style={{ transform: 'translateZ(55px)' }}
             animate={{ y: [0, -6, 0] }}
             transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut' }}
           >
@@ -253,7 +478,7 @@ export function CyberAvatar() {
           {/* 6. FLOATING TELEMETRY CHIP 2: LIVE AVAILABILITY BEACON */}
           <motion.div
             className="absolute -bottom-3 -left-3 sm:bottom-2 sm:-left-4 rounded-2xl border border-emerald-400/40 bg-slate-900/90 p-3.5 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.7)] flex items-center gap-3 transition-all duration-300 hover:border-emerald-300 hover:scale-105"
-            style={{ transform: 'translateZ(55px)' }}
+            style={{ transform: 'translateZ(60px)' }}
             animate={{ y: [0, 6, 0] }}
             transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 0.3 }}
           >
@@ -277,7 +502,7 @@ export function CyberAvatar() {
           {/* 7. FLOATING TELEMETRY CHIP 3: TECH CORE PILL */}
           <motion.div
             className="absolute -bottom-5 right-4 rounded-xl border border-violet-500/40 bg-slate-950/90 px-3.5 py-1.5 backdrop-blur-xl shadow-xl transition-all duration-300 hover:border-violet-400 hover:scale-105"
-            style={{ transform: 'translateZ(45px)' }}
+            style={{ transform: 'translateZ(50px)' }}
             animate={{ y: [0, -4, 0] }}
             transition={{ repeat: Infinity, duration: 3.8, ease: 'easeInOut', delay: 0.7 }}
           >
@@ -297,8 +522,9 @@ export function CyberAvatar() {
         transition={{ delay: 0.5, duration: 0.5 }}
         className="mt-8 flex items-center gap-1.5 rounded-full border border-white/10 bg-slate-900/80 p-1 backdrop-blur-xl shadow-lg"
       >
-        <span className="pl-3 pr-2 text-[10px] font-mono uppercase tracking-wider text-slate-400">
-          Aesthetic:
+        <span className="pl-3 pr-2 text-[10px] font-mono uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+          <Eye className="h-3 w-3 text-cyan-400" />
+          <span>Aesthetic:</span>
         </span>
         {Object.values(THEMES).map((t) => {
           const active = themeKey === t.id;
