@@ -1,16 +1,10 @@
 import React, { useRef, useEffect, useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { useProgress, Environment } from '@react-three/drei';
 import { AvatarModel } from './AvatarModel';
 import * as THREE from 'three';
 
-/**
- * Scene Floating Particles
- * Faint ambient dust particles around the 3D character (scaled down on mobile)
- */
 function PortalParticles({ reducedMotion }) {
-  const pointsRef = useRef();
-  const count = typeof window !== 'undefined' && window.innerWidth < 640 ? 30 : 65;
+  const count = typeof window !== 'undefined' && window.innerWidth < 640 ? 25 : 55;
 
   const [positions] = useState(() => {
     const pos = new Float32Array(count * 3);
@@ -23,12 +17,9 @@ function PortalParticles({ reducedMotion }) {
   });
 
   return (
-    <points ref={pointsRef}>
+    <points>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
-        />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial
         size={0.035}
@@ -42,144 +33,62 @@ function PortalParticles({ reducedMotion }) {
   );
 }
 
-/**
- * Loading state with pulsing ring and percentage from useProgress
- */
-function LoaderOverlay() {
-  const { active, progress } = useProgress();
-  if (!active) return null;
-
-  return (
-    <div className="absolute inset-0 z-20 flex flex-col items-center justify-center rounded-full bg-slate-950/80 backdrop-blur-sm">
-      <div className="relative flex h-16 w-16 items-center justify-center">
-        <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-cyan-400 border-r-violet-500" />
-        <span className="font-mono text-xs font-bold text-cyan-300">
-          {Math.round(progress)}%
-        </span>
-      </div>
-      <span className="mt-2 font-mono text-[11px] tracking-wider text-slate-400">
-        LOADING 3D AVATAR...
-      </span>
-    </div>
-  );
-}
-
-/**
- * Static 2D WebGL Fallback
- * Used when WebGL is unavailable or fails completely.
- */
-function StaticFallback({ fallbackImg, mouseNorm }) {
-  const tiltX = (mouseNorm?.y || 0) * 12;
-  const tiltY = (mouseNorm?.x || 0) * -14;
-
-  return (
-    <div
-      className="relative h-full w-full overflow-hidden rounded-full transition-transform duration-200 ease-out"
-      style={{
-        transform: `perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`,
-      }}
-    >
-      <img
-        src={fallbackImg}
-        alt="Avatar fallback portrait"
-        className="h-full w-full object-cover"
-      />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-cyan-900/20" />
-    </div>
-  );
-}
-
-/**
- * AvatarScene
- * 
- * - Fixed PerspectiveCamera (fov ~30)
- * - 3 Lights: Soft Key + Cyan Rim + Magenta Rim
- * - alpha: true (transparent canvas so radial teal background & glow show through)
- * - IntersectionObserver pauses frameloop when off-screen
- * - Accessible aria-hidden canvas
- */
 export function AvatarScene({
   targetRef,
-  modelUrl = '/models/avatar.glb',
   reducedMotion = false,
-  fallbackImg = '/rizwan-3d-avatar.jpg',
-  mouseNorm = { x: 0, y: 0 },
 }) {
   const containerRef = useRef();
   const [isVisible, setIsVisible] = useState(true);
-  const [hasWebGLError, setHasWebGLError] = useState(false);
 
-  // Pause frameloop when off-screen
   useEffect(() => {
     if (!containerRef.current) return;
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
-      },
+      ([entry]) => setIsVisible(entry.isIntersecting),
       { threshold: 0.1 }
     );
     observer.observe(containerRef.current);
     return () => observer.disconnect();
   }, []);
 
-  if (hasWebGLError) {
-    return <StaticFallback fallbackImg={fallbackImg} mouseNorm={mouseNorm} />;
-  }
-
   return (
     <div ref={containerRef} className="relative h-full w-full">
-      <LoaderOverlay />
-
       <Canvas
-        dpr={[1, 1.5]}
+        dpr={[1, 2]} // High-DPI crystal clear pixel resolution
         gl={{
           alpha: true,
           antialias: true,
           powerPreference: 'high-performance',
           toneMapping: THREE.ACESFilmicToneMapping,
+          toneMappingExposure: 1.25,
         }}
-        camera={{ position: [0, 0, 2.7], fov: 30 }}
+        camera={{ position: [0, 0.1, 2.75], fov: 34 }}
         frameloop={isVisible ? 'always' : 'never'}
-        fallback={<StaticFallback fallbackImg={fallbackImg} mouseNorm={mouseNorm} />}
         aria-hidden="true"
         onCreated={({ gl }) => {
-          gl.setClearColor(0x000000, 0); // Transparent background
+          gl.setClearColor(0x000000, 0); // Transparent canvas so background radial glow shows through
         }}
-        onError={() => setHasWebGLError(true)}
       >
-        {/* 3 LIGHTS ONLY (Max 3 lights as specified) */}
-        
-        {/* 1. Soft Key Light (warm neutral frontal-angled illumination) */}
-        <directionalLight
-          position={[1.5, 2.0, 2.2]}
-          intensity={1.25}
-          color="#f8fafc"
-        />
+        {/* Soft, crisp key light from front-right (defines cheekbones & nose depth) */}
+        <directionalLight position={[1.4, 1.8, 2.2]} intensity={2.2} color="#ffffff" />
 
-        {/* 2. Cyan Rim Light (from left-behind to highlight cheek & jawline) */}
-        <directionalLight
-          position={[-2.4, 0.6, -1.2]}
-          intensity={2.4}
-          color="#22d3ee"
-        />
+        {/* Dynamic Cyan Rim Light from left-behind (sharp cyber edge glow on hair & jaw) */}
+        <directionalLight position={[-2.6, 0.9, -1.0]} intensity={4.5} color="#22d3ee" />
 
-        {/* 3. Magenta Rim Light (from right-behind to highlight hair & shoulder edge) */}
-        <directionalLight
-          position={[2.4, -0.4, -1.2]}
-          intensity={2.0}
-          color="#f43f5e"
-        />
+        {/* Dynamic Magenta Rim Light from right-behind */}
+        <directionalLight position={[2.6, -0.4, -1.0]} intensity={3.5} color="#f43f5e" />
 
-        {/* Subtle Ambient Reflections */}
-        <ambientLight intensity={0.45} color="#0f172a" />
+        {/* Subtle Ambient light (balanced to prevent washed out blur) */}
+        <ambientLight intensity={0.38} color="#0f172a" />
 
-        {/* Floating background particles */}
+        {/* Eye catchlight (specular sparkle in the pupils) */}
+        <pointLight position={[0, 0.35, 1.7]} intensity={1.4} color="#e0f2fe" distance={3.2} />
+
+        {/* Floating cyber particles */}
         {!reducedMotion && <PortalParticles reducedMotion={reducedMotion} />}
 
-        {/* The 3D Avatar (Rigged GLB with Neck/Head rotation or Plan B bust) */}
+        {/* Real Rigged 3D Character with Moving Head, Eyes & Neck */}
         <Suspense fallback={null}>
           <AvatarModel
-            modelUrl={modelUrl}
             targetRef={targetRef}
             reducedMotion={reducedMotion}
           />
@@ -188,3 +97,5 @@ export function AvatarScene({
     </div>
   );
 }
+
+export default AvatarScene;
