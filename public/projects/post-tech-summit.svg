@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <linearGradient id="summitBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#020617"/>
+      <stop offset="40%" stop-color="#0b112c"/>
+      <stop offset="100%" stop-color="#050818"/>
+    </linearGradient>
+    <linearGradient id="glowCyan" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1080" height="1080" fill="url(#summitBg)"/>
+
+  <!-- Neon Frame Lines -->
+  <rect x="45" y="45" width="990" height="990" rx="30" fill="none" stroke="#1e293b" stroke-width="2"/>
+  <rect x="55" y="55" width="970" height="970" rx="25" fill="none" stroke="#38bdf8" stroke-width="1" stroke-opacity="0.3"/>
+
+  <!-- Top Badges -->
+  <rect x="90" y="90" width="180" height="38" rx="19" fill="#0284c7" fill-opacity="0.2" stroke="#38bdf8" stroke-width="1"/>
+  <text x="115" y="115" fill="#38bdf8" font-family="monospace" font-size="13" font-weight="bold">GLOBAL SUMMIT</text>
+  <text x="990" y="115" fill="#94a3b8" font-family="monospace" font-size="14" text-anchor="end">OCTOBER 24-26, 2026</text>
+
+  <!-- Big Title -->
+  <text x="90" y="240" fill="#ffffff" font-family="sans-serif" font-weight="900" font-size="80" letter-spacing="-1">FUTURE OF</text>
+  <text x="90" y="330" fill="url(#glowCyan)" font-family="sans-serif" font-weight="900" font-size="80" letter-spacing="-1">WEB3 &amp; AI TECH</text>
+
+  <text x="90" y="400" fill="#94a3b8" font-family="sans-serif" font-size="22" max-width="800">
+    Join 5,000+ engineers, creative visual designers, and tech leaders for the premier 3-day conference.
+  </text>
+
+  <!-- Speaker Cards Grid -->
+  <g transform="translate(90, 460)">
+    <!-- Speaker 1 -->
+    <rect x="0" y="0" width="280" height="340" rx="22" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+    <circle cx="140" cy="95" r="55" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+    <text x="140" y="105" fill="#38bdf8" font-family="sans-serif" font-size="34" font-weight="bold" text-anchor="middle">RM</text>
+    <text x="140" y="195" fill="#ffffff" font-family="sans-serif" font-size="20" font-weight="bold" text-anchor="middle">Rizwan Malik</text>
+    <text x="140" y="225" fill="#38bdf8" font-family="monospace" font-size="12" text-anchor="middle">KEYNOTE SPEAKER</text>
+    <text x="140" y="255" fill="#94a3b8" font-family="sans-serif" font-size="13" text-anchor="middle">Lead 3D &amp; Full-Stack</text>
+    <rect x="40" y="280" width="200" height="34" rx="10" fill="#0284c7" fill-opacity="0.2"/>
+    <text x="140" y="302" fill="#38bdf8" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Talk: WebGL Immersion</text>
+
+    <!-- Speaker 2 -->
+    <rect x="310" y="0" width="280" height="340" rx="22" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+    <circle cx="450" cy="95" r="55" fill="#1e293b" stroke="#a855f7" stroke-width="2"/>
+    <text x="450" y="105" fill="#a855f7" font-family="sans-serif" font-size="34" font-weight="bold" text-anchor="middle">SV</text>
+    <text x="450" y="195" fill="#ffffff" font-family="sans-serif" font-size="20" font-weight="bold" text-anchor="middle">Sarah Vance</text>
+    <text x="450" y="225" fill="#a855f7" font-family="monospace" font-size="12" text-anchor="middle">VP OF PRODUCT DESIGN</text>
+    <text x="450" y="255" fill="#94a3b8" font-family="sans-serif" font-size="13" text-anchor="middle">Meta Spatial Computing</text>
+    <rect x="350" y="280" width="200" height="34" rx="10" fill="#a855f7" fill-opacity="0.2"/>
+    <text x="450" y="302" fill="#c4b5fd" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Talk: AI Design Systems</text>
+
+    <!-- Speaker 3 -->
+    <rect x="620" y="0" width="280" height="340" rx="22" fill="#0f172a" stroke="#334155" stroke-width="1.5"/>
+    <circle cx="760" cy="95" r="55" fill="#1e293b" stroke="#ec4899" stroke-width="2"/>
+    <text x="760" y="105" fill="#ec4899" font-family="sans-serif" font-size="34" font-weight="bold" text-anchor="middle">AK</text>
+    <text x="760" y="195" fill="#ffffff" font-family="sans-serif" font-size="20" font-weight="bold" text-anchor="middle">Alex Chen</text>
+    <text x="760" y="225" fill="#ec4899" font-family="monospace" font-size="12" text-anchor="middle">CHIEF ARCHITECT</text>
+    <text x="760" y="255" fill="#94a3b8" font-family="sans-serif" font-size="13" text-anchor="middle">Google DeepMind</text>
+    <rect x="660" y="280" width="200" height="34" rx="10" fill="#ec4899" fill-opacity="0.2"/>
+    <text x="760" y="302" fill="#f472b6" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">Talk: Agentic AI Frontiers</text>
+  </g>
+
+  <!-- Bottom Footer -->
+  <g transform="translate(90, 870)">
+    <text x="0" y="45" fill="#ffffff" font-family="sans-serif" font-size="26" font-weight="bold">Early Bird Tickets Available</text>
+    <text x="0" y="75" fill="#64748b" font-family="sans-serif" font-size="15">Livestream Passes &amp; In-Person Expo Access</text>
+
+    <rect x="650" y="15" width="250" height="65" rx="32" fill="url(#glowCyan)"/>
+    <text x="775" y="55" fill="#ffffff" font-family="sans-serif" font-size="18" font-weight="bold" text-anchor="middle">REGISTER ONLINE ↗</text>
+  </g>
+</svg>

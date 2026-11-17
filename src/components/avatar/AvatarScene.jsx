@@ -61,7 +61,7 @@ export function AvatarScene({
           toneMapping: THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.25,
         }}
-        camera={{ position: [0, 0.1, 2.75], fov: 34 }}
+        camera={{ position: [0, 0.1, 2.6], fov: 32 }}
         frameloop={isVisible ? 'always' : 'never'}
         aria-hidden="true"
         onCreated={({ gl }) => {
@@ -69,19 +69,22 @@ export function AvatarScene({
         }}
       >
         {/* Soft, crisp key light from front-right (defines cheekbones & nose depth) */}
-        <directionalLight position={[1.4, 1.8, 2.2]} intensity={2.2} color="#ffffff" />
+        <directionalLight position={[1.0, 1.4, 2.8]} intensity={2.8} color="#ffffff" />
+
+        {/* Fill light from front-left for balanced face illumination */}
+        <directionalLight position={[-1.2, 0.8, 2.5]} intensity={1.4} color="#e0f2fe" />
 
         {/* Dynamic Cyan Rim Light from left-behind (sharp cyber edge glow on hair & jaw) */}
-        <directionalLight position={[-2.6, 0.9, -1.0]} intensity={4.5} color="#22d3ee" />
+        <directionalLight position={[-2.2, 1.2, -1.0]} intensity={3.8} color="#22d3ee" />
 
         {/* Dynamic Magenta Rim Light from right-behind */}
-        <directionalLight position={[2.6, -0.4, -1.0]} intensity={3.5} color="#f43f5e" />
+        <directionalLight position={[2.2, -0.2, -1.0]} intensity={3.0} color="#f43f5e" />
 
         {/* Subtle Ambient light (balanced to prevent washed out blur) */}
-        <ambientLight intensity={0.38} color="#0f172a" />
+        <ambientLight intensity={0.55} color="#112240" />
 
         {/* Eye catchlight (specular sparkle in the pupils) */}
-        <pointLight position={[0, 0.35, 1.7]} intensity={1.4} color="#e0f2fe" distance={3.2} />
+        <pointLight position={[0, 0.25, 1.9]} intensity={1.8} color="#e0f2fe" distance={3.0} />
 
         {/* Floating cyber particles */}
         {!reducedMotion && <PortalParticles reducedMotion={reducedMotion} />}

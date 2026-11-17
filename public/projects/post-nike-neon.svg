@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <radialGradient id="adBg" cx="0.5" cy="0.4" r="0.8">
+      <stop offset="0%" stop-color="#1e1035"/>
+      <stop offset="50%" stop-color="#0c0714"/>
+      <stop offset="100%" stop-color="#040207"/>
+    </radialGradient>
+    <linearGradient id="neonGlow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ec4899"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+    <filter id="postGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="45" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <rect width="1080" height="1080" fill="url(#adBg)"/>
+
+  <!-- Background Lighting Orbs -->
+  <circle cx="540" cy="460" r="260" fill="#8b5cf6" opacity="0.25" filter="url(#postGlow)"/>
+  <circle cx="680" cy="380" r="180" fill="#ec4899" opacity="0.3" filter="url(#postGlow)"/>
+
+  <!-- Cyber Grid Lines -->
+  <g opacity="0.08" stroke="#ffffff" stroke-width="1.5">
+    <line x1="0" y1="200" x2="1080" y2="200"/>
+    <line x1="0" y1="400" x2="1080" y2="400"/>
+    <line x1="0" y1="600" x2="1080" y2="600"/>
+    <line x1="0" y1="800" x2="1080" y2="800"/>
+    <line x1="270" y1="0" x2="270" y2="1080"/>
+    <line x1="540" y1="0" x2="540" y2="1080"/>
+    <line x1="810" y1="0" x2="810" y2="1080"/>
+  </g>
+
+  <!-- Brand Kicker -->
+  <text x="90" y="140" fill="#38bdf8" font-family="monospace" font-size="16" letter-spacing="4" font-weight="bold">NEW REVOLUTION // 2026</text>
+  <text x="90" y="240" fill="#ffffff" font-family="sans-serif" font-weight="900" font-size="88" letter-spacing="-2">AIR PROTO</text>
+  <text x="90" y="320" fill="url(#neonGlow)" font-family="sans-serif" font-weight="900" font-size="88" letter-spacing="-2">CYBERFLOW</text>
+
+  <!-- Big Stylized 3D Sneaker Silhouette -->
+  <g transform="translate(140, 220) rotate(-18, 400, 300)">
+    <!-- Sole Glow Base -->
+    <path d="M 220 520 Q 380 500, 520 480 Q 640 430, 720 380 Q 750 420, 680 470 Q 560 540, 400 550 Q 250 560, 220 520 Z" fill="#06b6d4" filter="url(#postGlow)"/>
+    
+    <!-- Sneaker Main Body Geometry -->
+    <path d="M 240 500 Q 320 340, 480 320 Q 560 300, 660 350 L 740 400 Q 720 450, 640 480 Q 480 520, 360 520 Z" fill="#0f172a" stroke="url(#neonGlow)" stroke-width="4"/>
+    
+    <!-- Neon Swoosh Wave -->
+    <path d="M 280 430 Q 440 440, 580 360 Q 640 330, 680 310 Q 600 390, 480 460 Q 360 480, 280 430 Z" fill="url(#neonGlow)"/>
+    
+    <!-- Air Bubble Accents -->
+    <ellipse cx="340" cy="510" rx="35" ry="12" fill="#38bdf8" opacity="0.8"/>
+    <ellipse cx="420" cy="505" rx="35" ry="12" fill="#ec4899" opacity="0.8"/>
+  </g>
+
+  <!-- Floating Feature Specs -->
+  <rect x="90" y="660" width="260" height="90" rx="20" fill="#0f172a" fill-opacity="0.8" stroke="#38bdf8" stroke-width="1.5"/>
+  <text x="120" y="700" fill="#38bdf8" font-family="monospace" font-size="12" letter-spacing="1">ZERO GRAVITY</text>
+  <text x="120" y="730" fill="#ffffff" font-family="sans-serif" font-size="20" font-weight="bold">Ultralight Carbon</text>
+
+  <rect x="380" y="660" width="260" height="90" rx="20" fill="#0f172a" fill-opacity="0.8" stroke="#ec4899" stroke-width="1.5"/>
+  <text x="410" y="700" fill="#ec4899" font-family="monospace" font-size="12" letter-spacing="1">ENERGY RETURN</text>
+  <text x="410" y="730" fill="#ffffff" font-family="sans-serif" font-size="20" font-weight="bold">+42% Boost Foam</text>
+
+  <rect x="670" y="660" width="320" height="90" rx="20" fill="#0f172a" fill-opacity="0.8" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="700" y="700" fill="#a855f7" font-family="monospace" font-size="12" letter-spacing="1">LIMITED EDITION</text>
+  <text x="700" y="730" fill="#ffffff" font-family="sans-serif" font-size="20" font-weight="bold">Drop #04 • 500 Pairs</text>
+
+  <!-- Bottom Purchase CTA Footer -->
+  <line x1="90" y1="830" x2="990" y2="830" stroke="#334155" stroke-width="1.5"/>
+  <text x="90" y="910" fill="#ffffff" font-family="sans-serif" font-size="42" font-weight="900">$249 <tspan fill="#64748b" font-size="20" font-weight="normal">USD</tspan></text>
+  <text x="90" y="950" fill="#94a3b8" font-family="sans-serif" font-size="15">Worldwide Shipping Available • Exclusive Drop</text>
+
+  <rect x="730" y="870" width="260" height="75" rx="38" fill="url(#neonGlow)"/>
+  <text x="790" y="918" fill="#ffffff" font-family="sans-serif" font-size="20" font-weight="bold">PRE-ORDER NOW</text>
+</svg>

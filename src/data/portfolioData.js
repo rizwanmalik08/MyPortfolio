@@ -137,48 +137,180 @@ export const skillCategories = [
   { id: "marketing", label: "Marketing & SEO" }
 ];
 
+export const projectCategories = [
+  { id: "all", label: "All Works" },
+  { id: "web", label: "Live Websites" },
+  { id: "graphics", label: "Social Media Posts & Graphics" },
+  { id: "marketing", label: "Client Campaigns & Marketing" }
+];
+
 export const projects = [
+  // ==========================================
+  // --- REAL LIVE WEBSITES & CLIENT PORTALS ---
+  // ==========================================
   {
-    id: "new-jersey",
-    clientName: "New Jersey",
-    company: "New Jersey",
-    role: "Frontend Development",
-    review: "DigiServiceZone delivered beyond our expectations. Highly professional and reliable.",
+    id: "new-jersey-pk",
+    clientName: "New Jersey Clothing",
+    company: "New Jersey PK",
+    role: "Frontend Development & UI/UX",
+    category: "web",
+    type: "website",
+    review: "DigiServiceZone delivered beyond our expectations. Fast, modern, responsive e-commerce experience.",
     link: "https://newjersey.pk/",
     image: "/new_jersey.png",
-    badge: "N",
-    featured: false,
+    badge: "NJ",
+    featured: true,
     tags: ["React", "Tailwind CSS", "Responsive UI", "E-commerce"],
-    description: "Complete modern front-end web development with responsive architecture, smooth product catalog layouts, optimized assets, and seamless user experience for the New Jersey clothing brand.",
-    metrics: ["100% Mobile Responsive", "Ultra-fast load time", "Clean Component Architecture"]
+    description: "Production e-commerce storefront for New Jersey apparel. Engineered responsive component architecture, optimized asset pipelines, intuitive collection browsing, and seamless checkout flows across all devices.",
+    metrics: ["100% Mobile Responsive", "< 1.2s Load Speed", "Live Production Store"]
   },
   {
-    id: "noor-chemicals",
+    id: "digiservicezone-platform",
+    clientName: "DigiServiceZone Platform",
+    company: "DigiServiceZone",
+    role: "Full-Stack Web Development & Architecture",
+    category: "web",
+    type: "website",
+    review: "Our agency flagship web platform engineered for high conversion, interactive showcases, and client onboarding.",
+    link: "https://digiservicezone.com/",
+    image: "/real-websites/digiservicezone-preview.png",
+    badge: "DSZ",
+    featured: true,
+    tags: ["React", "Next.js", "Tailwind CSS", "Full-Stack Web"],
+    description: "Official web platform for DigiServiceZone agency. Features dark cyber aesthetic, dynamic client case studies, service inquiry systems, and optimized SEO structure that drives commercial client acquisition.",
+    metrics: ["Modern Web Architecture", "High-Converting UI", "Live Agency Platform"]
+  },
+  {
+    id: "noor-chemicals-web",
     clientName: "Noor Chemicals",
-    company: "Noor Chemicals",
-    role: "Social Media Marketing",
-    review: "Excellent communication, modern design and exceptional support throughout.",
+    company: "Noor Chemicals Corp",
+    role: "Digital Marketing & Web Strategy",
+    category: "web",
+    type: "website",
+    review: "Excellent communication, modern design, and exceptional ongoing digital marketing support throughout.",
     link: "https://www.facebook.com/profile.php?id=100090117847386",
     image: "/noor_chemicals.png",
-    badge: "N",
-    featured: true,
-    tags: ["Meta Ads", "Branding", "Creative Design", "SEO"],
-    description: "Holistic social media strategy, high-converting ad visuals, and targeted campaign management that significantly increased client brand reach, page engagement, and qualified commercial inquiries.",
-    metrics: ["300%+ Reach Growth", "Professional Brand Assets", "Active Lead Pipeline"]
+    badge: "NC",
+    featured: false,
+    tags: ["Web Strategy", "Meta Ads", "B2B Brand", "SEO"],
+    description: "Corporate digital presence and marketing funnel for Noor Chemicals. Established professional branding, product line catalogs, and lead generation channels that expanded market visibility in industrial chemicals.",
+    metrics: ["300%+ Reach Growth", "Verified Industrial Brand", "Active Lead Pipeline"]
   },
   {
-    id: "shaban-chemicals",
+    id: "shaban-chemicals-web",
     clientName: "Shaban Chemicals",
     company: "Shaban Chemicals",
-    role: "Social Media Marketing",
-    review: "A great team to work with. They understood our requirements perfectly.",
+    role: "B2B Web Presence & Marketing",
+    category: "web",
+    type: "website",
+    review: "A great team to work with. They understood our industrial requirements perfectly.",
     link: "https://www.facebook.com/shabanchemical/",
     image: "/shaban_chemical.png",
-    badge: "S",
+    badge: "SC",
     featured: false,
-    tags: ["Social Strategy", "Brand Content", "Copywriting", "Graphics"],
-    description: "Strategic digital marketing campaigns, branded industrial graphics, product showcase posts, and community engagement initiatives tailored for the chemical manufacturing sector.",
+    tags: ["B2B Portal", "Brand Content", "Industrial SEO", "Social Growth"],
+    description: "B2B digital marketing and industrial product portfolio for Shaban Chemicals. Created unified corporate visuals, product catalog presentations, and client communication touchpoints.",
     metrics: ["Consistent Brand Voice", "Enhanced Engagement", "Verified Industrial Presence"]
+  },
+
+  // ==========================================
+  // --- REAL CLIENT GRAPHICS & SOCIAL POSTS ---
+  // ==========================================
+  {
+    id: "dsz-web-dev-post",
+    clientName: "Web Development Services Post",
+    company: "DigiServiceZone Client Post",
+    role: "Graphic Design & Typography",
+    category: "graphics",
+    type: "graphic-post",
+    review: "Professional layout, clear service hierarchy, and bold commercial typography that generated client inquiries.",
+    link: "https://digiservicezone.com/",
+    image: "/real-graphics/web-dev-post.png",
+    badge: "DSZ",
+    featured: true,
+    tags: ["Social Media Post", "Photoshop", "Ad Graphic", "Custom Layout"],
+    description: "Official social media marketing post designed for DigiServiceZone's web development services. Features server infrastructure imagery, service feature checklists, and prominent contact call-to-actions.",
+    metrics: ["1080 × 1080px Square", "Commercial Social Post", "High-Converting Layout"]
+  },
+  {
+    id: "modelux-vio-residences",
+    clientName: "VIO Residences Dubai Campaign",
+    company: "Modelux Developments",
+    role: "Real Estate Social Ad Design",
+    category: "graphics",
+    type: "graphic-post",
+    review: "Luxury architectural presentation that perfectly highlighted the rooftop amenities and modern living concept.",
+    link: "https://modeluxdevelopments.com/",
+    image: "/real-graphics/digital-expertise.webp",
+    badge: "MD",
+    featured: true,
+    tags: ["Real Estate Ad", "Luxury Branding", "Multi-Photo Grid", "Meta Campaign"],
+    description: "High-end social media campaign post created for Modelux Developments' VIO Residences in Dubai. Showcases rooftop gardens, outdoor cinema, swimming pool, and luxury residential amenities with elegant editorial framing.",
+    metrics: ["High-Res Meta Ad", "Luxury Dubai Client", "Multi-Image Composition"]
+  },
+  {
+    id: "dsz-graphic-agency-post",
+    clientName: "Graphic Design Agency Post",
+    company: "DigiServiceZone Client Creative",
+    role: "Creative Direction & Composition",
+    category: "graphics",
+    type: "graphic-post",
+    review: "Engaging circular photo framing and modern color blocking that effectively communicates our creative capabilities.",
+    link: "https://digiservicezone.com/",
+    image: "/real-graphics/graphic-design-post.png",
+    badge: "GD",
+    featured: false,
+    tags: ["Social Creative", "Photo Composition", "Brand Collateral", "Illustrator"],
+    description: "Marketing post design featuring collaborative team imagery, dynamic halftone dot patterns, clean blue brand accents, and direct contact details for creative design inquiries.",
+    metrics: ["Square 1:1 Feed Post", "Halftone Pattern Art", "Client Brand Assets"]
+  },
+  {
+    id: "dsz-brand-identity-post",
+    clientName: "Striking Visuals & Branding Post",
+    company: "DigiServiceZone Creative Series",
+    role: "Brand Identity Design",
+    category: "graphics",
+    type: "graphic-post",
+    review: "Dark mode aesthetic with warm golden typography that positions our design agency as premium and modern.",
+    link: "https://digiservicezone.com/",
+    image: "/real-graphics/brand-identity-post.png",
+    badge: "ID",
+    featured: false,
+    tags: ["Brand Identity", "Dark Mode UI", "Poster Design", "Social Kit"],
+    description: "Editorial style social media post showcasing graphic design, website design, motion graphics, and game asset services. Features sleek dark graphite backdrop and golden script accent typography.",
+    metrics: ["Dark Luxury Aesthetic", "Editorial Hierarchy", "Multi-Service Showcase"]
+  },
+  {
+    id: "dsz-digital-marketing-post",
+    clientName: "Digital Marketing Agency Post",
+    company: "DigiServiceZone Marketing Kit",
+    role: "Marketing Visual & Ad Design",
+    category: "marketing",
+    type: "graphic-post",
+    review: "High-energy brand creative that drove qualified commercial inquiries across Meta and WhatsApp channels.",
+    link: "https://digiservicezone.com/",
+    image: "/real-graphics/social-media-post-1.png",
+    badge: "MKT",
+    featured: false,
+    tags: ["Marketing Ad", "Lead Generation", "Vector Shapes", "Brand Assets"],
+    description: "Commercial marketing post designed for business growth and customer acquisition campaigns. Incorporates curved geometric brand motifs, service category icons, and direct phone/web contact badges.",
+    metrics: ["Direct Lead Generation", "Custom Vector Curves", "Brand Marketing Kit"]
+  },
+  {
+    id: "dsz-social-growth-post",
+    clientName: "Social Media Growth 3D Post",
+    company: "DigiServiceZone Marketing",
+    role: "3D Visuals & Social Campaign",
+    category: "marketing",
+    type: "graphic-post",
+    review: "Playful isometric 3D arrows and vibrant pastel purple styling that immediately caught attention on social feeds.",
+    link: "https://digiservicezone.com/",
+    image: "/real-graphics/social-media-post-2.png",
+    badge: "3D",
+    featured: false,
+    tags: ["Social Marketing", "3D Isometric", "Growth Campaign", "Meta Ad"],
+    description: "Eye-catching social media promotional post with custom 3D upward growth arrows, gold coin visual, and bold gradient typography focused on social engagement amplification.",
+    metrics: ["3D Render Elements", "Vibrant Social Visual", "Engagement Campaign"]
   }
 ];
 

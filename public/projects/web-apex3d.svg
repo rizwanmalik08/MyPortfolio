@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="1200" height="750">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0a0b16"/>
+      <stop offset="50%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#050811"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#3b82f6"/>
+    </linearGradient>
+    <linearGradient id="sphereGrad" x1="0.2" y1="0.2" x2="0.8" y2="0.8">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="40%" stop-color="#818cf8"/>
+      <stop offset="80%" stop-color="#ec4899"/>
+      <stop offset="100%" stop-color="#1e1b4b"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="30" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="750" fill="url(#bg)"/>
+
+  <!-- Subtle Grid -->
+  <g opacity="0.12" stroke="#38bdf8" stroke-width="1">
+    <line x1="0" y1="150" x2="1200" y2="150"/>
+    <line x1="0" y1="300" x2="1200" y2="300"/>
+    <line x1="0" y1="450" x2="1200" y2="450"/>
+    <line x1="0" y1="600" x2="1200" y2="600"/>
+    <line x1="200" y1="0" x2="200" y2="750"/>
+    <line x1="400" y1="0" x2="400" y2="750"/>
+    <line x1="600" y1="0" x2="600" y2="750"/>
+    <line x1="800" y1="0" x2="800" y2="750"/>
+    <line x1="1000" y1="0" x2="1000" y2="750"/>
+  </g>
+
+  <!-- Browser Header -->
+  <rect width="1200" height="50" fill="#0d111d"/>
+  <circle cx="35" cy="25" r="6" fill="#ef4444"/>
+  <circle cx="55" cy="25" r="6" fill="#f59e0b"/>
+  <circle cx="75" cy="25" r="6" fill="#10b981"/>
+  <rect x="140" y="12" width="600" height="26" rx="6" fill="#1e293b"/>
+  <text x="160" y="29" fill="#94a3b8" font-family="monospace" font-size="12">https://apex-3d-studio.live/experience</text>
+
+  <!-- Live Badge -->
+  <rect x="1060" y="13" width="95" height="24" rx="12" fill="#059669"/>
+  <circle cx="1075" cy="25" r="4" fill="#34d399"/>
+  <text x="1086" y="29" fill="#ffffff" font-family="sans-serif" font-size="11" font-weight="bold">LIVE DEMO</text>
+
+  <!-- Navigation Bar in App -->
+  <rect x="60" y="75" width="1080" height="60" rx="14" fill="#111827" stroke="#374151" stroke-width="1"/>
+  <text x="90" y="112" fill="#ffffff" font-family="sans-serif" font-weight="900" font-size="20" letter-spacing="1.5">APEX // <tspan fill="#38bdf8">3D STUDIO</tspan></text>
+  <text x="750" y="110" fill="#94a3b8" font-family="sans-serif" font-size="14">Showcase</text>
+  <text x="850" y="110" fill="#94a3b8" font-family="sans-serif" font-size="14">Configurator</text>
+  <text x="965" y="110" fill="#38bdf8" font-family="sans-serif" font-size="14" font-weight="bold">Interactive View</text>
+
+  <!-- 3D Central Visual Orb -->
+  <circle cx="600" cy="420" r="160" fill="url(#sphereGrad)" filter="url(#glow)"/>
+  
+  <!-- Orbit Rings -->
+  <ellipse cx="600" cy="420" rx="270" ry="90" fill="none" stroke="#38bdf8" stroke-width="2" stroke-dasharray="8 6" opacity="0.6"/>
+  <ellipse cx="600" cy="420" rx="340" ry="120" fill="none" stroke="#ec4899" stroke-width="1.5" opacity="0.4"/>
+  <circle cx="360" cy="380" r="12" fill="#38bdf8" filter="url(#glow)"/>
+  <circle cx="820" cy="470" r="16" fill="#f43f5e" filter="url(#glow)"/>
+
+  <!-- Left HUD Panel -->
+  <rect x="90" y="240" width="220" height="280" rx="16" fill="#0f172a" fill-opacity="0.85" stroke="#38bdf8" stroke-width="1" stroke-opacity="0.3"/>
+  <text x="110" y="275" fill="#38bdf8" font-family="monospace" font-size="11" letter-spacing="2">RENDER STATS</text>
+  <text x="110" y="315" fill="#ffffff" font-family="sans-serif" font-weight="bold" font-size="28">120 FPS</text>
+  <text x="110" y="335" fill="#64748b" font-family="monospace" font-size="11">WebGL 2.0 • Three.js</text>
+  <line x1="110" y1="360" x2="290" y2="360" stroke="#334155"/>
+  <text x="110" y="390" fill="#94a3b8" font-family="sans-serif" font-size="12">Draw Calls: 14</text>
+  <text x="110" y="420" fill="#94a3b8" font-family="sans-serif" font-size="12">Triangles: 142.8K</text>
+  <text x="110" y="450" fill="#94a3b8" font-family="sans-serif" font-size="12">Shaders: PBR Custom</text>
+  <rect x="110" y="475" width="180" height="28" rx="8" fill="#38bdf8" fill-opacity="0.15"/>
+  <text x="135" y="493" fill="#38bdf8" font-family="sans-serif" font-size="11" font-weight="bold">ACTIVE ORBIT CAM</text>
+
+  <!-- Right Configurator HUD -->
+  <rect x="890" y="240" width="220" height="280" rx="16" fill="#0f172a" fill-opacity="0.85" stroke="#ec4899" stroke-width="1" stroke-opacity="0.3"/>
+  <text x="910" y="275" fill="#ec4899" font-family="monospace" font-size="11" letter-spacing="2">SHADING MODE</text>
+  <rect x="910" y="295" width="180" height="34" rx="8" fill="#ec4899" fill-opacity="0.2"/>
+  <text x="930" y="317" fill="#ffffff" font-family="sans-serif" font-size="12" font-weight="bold">Raytraced Bloom</text>
+  <rect x="910" y="340" width="180" height="34" rx="8" fill="#1e293b"/>
+  <text x="930" y="362" fill="#94a3b8" font-family="sans-serif" font-size="12">Wireframe Mesh</text>
+  <rect x="910" y="385" width="180" height="34" rx="8" fill="#1e293b"/>
+  <text x="930" y="407" fill="#94a3b8" font-family="sans-serif" font-size="12">Normal Map Vector</text>
+  <rect x="910" y="445" width="180" height="42" rx="10" fill="url(#cyanGrad)"/>
+  <text x="945" y="471" fill="#ffffff" font-family="sans-serif" font-size="13" font-weight="bold">Rotate View 360°</text>
+
+  <!-- Bottom Control Deck -->
+  <rect x="360" y="650" width="480" height="60" rx="18" fill="#0f172a" fill-opacity="0.9" stroke="#334155" stroke-width="1"/>
+  <text x="400" y="686" fill="#ffffff" font-family="sans-serif" font-size="14" font-weight="600">Interactive 3D Experience</text>
+  <circle cx="780" cy="680" r="16" fill="#3b82f6"/>
+  <text x="774" y="685" fill="#fff" font-family="sans-serif" font-size="16">▶</text>
+</svg>

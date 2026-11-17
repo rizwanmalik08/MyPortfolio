@@ -67,8 +67,9 @@ export function AvatarModel({ targetRef, reducedMotion = false }) {
   useEffect(() => {
     gltf.scene.traverse((child) => {
       if (child.isMesh && child.material) {
-        child.material.roughness = 0.52;
-        child.material.metalness = 0.08;
+        child.material.roughness = 0.48;
+        child.material.metalness = 0.05;
+        child.material.envMapIntensity = 0.6;
 
         if (child.material.map) {
           child.material.map.anisotropy = 16;
@@ -81,7 +82,7 @@ export function AvatarModel({ targetRef, reducedMotion = false }) {
         if (child.material.normalMap) {
           child.material.normalMap.anisotropy = 16;
           // Crisp facial depth contours for nose, beard, and cheekbones
-          child.material.normalScale = new THREE.Vector2(1.35, 1.35);
+          child.material.normalScale = new THREE.Vector2(1.5, 1.5);
           child.material.normalMap.needsUpdate = true;
         }
 
@@ -90,36 +91,34 @@ export function AvatarModel({ targetRef, reducedMotion = false }) {
     });
   }, [gltf]);
 
-  // Set relaxed natural posture on arms so they hang down at sides
+  // Arms: gently rest downwards so shoulder silhouette slopes naturally
   useEffect(() => {
     if (bones.leftArm) {
-      bones.leftArm.rotation.z = -1.32;
-      bones.leftArm.rotation.x = 0.18;
+      bones.leftArm.rotation.z = -1.28;
+      bones.leftArm.rotation.x = 0.15;
     }
     if (bones.rightArm) {
-      bones.rightArm.rotation.z = 1.32;
-      bones.rightArm.rotation.x = 0.18;
-    }
-    if (bones.leftForeArm) {
-      bones.leftForeArm.rotation.z = -0.25;
-    }
-    if (bones.rightForeArm) {
-      bones.rightForeArm.rotation.z = 0.25;
+      bones.rightArm.rotation.z = 1.28;
+      bones.rightArm.rotation.x = 0.15;
     }
   }, [bones]);
 
-  // Compute model bounding box to position and frame the head and upper torso
+  // Compute model bounding box for true PASSPORT PHOTO framing:
+  // - Head and face are the clear hero of the portrait (~60% of circle)
+  // - Top of hair has clean ~15% headroom below the top status pill
+  // - Shoulders slope outwards and span naturally across the bottom rim
+  // - No armpits or elbows visible; clean, elegant headshot bust
   const modelTransform = useMemo(() => {
     const box = new THREE.Box3().setFromObject(gltf.scene);
     const size = box.getSize(new THREE.Vector3());
     const center = box.getCenter(new THREE.Vector3());
 
-    // Scale so the bust fits with balanced headroom (face and hair fully visible)
-    const desiredBustHeight = 2.4;
-    const scaleFactor = desiredBustHeight / (size.y * 0.42);
+    // Scale so head and upper shoulders fit like an official passport photo
+    const desiredBustHeight = 2.3;
+    const scaleFactor = desiredBustHeight / (size.y * 0.29);
 
-    // Target the head center with balanced headroom
-    const targetY = -(box.max.y - size.y * 0.165) * scaleFactor;
+    // Position head so top of hair has clean headroom, face is centered
+    const targetY = -(box.max.y - size.y * 0.112) * scaleFactor;
     const targetX = -center.x * scaleFactor;
     const targetZ = -center.z * scaleFactor;
 
@@ -134,8 +133,6 @@ export function AvatarModel({ targetRef, reducedMotion = false }) {
     () => ({
       neck: bones.neck ? bones.neck.rotation.clone() : new THREE.Euler(),
       head: bones.head ? bones.head.rotation.clone() : new THREE.Euler(),
-      leftEye: bones.leftEye ? bones.leftEye.rotation.clone() : new THREE.Euler(),
-      rightEye: bones.rightEye ? bones.rightEye.rotation.clone() : new THREE.Euler(),
     }),
     [bones]
   );
@@ -152,22 +149,21 @@ export function AvatarModel({ targetRef, reducedMotion = false }) {
     const targets = targetRef.current;
     const isHovered = targets.isHovered;
 
-    // Responsive damping
-    const smoothNeck = isHovered ? 0.14 : 0.32;
-    const smoothHead = isHovered ? 0.12 : 0.28;
-    const smoothEyes = 0.08; // Eyes reach target first
+    // Smooth damping for natural head movement
+    const smoothNeck = isHovered ? 0.16 : 0.32;
+    const smoothHead = isHovered ? 0.14 : 0.28;
 
-    // 1. ROTATE NECK BONE (40% distribution)
+    // 1. ROTATE NECK BONE (35% distribution for natural subtle posture)
     if (bones.neck) {
       const euler = [
-        baseRot.neck.x + targets.neckTarget[0],
-        baseRot.neck.y + targets.neckTarget[1],
-        baseRot.neck.z + targets.neckTarget[2],
+        baseRot.neck.x + targets.neckTarget[0] * 0.85,
+        baseRot.neck.y + targets.neckTarget[1] * 0.85,
+        baseRot.neck.z + targets.neckTarget[2] * 0.85,
       ];
       easing.dampE(bones.neck.rotation, euler, smoothNeck, delta);
     }
 
-    // 2. ROTATE HEAD BONE (60% distribution)
+    // 2. ROTATE HEAD BONE (65% distribution)
     if (bones.head) {
       const euler = [
         baseRot.head.x + targets.headTarget[0],
@@ -177,31 +173,13 @@ export function AvatarModel({ targetRef, reducedMotion = false }) {
       easing.dampE(bones.head.rotation, euler, smoothHead, delta);
     }
 
-    // 3. ROTATE EYES (Lead target and look around)
-    if (bones.leftEye) {
-      const euler = [
-        baseRot.leftEye.x + targets.eyesTarget[0],
-        baseRot.leftEye.y + targets.eyesTarget[1],
-        baseRot.leftEye.z,
-      ];
-      easing.dampE(bones.leftEye.rotation, euler, smoothEyes, delta);
-    }
-    if (bones.rightEye) {
-      const euler = [
-        baseRot.rightEye.x + targets.eyesTarget[0],
-        baseRot.rightEye.y + targets.eyesTarget[1],
-        baseRot.rightEye.z,
-      ];
-      easing.dampE(bones.rightEye.rotation, euler, smoothEyes, delta);
-    }
-
-    // 4. BREATHING MOTION (subtle chest oscillation while body stays anchored)
+    // 3. BREATHING MOTION (tiny lifelike oscillation)
     if (!reducedMotion && groupRef.current) {
-      const breath = Math.sin(time * 2.2) * 0.003;
+      const breath = Math.sin(time * 2.0) * 0.002;
       groupRef.current.position.y = modelTransform.position[1] + breath;
     }
 
-    // 5. NATURAL PROCEDURAL BLINKING (every 2-5 seconds)
+    // 4. NATURAL PROCEDURAL BLINKING (every 2-5 seconds via morph targets)
     if (bones.morphMeshes.length > 0 && !reducedMotion) {
       const bs = blinkState.current;
       if (!bs.blinking && time >= bs.nextBlink) {
