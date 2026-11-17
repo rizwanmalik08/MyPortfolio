@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Mail, ChevronRight, Terminal, ArrowDown, Code2, Palette, Globe, TrendingUp, Cpu } from 'lucide-react';
 import { personalInfo } from '../../data/portfolioData';
 import { soundManager } from '../../utils/audioFX';
-import { CyberAvatar } from '../ui/CyberAvatar';
+import { AvatarPortal } from '../avatar/AvatarPortal';
 
 // Dynamic rotating roles with distinct gradient colors
 const ROLES = [
@@ -220,7 +220,7 @@ export function Hero() {
 
           {/* Right Column: Holographic Cyber Avatar Console */}
           <div className="lg:col-span-5 relative flex items-center justify-center">
-            <CyberAvatar />
+            <AvatarPortal />
           </div>
 
         </div>
