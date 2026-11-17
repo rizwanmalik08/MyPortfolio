@@ -39,6 +39,16 @@
   background-size: 32px 32px;
 }
 
+/* Holographic Shimmer Scan Animation */
+@keyframes shimmer {
+  0% { transform: translateX(-120%); }
+  40%, 100% { transform: translateX(220%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /* GPU Compositor-Accelerated Infinite Marquees */
 @keyframes marquee-left {
   0% { transform: translate3d(0, 0, 0); }

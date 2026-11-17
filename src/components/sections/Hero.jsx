@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Mail, ChevronRight, Terminal, ArrowDown, Code2, Palette, Globe, TrendingUp, Cpu } from 'lucide-react';
 import { personalInfo } from '../../data/portfolioData';
 import { soundManager } from '../../utils/audioFX';
-import rizwanPhoto from '../../assets/rizwan.jpg.png';
+import { CyberAvatar } from '../ui/CyberAvatar';
 
 // Dynamic rotating roles with distinct gradient colors
 const ROLES = [
@@ -220,102 +220,7 @@ export function Hero() {
 
           {/* Right Column: Holographic Cyber Avatar Console */}
           <div className="lg:col-span-5 relative flex items-center justify-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.88 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative w-80 h-80 sm:w-96 sm:h-96"
-            >
-              {/* Concentric Rotating HUD Radar Rings */}
-              <div
-                className="pointer-events-none absolute -inset-6 rounded-full border border-cyan-400/20 border-dashed animate-spin"
-                style={{ animationDuration: '45s' }}
-              />
-              <div
-                className="pointer-events-none absolute -inset-12 rounded-full border border-violet-500/20 border-dotted animate-spin"
-                style={{ animationDuration: '60s', animationDirection: 'reverse' }}
-              />
-
-              {/* Holographic Radar Degree Markers */}
-              <div className="pointer-events-none absolute inset-0 flex items-center justify-between text-[9px] font-mono text-cyan-400/40 px-1">
-                <span>[000°]</span>
-                <span>[180°]</span>
-              </div>
-              <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-between text-[9px] font-mono text-cyan-400/40 py-1">
-                <span>[090°]</span>
-                <span>[270°]</span>
-              </div>
-
-              {/* Pulsing Ambient Core Aura */}
-              <div className="absolute -inset-4 rounded-full bg-gradient-to-tr from-violet-600/35 via-cyan-500/25 to-pink-500/25 blur-3xl animate-pulse" />
-
-              {/* Main Avatar Container with 3D Bevel */}
-              <div className="relative h-full w-full overflow-hidden rounded-full border-2 border-cyan-400/50 bg-[#0c0e1c] p-2.5 shadow-[0_0_60px_rgba(34,211,238,0.25)] backdrop-blur-md">
-                
-                {/* Portrait Image */}
-                <div className="relative h-full w-full overflow-hidden rounded-full bg-slate-950">
-                  <img
-                    src={rizwanPhoto}
-                    alt="Rizwan portrait"
-                    className="h-full w-full rounded-full object-cover transition-transform duration-700 hover:scale-105"
-                    width="600"
-                    height="600"
-                    loading="eager"
-                  />
-                  
-                  {/* Subtle Holographic Grid Scanline Overlay */}
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/10 to-transparent opacity-40 animate-pulse" />
-                  <div className="pointer-events-none absolute inset-0 rounded-full shadow-inner" />
-                </div>
-              </div>
-
-              {/* Floating Telemetry Chip 1: Experience */}
-              <motion.div
-                className="absolute -top-3 -right-3 sm:top-2 sm:-right-4 rounded-2xl border border-cyan-400/40 bg-slate-900/90 p-3.5 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.6)] text-center min-w-[90px]"
-                animate={{ y: [0, -6, 0] }}
-                transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut' }}
-              >
-                <span className="block text-xl font-black text-cyan-300 font-mono">4+</span>
-                <span className="text-[9px] uppercase tracking-widest text-slate-400 font-mono">
-                  YEARS EXP
-                </span>
-                <div className="mt-1.5 h-1 w-full rounded-full bg-white/10 overflow-hidden">
-                  <div className="h-full rounded-full bg-cyan-400 w-4/5"></div>
-                </div>
-              </motion.div>
-
-              {/* Floating Telemetry Chip 2: Available Status */}
-              <motion.div
-                className="absolute -bottom-3 -left-3 sm:bottom-2 sm:-left-4 rounded-2xl border border-emerald-400/40 bg-slate-900/90 p-3.5 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.6)] flex items-center gap-3"
-                animate={{ y: [0, 6, 0] }}
-                transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 0.3 }}
-              >
-                <div className="flex h-3 w-3 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                </div>
-                <div>
-                  <p className="text-[11px] font-bold text-white uppercase tracking-wider font-mono">
-                    AVAILABLE FOR WORK
-                  </p>
-                  <p className="text-[10px] text-cyan-400 font-mono">
-                    Full-Stack & Design
-                  </p>
-                </div>
-              </motion.div>
-
-              {/* Floating Telemetry Chip 3: Technology Core */}
-              <motion.div
-                className="absolute -bottom-4 right-6 rounded-xl border border-violet-500/30 bg-slate-950/90 px-3 py-1.5 backdrop-blur-md shadow-lg"
-                animate={{ y: [0, -4, 0] }}
-                transition={{ repeat: Infinity, duration: 3.8, ease: 'easeInOut', delay: 0.7 }}
-              >
-                <span className="text-[10px] font-mono text-violet-300">
-                  REACT • THREE.JS • C++
-                </span>
-              </motion.div>
-
-            </motion.div>
+            <CyberAvatar />
           </div>
 
         </div>
