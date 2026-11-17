@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { HeroObject } from './HeroObject';
+import { FluidAurora } from './FluidAurora';
 import { ParticleWave } from './ParticleWave';
 import { AmbientDust } from './AmbientDust';
 import { SkillsCloud } from './SkillsCloud';
@@ -31,9 +31,9 @@ function ClickShockwave() {
     if (!active || !meshRef.current) return;
     scaleRef.current += delta * 6;
     meshRef.current.scale.setScalar(scaleRef.current);
-    meshRef.current.material.opacity = Math.max(0, 1 - scaleRef.current / 4);
+    meshRef.current.material.opacity = Math.max(0, 0.8 - scaleRef.current / 4);
 
-    if (scaleRef.current > 4) {
+    if (scaleRef.current > 3.5) {
       setActive(false);
     }
   });
@@ -42,7 +42,7 @@ function ClickShockwave() {
 
   return (
     <mesh ref={meshRef} position={[0, 0, 1.2]}>
-      <ringGeometry args={[0.9, 0.98, 48]} />
+      <ringGeometry args={[0.92, 0.98, 48]} />
       <meshBasicMaterial
         color="#38bdf8"
         transparent
@@ -83,30 +83,30 @@ function CameraController({ scrollProgress, prefersReducedMotion }) {
     if (p < 0.18) {
       // Hero: Head-on view
       const t = p / 0.18;
-      targetX = THREE.MathUtils.lerp(0, 0.4, t);
+      targetX = THREE.MathUtils.lerp(0, 0.3, t);
       targetY = THREE.MathUtils.lerp(0, -0.6, t);
       targetZ = THREE.MathUtils.lerp(5.5, 5.2, t);
       lookY = targetY;
     } else if (p < 0.36) {
       // About: Pan right to frame profile card
       const t = (p - 0.18) / 0.18;
-      targetX = THREE.MathUtils.lerp(0.4, 1.1, t);
+      targetX = THREE.MathUtils.lerp(0.3, 0.8, t);
       targetY = THREE.MathUtils.lerp(-0.6, -1.8, t);
       targetZ = THREE.MathUtils.lerp(5.2, 5.0, t);
-      lookX = 0.3;
+      lookX = 0.2;
       lookY = targetY;
     } else if (p < 0.54) {
       // Skills: Sweep left
       const t = (p - 0.36) / 0.18;
-      targetX = THREE.MathUtils.lerp(1.1, -1.0, t);
+      targetX = THREE.MathUtils.lerp(0.8, -0.8, t);
       targetY = THREE.MathUtils.lerp(-1.8, -3.2, t);
       targetZ = THREE.MathUtils.lerp(5.0, 4.8, t);
-      lookX = -0.2;
+      lookX = -0.15;
       lookY = targetY;
     } else if (p < 0.72) {
       // Projects: Depth horizon
       const t = (p - 0.54) / 0.18;
-      targetX = THREE.MathUtils.lerp(-1.0, 0, t);
+      targetX = THREE.MathUtils.lerp(-0.8, 0, t);
       targetY = THREE.MathUtils.lerp(-3.2, -5.2, t);
       targetZ = THREE.MathUtils.lerp(4.8, 5.3, t);
       lookX = 0;
@@ -114,15 +114,15 @@ function CameraController({ scrollProgress, prefersReducedMotion }) {
     } else if (p < 0.86) {
       // Services & Certs
       const t = (p - 0.72) / 0.14;
-      targetX = THREE.MathUtils.lerp(0, 0.5, t);
+      targetX = THREE.MathUtils.lerp(0, 0.4, t);
       targetY = THREE.MathUtils.lerp(-5.2, -6.8, t);
       targetZ = THREE.MathUtils.lerp(5.3, 5.0, t);
-      lookX = 0.15;
+      lookX = 0.1;
       lookY = targetY;
     } else {
       // Contact: Portal gateway
       const t = (p - 0.86) / 0.14;
-      targetX = THREE.MathUtils.lerp(0.5, 0, t);
+      targetX = THREE.MathUtils.lerp(0.4, 0, t);
       targetY = THREE.MathUtils.lerp(-6.8, -8.0, t);
       targetZ = THREE.MathUtils.lerp(5.0, 5.2, t);
       lookX = 0;
@@ -130,8 +130,8 @@ function CameraController({ scrollProgress, prefersReducedMotion }) {
     }
 
     // Parallax damping
-    targetX += state.pointer.x * 0.18;
-    targetY += state.pointer.y * 0.14;
+    targetX += state.pointer.x * 0.15;
+    targetY += state.pointer.y * 0.12;
 
     state.camera.position.x = THREE.MathUtils.damp(state.camera.position.x, targetX, 2.5, clampedDelta);
     state.camera.position.y = THREE.MathUtils.damp(state.camera.position.y, targetY, 2.5, clampedDelta);
@@ -149,7 +149,8 @@ function CameraController({ scrollProgress, prefersReducedMotion }) {
 
 /**
  * Main 3D Canvas Scene
- * Clean, modern, professional background that never obstructs text or UI
+ * Ultra-modern, executive, high-end background inspired by Linear, Stripe & Apple Pro.
+ * Zero wireframes, zero clutter — pure silky liquid aurora, ambient stardust, and depth.
  */
 export function Scene({ scrollProgress = 0 }) {
   const prefersReducedMotion = useReducedMotion();
@@ -185,10 +186,10 @@ export function Scene({ scrollProgress = 0 }) {
           }
         >
           {/* Subtle Studio Lighting */}
-          <ambientLight intensity={0.8} />
-          <directionalLight position={[5, 8, 5]} intensity={1.3} color="#ffffff" />
-          <pointLight position={[-4, 3, 3]} intensity={2.0} color="#6366f1" distance={10} />
-          <pointLight position={[4, -2, 3]} intensity={1.8} color="#06b6d4" distance={10} />
+          <ambientLight intensity={0.9} />
+          <directionalLight position={[5, 8, 5]} intensity={1.2} color="#ffffff" />
+          <pointLight position={[-4, 3, 3]} intensity={2.0} color="#6366f1" distance={12} />
+          <pointLight position={[4, -2, 3]} intensity={1.8} color="#06b6d4" distance={12} />
 
           {/* Camera Motion */}
           <CameraController
@@ -196,13 +197,13 @@ export function Scene({ scrollProgress = 0 }) {
             prefersReducedMotion={prefersReducedMotion}
           />
 
-          {/* 1. Iconic 3D Interactive Particle Wave (Positioned safely at lower horizon) */}
+          {/* 1. Silky GLSL Fluid Aurora (Linear / Stripe Executive Ambient Light) */}
+          <FluidAurora scrollProgress={scrollProgress} isMobile={isMobile} />
+
+          {/* 2. Soft Luminous Horizon Wave (Gracefully sits at lower depth) */}
           <ParticleWave scrollProgress={scrollProgress} isMobile={isMobile} />
 
-          {/* 2. Delicate Gyroscopic Accent Framing the Avatar (Positioned safely on right) */}
-          <HeroObject scrollProgress={scrollProgress} isMobile={isMobile} />
-
-          {/* 3. Section Backdrops */}
+          {/* 3. Section Accent Lighting */}
           <SkillsCloud scrollProgress={scrollProgress} />
           <ProjectsBackground scrollProgress={scrollProgress} />
           <ContactPortal scrollProgress={scrollProgress} isMobile={isMobile} />

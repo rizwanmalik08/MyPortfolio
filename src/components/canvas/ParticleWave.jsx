@@ -3,17 +3,16 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 /**
- * Modern 3D Interactive Particle Wave (Iconic Creative Tech Wave)
- * Sits elegantly at the horizon and lower depth.
- * NEVER blocks text or portrait — provides breathtaking depth and motion.
+ * Modern 3D Interactive Horizon Particle Wave
+ * Silky, low-horizon wave that provides cinematic depth without competing with text.
  */
 export function ParticleWave({ scrollProgress = 0, isMobile = false }) {
   const pointsRef = useRef();
 
-  const countX = isMobile ? 35 : 55;
-  const countY = isMobile ? 35 : 55;
+  const countX = isMobile ? 32 : 52;
+  const countY = isMobile ? 32 : 52;
   const numParticles = countX * countY;
-  const separation = 0.32;
+  const separation = 0.34;
 
   const [positions, colors] = useMemo(() => {
     const pos = new Float32Array(numParticles * 3);
@@ -55,7 +54,7 @@ export function ParticleWave({ scrollProgress = 0, isMobile = false }) {
   useFrame((state, delta) => {
     if (!pointsRef.current) return;
     const clampedDelta = Math.min(delta, 0.05);
-    const time = state.clock.elapsedTime * 1.2;
+    const time = state.clock.elapsedTime * 1.0;
     const posArray = pointsRef.current.geometry.attributes.position.array;
 
     let i = 0;
@@ -63,8 +62,8 @@ export function ParticleWave({ scrollProgress = 0, isMobile = false }) {
       for (let iy = 0; iy < countY; iy++) {
         // Dual harmonic wave function
         const waveY =
-          Math.sin((ix * 0.25) + time) * 0.45 +
-          Math.sin((iy * 0.2) + time * 0.9) * 0.45;
+          Math.sin((ix * 0.22) + time) * 0.4 +
+          Math.sin((iy * 0.18) + time * 0.85) * 0.4;
 
         posArray[i * 3 + 1] = waveY;
         i++;
@@ -73,18 +72,18 @@ export function ParticleWave({ scrollProgress = 0, isMobile = false }) {
     pointsRef.current.geometry.attributes.position.needsUpdate = true;
 
     // Smooth subtle mouse tilt
-    const targetRotX = 0.55 + state.pointer.y * 0.08;
-    const targetRotY = state.pointer.x * 0.1;
+    const targetRotX = 0.55 + state.pointer.y * 0.06;
+    const targetRotY = state.pointer.x * 0.08;
     pointsRef.current.rotation.x = THREE.MathUtils.damp(pointsRef.current.rotation.x, targetRotX, 2, clampedDelta);
     pointsRef.current.rotation.y = THREE.MathUtils.damp(pointsRef.current.rotation.y, targetRotY, 2, clampedDelta);
 
-    // Scroll glide: as user scrolls down, wave softly recedes
-    pointsRef.current.position.y = -2.4 - scrollProgress * 1.5;
-    pointsRef.current.position.z = -3.5 - scrollProgress * 2.0;
+    // Scroll glide: softly recedes into depth as user scrolls
+    pointsRef.current.position.y = -2.6 - scrollProgress * 1.5;
+    pointsRef.current.position.z = -3.8 - scrollProgress * 2.0;
   });
 
   return (
-    <group position={[0, -2.4, -3.5]}>
+    <group position={[0, -2.6, -3.8]}>
       <points ref={pointsRef} rotation={[0.55, 0, 0]}>
         <bufferGeometry>
           <bufferAttribute
@@ -101,10 +100,10 @@ export function ParticleWave({ scrollProgress = 0, isMobile = false }) {
           />
         </bufferGeometry>
         <pointsMaterial
-          size={isMobile ? 0.055 : 0.065}
+          size={isMobile ? 0.04 : 0.048}
           vertexColors
           transparent
-          opacity={0.65}
+          opacity={0.42}
           blending={THREE.AdditiveBlending}
           depthWrite={false}
         />
