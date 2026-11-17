@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Canvas } from '@react-three/fiber';
-import { Sparkles, Activity, CheckCircle2, Zap, Bot, User, Eye } from 'lucide-react';
+import { Sparkles, Activity, CheckCircle2, Zap, Bot, User, Eye, RotateCcw, Move3d } from 'lucide-react';
 import { soundManager } from '../../utils/audioFX';
 import { CyberCharacter } from '../canvas/CyberCharacter';
 import rizwanPhoto from '../../assets/rizwan.jpg.png';
@@ -53,6 +53,8 @@ export function CyberAvatar() {
   const containerRef = useRef(null);
   const [viewMode, setViewMode] = useState('character'); // 'character' | 'portrait'
   const [themeKey, setThemeKey] = useState('cyber');
+  const [autoRotate, setAutoRotate] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [mouseNorm, setMouseNorm] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -81,10 +83,14 @@ export function CyberAvatar() {
     const normY = (y - centerY) / centerY;
 
     setMouseNorm({ x: normX, y: -normY });
-    setTilt({
-      x: normY * -12,
-      y: normX * 12,
-    });
+    
+    // Only apply card tilt when user is not directly dragging the 3D model
+    if (!isDragging) {
+      setTilt({
+        x: normY * -8,
+        y: normX * 8,
+      });
+    }
   };
 
   const handleMouseEnter = () => {
@@ -115,7 +121,7 @@ export function CyberAvatar() {
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-4 flex items-center gap-1.5 rounded-full border border-white/15 bg-slate-900/90 p-1.5 backdrop-blur-xl shadow-xl z-20"
+        className="mb-3 flex items-center gap-1.5 rounded-full border border-white/15 bg-slate-900/90 p-1.5 backdrop-blur-xl shadow-xl z-20"
       >
         <button
           onClick={() => handleModeSwitch('character')}
@@ -126,7 +132,7 @@ export function CyberAvatar() {
           }`}
         >
           <Bot className="h-3.5 w-3.5 text-cyan-300" />
-          <span>3D Character</span>
+          <span>3D Avatar Model</span>
         </button>
 
         <button
@@ -141,6 +147,35 @@ export function CyberAvatar() {
           <span>Real Portrait</span>
         </button>
       </motion.div>
+
+      {/* 3D INTERACTION CONTROLS BAR (DRAG TO ROTATE & 360 SPIN) */}
+      {viewMode === 'character' && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="mb-3 flex items-center gap-2 z-20"
+        >
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/30 text-[10px] font-mono text-cyan-300 backdrop-blur-md shadow-sm">
+            <Move3d className="h-3 w-3 text-cyan-400 animate-pulse" />
+            <span>DRAG TO ROTATE 3D</span>
+          </div>
+
+          <button
+            onClick={() => {
+              soundManager.playClick();
+              setAutoRotate((prev) => !prev);
+            }}
+            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-mono font-bold transition-all duration-300 ${
+              autoRotate
+                ? 'bg-gradient-to-r from-cyan-500 to-violet-600 text-white shadow-md shadow-cyan-500/30'
+                : 'bg-slate-900/80 border border-white/15 text-slate-400 hover:text-white hover:bg-white/5'
+            }`}
+          >
+            <RotateCcw className={`h-3 w-3 ${autoRotate ? 'animate-spin' : ''}`} />
+            <span>360° SPIN</span>
+          </button>
+        </motion.div>
+      )}
       
       {/* 3D PERSPECTIVE WRAPPER */}
       <div
@@ -148,7 +183,7 @@ export function CyberAvatar() {
         onMouseMove={handleMouseMove}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className="relative w-80 h-80 sm:w-96 sm:h-96 select-none cursor-pointer"
+        className="relative w-80 h-80 sm:w-96 sm:h-96 select-none cursor-grab active:cursor-grabbing"
         style={{
           perspective: '1200px',
         }}
@@ -158,7 +193,7 @@ export function CyberAvatar() {
           className="relative w-full h-full transition-transform duration-300 ease-out"
           style={{
             transformStyle: 'preserve-3d',
-            transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${isHovered ? 1.03 : 1})`,
+            transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(${isHovered ? 1.02 : 1})`,
           }}
         >
 
@@ -223,15 +258,15 @@ export function CyberAvatar() {
                 style={{ transformStyle: 'preserve-3d' }}
               >
                 
-                {/* MODE A: 3D CHARACTER (Default & Fully Interactive) */}
+                {/* MODE A: MOVABLE 3D AVATAR MODEL (Interactive OrbitControls & Depth Mesh) */}
                 {viewMode === 'character' ? (
-                  <div className="relative w-full h-full">
+                  <div className="relative w-full h-full cursor-grab active:cursor-grabbing">
                     {/* Background Tech Grid */}
                     <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(rgba(56,189,248,0.12)_1px,transparent_1px)] [background-size:18px_18px]" />
 
-                    {/* Dedicated Three.js 3D Character Canvas */}
+                    {/* Dedicated Three.js 3D Avatar Canvas with OrbitControls */}
                     <Canvas
-                      camera={{ position: [0, 0, 3.2], fov: 42 }}
+                      camera={{ position: [0, 0, 3.1], fov: 44 }}
                       gl={{
                         alpha: true,
                         antialias: true,
@@ -240,18 +275,24 @@ export function CyberAvatar() {
                       className="w-full h-full"
                     >
                       <Suspense fallback={null}>
-                        <CyberCharacter mouseNorm={mouseNorm} theme={themeKey} />
+                        <CyberCharacter
+                          mouseNorm={mouseNorm}
+                          theme={themeKey}
+                          autoRotate={autoRotate}
+                          isDragging={isDragging}
+                          onDragChange={setIsDragging}
+                        />
                       </Suspense>
                     </Canvas>
 
-                    {/* Character Telemetry Footer */}
+                    {/* Model Telemetry Footer */}
                     <div className="pointer-events-none absolute bottom-2.5 inset-x-0 flex items-center justify-between px-6 text-[8px] font-mono text-cyan-300/70 uppercase tracking-widest">
-                      <span>UNIT: RIZWAN-01</span>
-                      <span>TRACKING: ACTIVE</span>
+                      <span>3D MODEL: RIZWAN</span>
+                      <span>ORBIT: ACTIVE</span>
                     </div>
                   </div>
                 ) : (
-                  /* MODE B: REAL PORTRAIT (Clean, stylish, zero rings over tie!) */
+                  /* MODE B: REAL PORTRAIT (Clean, stylish, zero rings over tie) */
                   <div className="relative w-full h-full">
                     {/* Portrait Photo */}
                     <img
@@ -311,7 +352,7 @@ export function CyberAvatar() {
 
           {/* 5. FLOATING TELEMETRY CHIP 1: EXPERIENCE MATRIX */}
           <motion.div
-            className="absolute -top-3 -right-3 sm:top-2 sm:-right-4 rounded-2xl border border-cyan-400/40 bg-slate-900/90 p-3.5 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.7)] text-center min-w-[96px] transition-all duration-300 hover:border-cyan-300 hover:scale-105"
+            className="absolute -top-3 -right-3 sm:top-2 sm:-right-4 rounded-2xl border border-cyan-400/40 bg-slate-900/90 p-3.5 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.7)] text-center min-w-[96px] transition-all duration-300 hover:border-cyan-300 hover:scale-105 pointer-events-auto"
             style={{ transform: 'translateZ(55px)' }}
             animate={{ y: [0, -6, 0] }}
             transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut' }}
@@ -333,7 +374,7 @@ export function CyberAvatar() {
 
           {/* 6. FLOATING TELEMETRY CHIP 2: LIVE AVAILABILITY BEACON */}
           <motion.div
-            className="absolute -bottom-3 -left-3 sm:bottom-2 sm:-left-4 rounded-2xl border border-emerald-400/40 bg-slate-900/90 p-3.5 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.7)] flex items-center gap-3 transition-all duration-300 hover:border-emerald-300 hover:scale-105"
+            className="absolute -bottom-3 -left-3 sm:bottom-2 sm:-left-4 rounded-2xl border border-emerald-400/40 bg-slate-900/90 p-3.5 backdrop-blur-xl shadow-[0_15px_35px_rgba(0,0,0,0.7)] flex items-center gap-3 transition-all duration-300 hover:border-emerald-300 hover:scale-105 pointer-events-auto"
             style={{ transform: 'translateZ(60px)' }}
             animate={{ y: [0, 6, 0] }}
             transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut', delay: 0.3 }}
@@ -357,7 +398,7 @@ export function CyberAvatar() {
 
           {/* 7. FLOATING TELEMETRY CHIP 3: TECH CORE PILL */}
           <motion.div
-            className="absolute -bottom-5 right-4 rounded-xl border border-violet-500/40 bg-slate-950/90 px-3.5 py-1.5 backdrop-blur-xl shadow-xl transition-all duration-300 hover:border-violet-400 hover:scale-105"
+            className="absolute -bottom-5 right-4 rounded-xl border border-violet-500/40 bg-slate-950/90 px-3.5 py-1.5 backdrop-blur-xl shadow-xl transition-all duration-300 hover:border-violet-400 hover:scale-105 pointer-events-auto"
             style={{ transform: 'translateZ(50px)' }}
             animate={{ y: [0, -4, 0] }}
             transition={{ repeat: Infinity, duration: 3.8, ease: 'easeInOut', delay: 0.7 }}
