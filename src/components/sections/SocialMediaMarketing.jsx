@@ -21,13 +21,6 @@ import {
 
 export function SocialMediaMarketing() {
   const [selectedProject, setSelectedProject] = useState(null);
-  const [activeCategory, setActiveCategory] = useState('all');
-
-  const categoryIcons = {
-    all: Layers,
-    clients: Users,
-    campaigns: Target,
-  };
 
   const marketingStats = [
     { label: 'Total Reach Generated', value: '500K+', icon: TrendingUp, accent: 'text-cyan-400' },
@@ -40,10 +33,6 @@ export function SocialMediaMarketing() {
     soundManager.playClick();
     setSelectedProject(project);
   };
-
-  const filteredProjects = activeCategory === 'all'
-    ? socialMediaProjects
-    : socialMediaProjects.filter((p) => p.category === activeCategory);
 
   return (
     <section id="social-media" className="relative py-24 z-10 scroll-mt-20">
@@ -88,54 +77,13 @@ export function SocialMediaMarketing() {
           })}
         </div>
 
-        {/* Category Filter Tabs */}
-        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-14">
-          {socialMediaCategories.map((cat) => {
-            const Icon = categoryIcons[cat.id] || Layers;
-            const isActive = activeCategory === cat.id;
-            const count = cat.id === 'all' 
-              ? socialMediaProjects.length 
-              : socialMediaProjects.filter((p) => p.category === cat.id).length;
-
-            return (
-              <button
-                key={cat.id}
-                onClick={() => {
-                  soundManager.playClick();
-                  setActiveCategory(cat.id);
-                }}
-                className={`relative flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-semibold tracking-wide transition-all ${
-                  isActive
-                    ? 'text-white shadow-[0_0_20px_rgba(16,185,129,0.3)]'
-                    : 'text-slate-400 hover:text-white bg-slate-900/60 border border-white/10 hover:border-white/20'
-                }`}
-              >
-                {isActive && (
-                  <motion.div
-                    layoutId="activeSocialCategory"
-                    className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 -z-10"
-                    transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                  />
-                )}
-                <Icon className={`h-3.5 w-3.5 ${isActive ? 'text-white' : 'text-slate-400'}`} />
-                <span>{cat.label}</span>
-                <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-full ${
-                  isActive ? 'bg-white/20 text-white' : 'bg-white/5 text-slate-400'
-                }`}>
-                  {count}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Campaigns Grid */}
+        {/* Campaigns Grid (3 Authentic Clients) */}
         <motion.div 
           layout
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8"
         >
           <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, idx) => (
+            {socialMediaProjects.map((project, idx) => (
               <motion.div
                 key={project.id}
                 layout
@@ -147,43 +95,47 @@ export function SocialMediaMarketing() {
                 <TiltCard className="h-full">
                   <div className="relative flex flex-col h-full rounded-3xl border border-white/10 bg-slate-950/70 p-5 sm:p-6 backdrop-blur-xl transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_15px_40px_rgba(16,185,129,0.15)] group">
                     
-                    {/* Square 1:1 Social Post Showcase */}
+                    {/* Visual Showcase (Client Brand or Campaign Creative) */}
                     <div 
                       onClick={() => handleOpenProject(project)}
-                      className="relative w-full aspect-square overflow-hidden rounded-2xl border border-white/10 bg-black/60 cursor-pointer"
+                      className="relative w-full aspect-square overflow-hidden rounded-2xl border border-white/10 bg-slate-900/80 cursor-pointer flex items-center justify-center p-3"
                     >
-                      <img
-                        src={project.image}
-                        alt={project.clientName}
-                        className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity" />
+                      {project.category === 'clients' ? (
+                        /* Clean Brand Emblem Card */
+                        <div className="w-full h-full rounded-xl bg-white p-6 flex items-center justify-center shadow-md transition-transform duration-500 group-hover:scale-105">
+                          <img
+                            src={project.image}
+                            alt={project.clientName}
+                            className="max-h-full max-w-full object-contain"
+                            loading="lazy"
+                          />
+                        </div>
+                      ) : (
+                        /* High-Res Campaign Post */
+                        <div className="relative w-full h-full overflow-hidden rounded-xl bg-slate-950">
+                          <img
+                            src={project.image}
+                            alt={project.clientName}
+                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                            loading="lazy"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
+                        </div>
+                      )}
 
-                      {/* Top Badges */}
-                      <div className="absolute top-3 left-3 flex items-center gap-2">
-                        {project.badge && (
-                          <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-pink-600/90 text-white font-mono text-xs font-bold shadow-lg">
-                            {project.badge}
-                          </span>
-                        )}
-                        <span className="rounded-full bg-slate-950/80 px-2.5 py-0.5 text-[10px] font-mono text-slate-300 border border-white/10 backdrop-blur-md">
-                          Square 1:1
-                        </span>
-                      </div>
-
+                      {/* Clean Platform Pill */}
                       {project.platform && (
-                        <div className="absolute top-3 right-3 flex items-center gap-1.5 rounded-full bg-emerald-950/80 px-2.5 py-1 text-[10px] font-mono text-emerald-300 border border-emerald-500/30 backdrop-blur-md">
+                        <div className="absolute top-3 right-3 flex items-center gap-1.5 rounded-full bg-slate-950/80 px-2.5 py-1 text-[11px] font-medium text-emerald-400 border border-emerald-500/30 backdrop-blur-md shadow-sm">
                           <Share2 className="h-3 w-3 text-emerald-400" />
                           <span>{project.platform}</span>
                         </div>
                       )}
 
-                      {/* Hover Overlay Trigger */}
+                      {/* Hover Trigger */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
                         <span className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow-[0_0_20px_rgba(16,185,129,0.5)]">
                           <Maximize2 className="h-3.5 w-3.5" />
-                          Full Campaign
+                          <span>View Details</span>
                         </span>
                       </div>
                     </div>
@@ -198,38 +150,24 @@ export function SocialMediaMarketing() {
                           <div className="flex flex-wrap items-center gap-x-2 gap-y-1 mt-1 text-xs text-slate-400">
                             <span className="text-slate-300 font-medium">{project.company}</span>
                             <span>•</span>
-                            <span className="text-emerald-400 font-mono text-[11px]">{project.role}</span>
+                            <span className="text-emerald-400 text-xs">{project.role}</span>
                           </div>
                         </div>
                       </div>
 
                       {/* Review / Strategy Quote */}
                       {project.review && (
-                        <p className="mt-3 text-xs italic text-slate-400 line-clamp-2">
+                        <p className="mt-3 text-xs italic text-slate-300 line-clamp-2">
                           "{project.review}"
                         </p>
                       )}
 
-                      {/* Campaign Metrics Pills */}
-                      {project.metrics && (
-                        <div className="flex flex-wrap gap-1.5 mt-3">
-                          {project.metrics.map((metric, i) => (
-                            <span
-                              key={i}
-                              className="rounded-md border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-mono font-semibold text-emerald-300"
-                            >
-                              {metric}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-
                       {/* Tags */}
-                      <div className="flex flex-wrap gap-1.5 mt-3">
+                      <div className="flex flex-wrap gap-1.5 mt-4">
                         {project.tags.slice(0, 3).map((tag, i) => (
                           <span
                             key={i}
-                            className="rounded-md border border-white/5 bg-white/5 px-2.5 py-1 text-[10px] font-mono text-slate-400"
+                            className="rounded-lg border border-white/5 bg-white/5 px-2.5 py-1 text-[11px] font-medium text-slate-400"
                           >
                             {tag}
                           </span>
@@ -243,18 +181,20 @@ export function SocialMediaMarketing() {
                           className="flex items-center gap-1.5 text-xs font-semibold text-slate-300 hover:text-white transition-colors"
                         >
                           <Eye className="h-3.5 w-3.5 text-emerald-400" />
-                          <span>Full Post</span>
+                          <span>View Details</span>
                         </button>
 
-                        <a
-                          href={project.image}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-1.5 rounded-full border border-pink-500/30 bg-pink-500/10 px-3.5 py-1.5 text-xs font-semibold text-pink-300 hover:bg-pink-500/20 hover:text-white transition-all shadow-[0_0_12px_rgba(244,63,94,0.2)]"
-                        >
-                          <span>HD View</span>
-                          <ArrowUpRight className="h-3.5 w-3.5" />
-                        </a>
+                        {project.link ? (
+                          <a
+                            href={project.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1.5 text-xs font-semibold text-emerald-300 hover:bg-emerald-500/20 hover:text-white transition-all"
+                          >
+                            <span>{project.category === 'clients' ? 'Visit Page' : 'Live Post'}</span>
+                            <ArrowUpRight className="h-3.5 w-3.5" />
+                          </a>
+                        ) : null}
                       </div>
                     </div>
                   </div>
@@ -266,12 +206,14 @@ export function SocialMediaMarketing() {
       </div>
 
       {/* Project Lightbox Modal */}
-      {selectedProject && (
-        <ProjectModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
-      )}
+      <AnimatePresence>
+        {selectedProject && (
+          <ProjectModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
+          />
+        )}
+      </AnimatePresence>
     </section>
   );
 }
