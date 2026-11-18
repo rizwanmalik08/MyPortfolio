@@ -15,6 +15,7 @@ import {
   Flame, 
   Layers, 
   Zap,
+  Users,
   Maximize2
 } from 'lucide-react';
 
@@ -24,9 +25,8 @@ export function SocialMediaMarketing() {
 
   const categoryIcons = {
     all: Layers,
-    growth: TrendingUp,
-    ads: Target,
-    content: Flame,
+    clients: Users,
+    campaigns: Target,
   };
 
   const marketingStats = [
@@ -57,13 +57,13 @@ export function SocialMediaMarketing() {
         <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-10">
           <span className="text-xs font-mono uppercase tracking-[0.3em] text-emerald-400 flex items-center gap-2">
             <Share2 className="h-3.5 w-3.5" />
-            Social Media Marketing &amp; Ad Creatives
+            Social Media Marketing &amp; Client Results
           </span>
           <h2 className="mt-2 text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-            Social Campaigns &amp; Growth
+            Social Campaigns &amp; Clients
           </h2>
           <p className="mt-4 text-sm sm:text-base text-slate-400">
-            Conversion-focused paid ad creatives, viral carousel sequences, and high-retention social media posts engineered for feed dominance.
+            High-converting social campaigns, B2B lead generation, and brand growth strategies for leading client accounts.
           </p>
         </div>
 

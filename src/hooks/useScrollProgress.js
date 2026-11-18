@@ -21,8 +21,6 @@ export function useScrollProgress() {
           const sections = [
             'home',
             'about',
-            'websites',
-            'projects',
             'social-media',
             'skills',
             'services',
