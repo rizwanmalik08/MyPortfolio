@@ -1,12 +1,29 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { navLinks, personalInfo } from '../../data/portfolioData';
 import { soundManager } from '../../utils/audioFX';
 import { Menu, X, Download, Sparkles, Volume2, VolumeX } from 'lucide-react';
 
+// Dynamic rotating roles matching Hero kinetic typography (concise to prevent layout shift)
+const ROLES = [
+  { title: 'Visual Designer', gradient: 'from-violet-400 via-purple-300 to-indigo-300' },
+  { title: 'Full-Stack Developer', gradient: 'from-cyan-300 via-sky-300 to-teal-200' },
+  { title: '3D Web Architect', gradient: 'from-pink-400 via-rose-300 to-amber-300' },
+  { title: 'Growth Marketer', gradient: 'from-emerald-300 via-teal-300 to-cyan-300' },
+];
+
 export function Navbar({ activeSection = 'home' }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [soundActive, setSoundActive] = useState(soundManager.isSoundEnabled());
+  const [roleIndex, setRoleIndex] = useState(0);
+
+  // Cycle roles smoothly every 3.2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % ROLES.length);
+    }, 3200);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleToggleSound = () => {
     const newState = soundManager.toggleSound();
@@ -14,27 +31,40 @@ export function Navbar({ activeSection = 'home' }) {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 px-4 py-3 transition-all duration-300">
+    <header className="fixed top-0 left-0 right-0 z-40 px-4 py-2.5 transition-all duration-300">
       <div className="mx-auto max-w-7xl">
-        <nav className="flex items-center justify-between rounded-full border border-white/10 bg-[#0a0a14]/80 px-5 py-2.5 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
-          {/* Brand Signature (Clean Typography without icon or status dot) */}
+        <nav className="flex items-center justify-between rounded-full border border-white/10 bg-[#0a0a14]/85 px-4 sm:px-5 py-1.5 backdrop-blur-xl shadow-[0_10px_40px_rgba(0,0,0,0.5)]">
+          {/* Brand Signature (Compact size with fixed width to eliminate menu movement) */}
           <a
             href="#home"
             onMouseEnter={() => soundManager.playHover()}
             onClick={() => soundManager.playClick()}
-            className="group flex flex-col text-left leading-none shrink-0 py-0.5"
+            className="group flex flex-col text-left leading-none w-[140px] sm:w-[155px] shrink-0 py-0.5 overflow-hidden"
           >
-            <div className="flex items-center gap-1.5">
-              <span className="text-base font-extrabold tracking-tight text-white group-hover:text-cyan-300 transition-colors">
+            <div className="flex items-center gap-1">
+              <span className="text-sm sm:text-[14.5px] font-extrabold tracking-tight text-white group-hover:text-cyan-300 transition-colors">
                 Rizwan
               </span>
-              <span className="text-base font-medium tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-300 to-violet-400">
+              <span className="text-sm sm:text-[14.5px] font-medium tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-indigo-300 to-violet-400">
                 Malik
               </span>
             </div>
-            <span className="text-[9px] font-mono tracking-[0.16em] uppercase text-slate-400 group-hover:text-slate-300 transition-colors mt-1">
-              Visual Designer
-            </span>
+
+            {/* Dynamic Rotating Role Underline (Slim & strictly contained) */}
+            <div className="h-3 mt-0.5 overflow-hidden flex items-center">
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={ROLES[roleIndex].title}
+                  initial={{ y: 5, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -5, opacity: 0 }}
+                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                  className={`text-[9px] sm:text-[9.5px] font-medium tracking-wide bg-gradient-to-r ${ROLES[roleIndex].gradient} bg-clip-text text-transparent truncate block`}
+                >
+                  {ROLES[roleIndex].title}
+                </motion.span>
+              </AnimatePresence>
+            </div>
           </a>
 
           {/* Desktop Navigation Links */}
