@@ -34,9 +34,8 @@ export function Projects() {
 
   const categoryIcons = {
     all: LayoutGrid,
-    clothing: Shirt,
     ecommerce: ShoppingBag,
-    business: Building2,
+    agency: Building2,
   };
 
   const handleOpenProject = (project) => {
@@ -63,7 +62,7 @@ export function Projects() {
             Websites &amp; Web Applications
           </h2>
           <p className="mt-4 text-sm sm:text-base text-slate-400">
-            Production clothing &amp; fashion e-commerce storefronts, digital retail stores, and enterprise business web applications.
+            Live client websites, production e-commerce platforms, and commercial agency portals.
           </p>
         </div>
 
