@@ -23,7 +23,6 @@ export function useScrollProgress() {
             'about',
             'websites',
             'projects',
-            'graphic-design',
             'social-media',
             'skills',
             'services',

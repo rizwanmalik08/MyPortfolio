@@ -7,7 +7,6 @@ import { Hero } from './components/sections/Hero';
 import { About } from './components/sections/About';
 import { Skills } from './components/sections/Skills';
 import { Projects } from './components/sections/Projects';
-import { GraphicDesign } from './components/sections/GraphicDesign';
 import { SocialMediaMarketing } from './components/sections/SocialMediaMarketing';
 import { Services } from './components/sections/Services';
 import { Certificates } from './components/sections/Certificates';
@@ -93,7 +92,6 @@ export default function App() {
         <Hero />
         <About />
         <Projects />
-        <GraphicDesign />
         <SocialMediaMarketing />
         <Services />
         <Skills />
