@@ -84,10 +84,12 @@ export default function App() {
       </Suspense>
 
       {/* Navigation Header with Sound FX toggle */}
-      <Navbar activeSection={activeSection} />
+      <div className={`transition-opacity duration-700 ${loading ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+        <Navbar activeSection={activeSection} />
+      </div>
 
       {/* Main Accessible DOM Content */}
-      <main className="relative z-10">
+      <main className={`relative z-10 transition-opacity duration-700 ${loading ? 'opacity-0' : 'opacity-100'}`}>
         <Hero />
         <About />
         <SocialMediaMarketing />

@@ -26,13 +26,25 @@ export function Footer() {
           
           {/* Col 1: Brand & Bio */}
           <div className="lg:col-span-4 space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-violet-600 to-cyan-400 text-white font-bold text-sm shadow-[0_0_15px_rgba(124,58,237,0.4)]">
-                R
+            <div className="flex items-center gap-2.5">
+              {/* Modern Squircle Vector Monogram */}
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl border border-white/20 bg-slate-950/80 p-2 shadow-[0_0_20px_rgba(56,189,248,0.35)] backdrop-blur-md">
+                <svg viewBox="0 0 24 24" className="w-5 h-5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="footerEmblemGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#38bdf8" />
+                      <stop offset="50%" stopColor="#818cf8" />
+                      <stop offset="100%" stopColor="#c084fc" />
+                    </linearGradient>
+                  </defs>
+                  <path
+                    d="M4.5 4C4.5 3.17 5.17 2.5 6 2.5H13C16.59 2.5 19.5 5.41 19.5 9C19.5 11.96 17.52 14.47 14.8 15.26L19.42 21.04C19.88 21.61 19.47 22.5 18.74 22.5H15.18C14.75 22.5 14.35 22.3 14.1 21.95L9.5 15.5H7.5V21.5C7.5 22.05 7.05 22.5 6.5 22.5H5.5C4.95 22.5 4.5 22.05 4.5 21.5V4ZM7.5 5.5V12.5H13C14.93 12.5 16.5 10.93 16.5 9C16.5 7.07 14.93 5.5 13 5.5H7.5Z"
+                    fill="url(#footerEmblemGrad)"
+                  />
+                </svg>
               </div>
-              <span className="text-xl font-bold text-white tracking-tight">
-                {personalInfo.name}
-                <span className="text-cyan-400">.</span>
+              <span className="text-xl font-black tracking-tight text-white">
+                Rizwan <span className="bg-gradient-to-r from-cyan-400 to-violet-400 bg-clip-text text-transparent">Malik</span>
               </span>
             </div>
             <p className="text-xs sm:text-sm text-slate-400 leading-relaxed max-w-sm">

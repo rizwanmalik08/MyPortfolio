@@ -162,5 +162,70 @@ export const soundManager = {
       osc.start(now);
       osc.stop(now + 0.15);
     });
+  },
+
+  // Cinematic Laser Etch & Chrome Resonance Impact
+  playCinematicSculpt() {
+    runWithActiveContext((ctx) => {
+      const now = ctx.currentTime;
+
+      // 1. High-frequency laser tracing sizzle
+      const noiseBuffer = ctx.createBuffer(1, ctx.sampleRate * 0.35, ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < noiseBuffer.length; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
+      const whiteNoise = ctx.createBufferSource();
+      whiteNoise.buffer = noiseBuffer;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(2400, now);
+      filter.frequency.exponentialRampToValueAtTime(8000, now + 0.35);
+      filter.Q.value = 4.0;
+
+      const noiseGain = ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.001, now);
+      noiseGain.gain.linearRampToValueAtTime(0.04, now + 0.1);
+      noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+
+      whiteNoise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(ctx.destination);
+      whiteNoise.start(now);
+
+      // 2. Resonant Chrome Chord & Sub Impact
+      setTimeout(() => {
+        runWithActiveContext((c) => {
+          const t = c.currentTime;
+          // Deep impact sub
+          const sub = c.createOscillator();
+          const subG = c.createGain();
+          sub.type = 'sine';
+          sub.frequency.setValueAtTime(90, t);
+          sub.frequency.exponentialRampToValueAtTime(45, t + 0.8);
+          subG.gain.setValueAtTime(0.2, t);
+          subG.gain.exponentialRampToValueAtTime(0.0001, t + 0.8);
+          sub.connect(subG);
+          subG.connect(c.destination);
+          sub.start(t);
+          sub.stop(t + 0.8);
+
+          // Crystal metallic harmonics (E5, G#5, B5, E6)
+          [659.25, 830.61, 987.77, 1318.51].forEach((freq, idx) => {
+            const osc = c.createOscillator();
+            const gain = c.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq, t + idx * 0.03);
+            gain.gain.setValueAtTime(0.04 / (idx + 1), t + idx * 0.03);
+            gain.gain.exponentialRampToValueAtTime(0.0001, t + idx * 0.03 + 1.2);
+            osc.connect(gain);
+            gain.connect(c.destination);
+            osc.start(t + idx * 0.03);
+            osc.stop(t + idx * 0.03 + 1.2);
+          });
+        });
+      }, 750);
+    });
   }
 };
