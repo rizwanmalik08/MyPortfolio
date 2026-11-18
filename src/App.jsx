@@ -7,6 +7,8 @@ import { Hero } from './components/sections/Hero';
 import { About } from './components/sections/About';
 import { Skills } from './components/sections/Skills';
 import { Projects } from './components/sections/Projects';
+import { GraphicDesign } from './components/sections/GraphicDesign';
+import { SocialMediaMarketing } from './components/sections/SocialMediaMarketing';
 import { Services } from './components/sections/Services';
 import { Certificates } from './components/sections/Certificates';
 import { Experience } from './components/sections/Experience';
@@ -90,9 +92,11 @@ export default function App() {
       <main className="relative z-10">
         <Hero />
         <About />
-        <Skills />
         <Projects />
+        <GraphicDesign />
+        <SocialMediaMarketing />
         <Services />
+        <Skills />
         <Certificates />
         <Experience />
         <Testimonials />

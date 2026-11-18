@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, Zap } from 'lucide-react';
-import { AvatarScene } from './AvatarScene';
+import { Avatar3DPortrait } from './Avatar3DPortrait';
 import { useHeadTarget } from './useHeadTarget';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
@@ -15,8 +15,10 @@ export function AvatarPortal({
   const portalRef = useRef(null);
   const reducedMotion = useReducedMotion();
 
+  const [isHovered, setIsHovered] = useState(false);
+  const [cursorCoords, setCursorCoords] = useState({ normX: 0, normY: 0 });
+
   const {
-    targetRef,
     trackingMode,
     onPointerEnter,
     onPointerMove,
@@ -52,7 +54,10 @@ export function AvatarPortal({
     return () => clearInterval(interval);
   }, []);
 
-  const handlePointerEnter = () => onPointerEnter();
+  const handlePointerEnter = () => {
+    setIsHovered(true);
+    onPointerEnter();
+  };
 
   const handlePointerMove = (e) => {
     if (!portalRef.current) return;
@@ -70,10 +75,13 @@ export function AvatarPortal({
     const normX = Math.max(-1, Math.min(1, (x - centerX) / centerX));
     const normY = Math.max(-1, Math.min(1, (y - centerY) / centerY));
 
+    setCursorCoords({ normX, normY });
     onPointerMove(normX, normY);
   };
 
   const handlePointerLeave = () => {
+    setIsHovered(false);
+    setCursorCoords({ normX: 0, normY: 0 });
     onPointerLeave();
   };
 
@@ -91,28 +99,39 @@ export function AvatarPortal({
       aria-label="Interactive 3D Avatar Console"
     >
       <span className="sr-only">
-        Interactive 3D character avatar of Rizwan with live head, eye, and neck movement.
+        Interactive 3D portrait of Rizwan in a tailored black suit with cursor-tracking lighting and motion.
       </span>
 
-      {/* DOTTED ORBIT RING & HUD BRACKETS */}
+      {/* CLOCKWISE & COUNTER-CLOCKWISE DECORATIVE ORBITS & HUD BRACKETS */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+        {/* Outer Clockwise Dotted Ring */}
         <div
           className={`absolute inset-2 sm:inset-0 rounded-full border border-dashed border-cyan-500/25 ${
             reducedMotion ? '' : 'animate-[spin_60s_linear_infinite]'
           }`}
         />
-        <div className="absolute -top-1 left-1/4 h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_10px_#22d3ee]" />
-        <div className="absolute top-1/3 -right-2 h-1.5 w-1.5 rounded-full bg-violet-400 shadow-[0_0_8px_#a78bfa]" />
-        <div className="absolute bottom-10 -left-2 h-2 w-2 rounded-full border border-cyan-400/80 bg-slate-950" />
+        {/* Inner Counter-Clockwise Orbit Ring */}
+        <div
+          className={`absolute inset-5 sm:inset-3 rounded-full border border-dotted border-violet-500/20 ${
+            reducedMotion ? '' : 'animate-[spin_42s_linear_infinite_reverse]'
+          }`}
+        />
 
+        {/* Orbiting Satellite Nodes */}
+        <div className="absolute -top-1 left-1/4 h-2 w-2 rounded-full bg-cyan-400 shadow-[0_0_12px_#22d3ee]" />
+        <div className="absolute top-1/3 -right-2 h-1.5 w-1.5 rounded-full bg-violet-400 shadow-[0_0_10px_#a78bfa]" />
+        <div className="absolute bottom-10 -left-2 h-2 w-2 rounded-full border border-cyan-400/80 bg-slate-950 shadow-[0_0_8px_rgba(34,211,238,0.5)]" />
+        <div className="absolute bottom-4 right-1/4 h-1.5 w-1.5 rounded-full bg-pink-400 shadow-[0_0_8px_#f43f5e]" />
+
+        {/* HUD Markers */}
         <div className="absolute left-0 top-1/2 -translate-y-1/2 font-mono text-xs text-cyan-400/80 tracking-widest">[+]</div>
         <div className="absolute right-0 top-1/2 -translate-y-1/2 font-mono text-xs text-cyan-400/80 tracking-widest">[+]</div>
         <div className="absolute top-1 left-1/2 -translate-x-1/2 font-mono text-[10px] tracking-[0.25em] text-cyan-400/60">// 001</div>
         <div className="absolute bottom-1 left-1/2 -translate-x-1/2 font-mono text-[10px] tracking-[0.25em] text-cyan-400/60">// 2026</div>
       </div>
 
-      {/* ROTATING CONIC GRADIENT RING + INDEPENDENT LIGHT ARC */}
-      <div className="relative flex items-center justify-center w-full h-full rounded-full p-[4px] sm:p-[5px] overflow-hidden shadow-[0_0_50px_rgba(34,211,238,0.25)]">
+      {/* ROTATING CONIC GRADIENT RING + SWEPT LIGHT ARC */}
+      <div className="relative flex items-center justify-center w-full h-full rounded-full p-[4px] sm:p-[5px] overflow-hidden shadow-[0_0_60px_rgba(124,58,237,0.35),0_0_30px_rgba(34,211,238,0.25)]">
         {/* Conic Gradient (Blue -> Violet -> Pink/Red, ~20s) */}
         <div
           className={`absolute -inset-[50%] bg-[conic-gradient(from_0deg,#2563eb_0%,#7c3aed_35%,#ec4899_70%,#f43f5e_85%,#2563eb_100%)] ${
@@ -120,30 +139,32 @@ export function AvatarPortal({
           }`}
         />
 
-        {/* Independent Sweeping White Light-Arc (~5.2s) */}
+        {/* Sweeping White Light-Arc (~5.2s) */}
         {!reducedMotion && (
           <div className="pointer-events-none absolute -inset-[50%] animate-[spin_5.2s_linear_infinite]">
             <div className="h-full w-full bg-[conic-gradient(from_0deg,transparent_0deg,transparent_310deg,rgba(255,255,255,0.95)_350deg,transparent_360deg)]" />
           </div>
         )}
 
-        {/* Inner Mask Container (clips 3D model to circle) */}
+        {/* Inner Mask Container (clips image cleanly to circle) */}
         <div className="relative w-full h-full rounded-full overflow-hidden bg-slate-950 flex items-center justify-center">
-          {/* Dark Teal Radial Glow Background */}
+          {/* Dark Space Radial Glow Background */}
           <div
             className="absolute inset-0 -z-10"
             style={{
-              background: 'radial-gradient(circle at 50% 45%, #083344 0%, #041c2c 55%, #020912 100%)',
+              background: 'radial-gradient(circle at 50% 42%, #0e122b 0%, #060918 55%, #02050f 100%)',
             }}
           />
 
-          <div className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 h-56 w-56 rounded-full bg-cyan-400/20 blur-[55px]" />
-          <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-48 w-48 rounded-full bg-violet-600/15 blur-[65px]" />
+          <div className="pointer-events-none absolute top-1/4 left-1/2 -translate-x-1/2 h-56 w-56 rounded-full bg-cyan-500/15 blur-[50px]" />
+          <div className="pointer-events-none absolute bottom-1/4 right-1/4 h-48 w-48 rounded-full bg-violet-600/20 blur-[60px]" />
 
-          {/* REAL 3D CHARACTER SCENE */}
+          {/* HIGH-DEFINITION 3D CHARACTER PORTRAIT */}
           <div className="relative w-full h-full">
-            <AvatarScene
-              targetRef={targetRef}
+            <Avatar3DPortrait
+              isHovered={isHovered}
+              normX={cursorCoords.normX}
+              normY={cursorCoords.normY}
               reducedMotion={reducedMotion}
             />
           </div>
@@ -151,32 +172,33 @@ export function AvatarPortal({
       </div>
 
       {/* TOP STATUS PILL */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
-        className="pointer-events-none absolute -top-4 sm:-top-5 left-1/2 -translate-x-1/2 z-30"
-      >
-        <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/40 bg-slate-950/85 px-4 py-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.5),0_0_15px_rgba(34,211,238,0.2)] backdrop-blur-md">
-          <span className="relative flex h-2 w-2">
-            <span
-              className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
-                trackingMode === 'tracking' ? 'bg-emerald-400' : 'bg-cyan-400'
-              }`}
-            />
-            <span
-              className={`relative inline-flex rounded-full h-2 w-2 ${
-                trackingMode === 'tracking' ? 'bg-emerald-400' : 'bg-cyan-400'
-              }`}
-            />
-          </span>
-          <span className="font-mono text-[10px] sm:text-[11px] font-semibold tracking-wider text-slate-200">
-            {trackingMode === 'tracking'
-              ? 'TRACKING CURSOR // LOCKED'
-              : 'AUTONOMOUS IDLE // OBSERVING SCENE'}
-          </span>
-        </div>
-      </motion.div>
+      <div className="absolute -top-4 sm:-top-5 left-1/2 -translate-x-1/2 z-30">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <div className="inline-flex items-center gap-2 rounded-full border border-cyan-400/40 bg-slate-950/85 px-4 py-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.5),0_0_15px_rgba(34,211,238,0.2)] backdrop-blur-md">
+            <span className="relative flex h-2 w-2">
+              <span
+                className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${
+                  trackingMode === 'tracking' ? 'bg-emerald-400' : 'bg-cyan-400'
+                }`}
+              />
+              <span
+                className={`relative inline-flex rounded-full h-2 w-2 ${
+                  trackingMode === 'tracking' ? 'bg-emerald-400' : 'bg-cyan-400'
+                }`}
+              />
+            </span>
+            <span className="font-mono text-[10px] sm:text-[11px] font-semibold tracking-wider text-slate-200">
+              {trackingMode === 'tracking'
+                ? 'TRACKING CURSOR // LOCKED'
+                : 'AUTONOMOUS IDLE // OBSERVING SCENE'}
+            </span>
+          </div>
+        </motion.div>
+      </div>
 
       {/* TOP-RIGHT GLASS CARD: 4+ YEARS EXP */}
       <motion.div
@@ -191,23 +213,31 @@ export function AvatarPortal({
           opacity: { duration: 0.6, delay: 0.3 },
           x: { duration: 0.6, delay: 0.3 },
         }}
-        className="absolute top-2 -right-3 sm:top-4 sm:-right-4 z-30 w-32 sm:w-36 rounded-2xl border border-cyan-400/30 bg-slate-950/70 p-3 sm:p-3.5 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_15px_rgba(34,211,238,0.15)] backdrop-blur-md"
-        aria-label="4 plus years of experience"
+        className="absolute -top-2 -right-4 sm:-right-8 z-20 pointer-events-none"
       >
-        <div className="flex items-center justify-between">
-          <span className="text-xl sm:text-2xl font-black tracking-tight text-white font-mono">{expCount}+</span>
-          <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-cyan-500/20 text-cyan-300">
-            <Sparkles className="h-3.5 w-3.5 animate-pulse" />
+        <div className="relative rounded-2xl border border-cyan-500/30 bg-slate-950/75 p-3 sm:p-4 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_20px_rgba(6,182,212,0.15)] backdrop-blur-xl">
+          <div className="flex items-center gap-3">
+            <div>
+              <div className="flex items-baseline gap-1">
+                <span className="font-mono text-xl sm:text-2xl font-black text-cyan-400">
+                  {expCount}+
+                </span>
+                <span className="text-[10px] font-mono text-cyan-300/70 tracking-widest uppercase">
+                  Years
+                </span>
+              </div>
+              <div className="text-[9px] font-mono text-slate-400 tracking-wider">
+                Full-Stack & 3D
+              </div>
+            </div>
+            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-cyan-500/10 border border-cyan-400/30">
+              <Sparkles className="h-4 w-4 text-cyan-300" />
+            </div>
           </div>
-        </div>
-        <p className="mt-1 font-mono text-[9px] sm:text-[10px] font-medium tracking-wider text-slate-400 uppercase">YEARS EXP</p>
-        <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-slate-800">
-          <motion.div
-            initial={{ width: '0%' }}
-            animate={{ width: '85%' }}
-            transition={{ duration: 1.2, delay: 0.5, ease: 'easeOut' }}
-            className="h-full rounded-full bg-gradient-to-r from-cyan-400 via-sky-400 to-indigo-500 shadow-[0_0_8px_#22d3ee]"
-          />
+          {/* Mini Progress Bar */}
+          <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-slate-800/80">
+            <div className="h-full w-[90%] rounded-full bg-gradient-to-r from-cyan-400 to-blue-500 shadow-[0_0_8px_#22d3ee]" />
+          </div>
         </div>
       </motion.div>
 
@@ -220,47 +250,42 @@ export function AvatarPortal({
           y: reducedMotion ? 0 : [0, 6, 0],
         }}
         transition={{
-          y: { duration: 4.8, repeat: Infinity, ease: 'easeInOut', delay: 0.8 },
+          y: { duration: 4.6, repeat: Infinity, ease: 'easeInOut', delay: 0.4 },
           opacity: { duration: 0.6, delay: 0.4 },
           x: { duration: 0.6, delay: 0.4 },
         }}
-        className="absolute bottom-2 -left-3 sm:bottom-4 sm:-left-4 z-30 min-w-[190px] sm:min-w-[210px] rounded-2xl border border-cyan-400/30 bg-slate-950/75 p-3 sm:p-3.5 shadow-[0_8px_32px_rgba(0,0,0,0.5),0_0_15px_rgba(34,211,238,0.15)] backdrop-blur-md"
-        aria-label="Available for work status"
+        className="absolute -bottom-2 -left-4 sm:-left-8 z-20 pointer-events-none"
       >
-        <div className="flex items-center gap-2.5">
-          <span className="relative flex h-2.5 w-2.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
-            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400 shadow-[0_0_8px_#34d399]" />
-          </span>
-          <span className="font-mono text-[10px] sm:text-[11px] font-bold tracking-wider text-white">
-            AVAILABLE FOR WORK
-          </span>
-        </div>
-        <div className="mt-1 flex items-center gap-2 font-mono text-[9px] sm:text-[10px] text-cyan-300/90">
-          <span>PING: {ping}ms</span>
-          <span className="text-slate-500">•</span>
-          <span className="text-emerald-400 font-semibold">READY</span>
+        <div className="relative rounded-2xl border border-emerald-500/30 bg-slate-950/75 p-3 sm:p-3.5 shadow-[0_8px_32px_rgba(0,0,0,0.6),0_0_20px_rgba(16,185,129,0.15)] backdrop-blur-xl">
+          <div className="flex items-center gap-2.5">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-400" />
+            </span>
+            <div>
+              <div className="font-mono text-[11px] sm:text-xs font-bold tracking-wider text-emerald-300">
+                AVAILABLE FOR WORK
+              </div>
+              <div className="font-mono text-[9px] text-slate-400 flex items-center gap-1.5 mt-0.5">
+                <span>PING: {ping}ms</span>
+                <span>•</span>
+                <span className="text-emerald-400/90 font-semibold">ONLINE</span>
+              </div>
+            </div>
+          </div>
         </div>
       </motion.div>
 
-      {/* BOTTOM TECH PILL */}
+      {/* BOTTOM-RIGHT TECH PILL */}
       <motion.div
-        initial={{ opacity: 0, y: 15 }}
-        animate={{
-          opacity: 1,
-          y: reducedMotion ? 0 : [0, -4, 0],
-        }}
-        transition={{
-          y: { duration: 3.8, repeat: Infinity, ease: 'easeInOut', delay: 1.2 },
-          opacity: { duration: 0.5, delay: 0.5 },
-        }}
-        className="absolute -bottom-3 sm:-bottom-4 right-4 sm:right-6 z-30"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+        className="absolute -bottom-4 sm:-bottom-5 right-2 sm:right-6 z-20 pointer-events-none"
       >
-        <div className="inline-flex items-center gap-2 rounded-full border border-violet-400/35 bg-slate-950/85 px-3.5 py-1.5 shadow-[0_4px_20px_rgba(0,0,0,0.5),0_0_15px_rgba(139,92,246,0.2)] backdrop-blur-md">
-          <Zap className="h-3 w-3 text-cyan-400 fill-cyan-400/20" />
-          <span className="font-mono text-[9px] sm:text-[10px] font-medium tracking-widest text-slate-300">
-            REACT • THREE.JS • C++
-          </span>
+        <div className="inline-flex items-center gap-1.5 rounded-full border border-violet-500/40 bg-slate-950/85 px-3 py-1 text-[9px] sm:text-[10px] font-mono tracking-wider text-violet-300 shadow-[0_0_15px_rgba(139,92,246,0.25)] backdrop-blur-md">
+          <Zap className="h-3 w-3 text-cyan-400" />
+          <span>REACT • THREE.JS • 3D WEB</span>
         </div>
       </motion.div>
     </div>

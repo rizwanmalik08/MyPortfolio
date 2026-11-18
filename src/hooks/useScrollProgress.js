@@ -18,7 +18,19 @@ export function useScrollProgress() {
           setProgress(currentProgress);
 
           // Find current active section
-          const sections = ['home', 'about', 'skills', 'projects', 'services', 'certificates', 'experience', 'contact'];
+          const sections = [
+            'home',
+            'about',
+            'websites',
+            'projects',
+            'graphic-design',
+            'social-media',
+            'skills',
+            'services',
+            'certificates',
+            'experience',
+            'contact'
+          ];
           const scrollPos = window.scrollY + 200;
 
           for (let i = sections.length - 1; i >= 0; i--) {

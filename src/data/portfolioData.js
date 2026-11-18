@@ -382,6 +382,230 @@ export const projects = [
   }
 ];
 
+// ==========================================
+// --- GRAPHIC DESIGN WORKS ---
+// ==========================================
+export const graphicDesignCategories = [
+  { id: "all", label: "All Works" },
+  { id: "branding", label: "Brand Identity" },
+  { id: "posters", label: "Marketing Posters" },
+  { id: "corporate", label: "Corporate Collateral" }
+];
+
+export const graphicDesignProjects = [
+  {
+    id: "gd-brand-identity",
+    clientName: "Brand Identity & Visual System",
+    company: "Botanical Labs & DigiServiceZone",
+    role: "Brand Identity & Art Direction",
+    category: "branding",
+    type: "graphic-design",
+    badge: "BI",
+    featured: true,
+    image: "/real-graphics/brand-identity-post.png",
+    review: "Sophisticated minimalism with organic tones. The visual identity elevated our packaging and digital brand presence.",
+    tags: ["Photoshop", "Illustrator", "Brand System", "Typography"],
+    description: "Complete visual identity design system. Crafted core logo marks, typographic hierarchy, primary and secondary color palettes, packaging mockups, and comprehensive brand guidelines for commercial deployment.",
+    metrics: ["Full Vector Guidelines", "4K Brand Assets", "Print & Digital Deliverables"],
+    deliverables: ["Primary & Secondary Logos", "Brand Style Guide Book", "Packaging Mockups", "Social Media Asset Kit"]
+  },
+  {
+    id: "gd-creative-agency-poster",
+    clientName: "Creative Design Agency Series",
+    company: "DigiServiceZone Creative",
+    role: "Visual Direction & Poster Design",
+    category: "posters",
+    type: "graphic-design",
+    badge: "GD",
+    featured: true,
+    image: "/real-graphics/graphic-design-post.png",
+    review: "Dark mode aesthetic with warm golden typography that positions our design agency as premium and modern.",
+    tags: ["Illustrator", "Poster Art", "Dark Mode UI", "Composition"],
+    description: "Striking agency marketing poster combining dark futuristic backdrop, elegant gold calligraphy accents, structured capabilities list, and clean circular framing for high-end client acquisition.",
+    metrics: ["High-DPI Print Ready", "Editorial Typography", "Multi-Ratio Exports"],
+    deliverables: ["A2/A3 Print Posters", "Vector Graphics", "Social Formats (1:1 & 9:16)", "Editable PSD/AI"]
+  },
+  {
+    id: "gd-digital-marketing-creative",
+    clientName: "Digital Marketing Visual Suite",
+    company: "DigiServiceZone Client",
+    role: "Creative Direction & Composition",
+    category: "branding",
+    type: "graphic-design",
+    badge: "DM",
+    featured: false,
+    image: "/real-graphics/social-media-post-3.png",
+    review: "High-energy brand creative that drove qualified commercial inquiries across Meta and WhatsApp channels.",
+    tags: ["Photoshop", "Brand Collateral", "Vector Shapes", "Photo Composition"],
+    description: "Commercial marketing collateral blending layered geometric color blocking with candid human photography and crisp vector contact badges. Designed for commercial advertising and brand recall.",
+    metrics: ["High-Contrast Visuals", "Brand Unified Palette", "Custom Vector Badges"],
+    deliverables: ["Commercial Graphics", "Print Collateral", "Web Ad Banners", "Vector Icons"]
+  },
+  {
+    id: "gd-digital-expertise-matrix",
+    clientName: "Digital Expertise & Solutions Deck",
+    company: "Enterprise Cloud Suite",
+    role: "Infographic & Deck Architecture",
+    category: "corporate",
+    type: "graphic-design",
+    badge: "DE",
+    featured: true,
+    image: "/real-graphics/digital-expertise.webp",
+    review: "Transformed complex multi-tier services into an intuitive, visually stunning capability matrix.",
+    tags: ["Figma", "Infographic Design", "Iconography", "Corporate Deck"],
+    description: "Executive presentation and infographic asset mapping enterprise capabilities, cloud integrations, and digital growth services into a clean, modern visual architecture.",
+    metrics: ["Enterprise Deck Slides", "Custom Iconography Set", "Vector Scalability"],
+    deliverables: ["Capability Matrix", "Vector Icon Library", "Pitch Deck Slides", "Interactive PDF"]
+  },
+  {
+    id: "gd-tech-agency-promo",
+    clientName: "Web & Mobile Engineering Poster",
+    company: "Full-Stack Development Studio",
+    role: "Graphic & UI Art Direction",
+    category: "posters",
+    type: "graphic-design",
+    badge: "WD",
+    featured: false,
+    image: "/real-graphics/web-dev-post.png",
+    review: "Bold visual hierarchy and cyberpunk color grading that captured immense developer and client attention.",
+    tags: ["Photoshop", "Cyberpunk", "Ad Creative", "Visual Hierarchy"],
+    description: "Futuristic visual promotional poster designed for full-stack engineering and software solutions. Utilizes neon cyan, violet, and deep slate gradients with stylized code telemetry overlays.",
+    metrics: ["Neon Color Grading", "Multi-Layered FX", "Commercial Art Direction"],
+    deliverables: ["Digital Web Banners", "Large Format Posters", "Vector Elements", "Motion Mockups"]
+  },
+  {
+    id: "gd-corporate-stationery",
+    clientName: "Corporate Identity & Executive Suite",
+    company: "Global Business Partners",
+    role: "Stationery & Print Design",
+    category: "corporate",
+    type: "graphic-design",
+    badge: "CP",
+    featured: false,
+    image: "/real-graphics/brand-identity-post.png",
+    review: "Flawless stationery design with meticulous typography and print-finishing specifications.",
+    tags: ["InDesign", "Illustrator", "Print Production", "Luxury Collateral"],
+    description: "Comprehensive corporate stationery suite including luxury business cards with spot UV/gold foil specifications, presentation folders, corporate envelopes, and executive letterheads.",
+    metrics: ["CMYK Print Ready", "Custom Die-Cut Specs", "Luxury Finishes"],
+    deliverables: ["Business Card Suite", "Letterheads & Envelopes", "Presentation Folder", "Brand Print Manual"]
+  }
+];
+
+// ==========================================
+// --- SOCIAL MEDIA MARKETING CAMPAIGNS ---
+// ==========================================
+export const socialMediaCategories = [
+  { id: "all", label: "All Campaigns" },
+  { id: "growth", label: "Lead Gen & Growth" },
+  { id: "ads", label: "Paid Ad Creatives" },
+  { id: "content", label: "Brand & Viral Social" }
+];
+
+export const socialMediaProjects = [
+  {
+    id: "smm-agency-growth-post",
+    clientName: "Social Media Growth & Marketing Post",
+    company: "DigiServiceZone Marketing",
+    role: "3D Visuals & Social Campaign",
+    category: "growth",
+    type: "social-media",
+    platform: "Instagram & Meta Ads",
+    badge: "3D",
+    featured: true,
+    image: "/real-graphics/social-media-post-2.png",
+    review: "Playful isometric 3D arrows and vibrant pastel purple styling that immediately caught attention on social feeds.",
+    tags: ["Social Marketing", "3D Isometric", "Growth Campaign", "Meta Ads"],
+    metrics: ["+310% Share Velocity", "4.8x Higher CTR", "18% Organic Save Rate"],
+    description: "Engineered for high feed stop-rate and algorithmic engagement. Features custom pastel purple 3D isometric arrows, gold coins, floating typography, and a prominent high-contrast CTA.",
+    deliverables: ["Square 1:1 Feed Post", "Story / Reel 9:16 Format", "Carousel Cover Art", "Ad Copy Variations"]
+  },
+  {
+    id: "smm-b2b-lead-generation",
+    clientName: "Agency Lead Generation Ad",
+    company: "DigiServiceZone Client Creative",
+    role: "Paid Social Media Creative",
+    category: "ads",
+    type: "social-media",
+    platform: "Meta, LinkedIn & WhatsApp",
+    badge: "GD",
+    featured: true,
+    image: "/real-graphics/social-media-post-1.png",
+    review: "Engaging circular photo framing and modern color blocking that effectively communicates our creative capabilities.",
+    tags: ["Social Creative", "Photo Composition", "Lead Generation", "Direct Response"],
+    metrics: ["+240% Reach Lift", "3.6x ROAS", "680+ Qualified Inquiries"],
+    description: "Direct-response advertising creative designed for high-converting social campaigns. Combines trust-building collaborative photography, concise service bullet points, and direct phone/WhatsApp contact credentials.",
+    deliverables: ["Meta Feed & Story Ads", "LinkedIn Sponsored Post", "A/B Testing Variants", "WhatsApp Click-to-Chat Linkage"]
+  },
+  {
+    id: "smm-digital-marketing-ad",
+    clientName: "Digital Marketing Campaign Creative",
+    company: "DigiServiceZone Creative",
+    role: "Marketing Visual & Ad Design",
+    category: "ads",
+    type: "social-media",
+    platform: "Facebook & Instagram Ads",
+    badge: "MKT",
+    featured: true,
+    image: "/real-graphics/social-media-post-3.png",
+    review: "High-energy brand creative that drove qualified commercial inquiries across Meta and WhatsApp channels.",
+    tags: ["Marketing Ad", "Lead Generation", "Vector Shapes", "Paid Ads"],
+    metrics: ["3.9x Campaign ROAS", "42% Lower CPL", "120K+ Ad Impressions"],
+    description: "Paid social advertising visual engineered to optimize cost per lead (CPL). Utilizes energetic expressive imagery, bold royal blue wave elements, and clear value proposition typography.",
+    deliverables: ["Paid Ad Creatives", "Carousel Card Slides", "Story Placement Assets", "Optimized Thumbnail Sets"]
+  },
+  {
+    id: "smm-air-proto-cyberflow",
+    clientName: "Air Proto // CyberFlow Campaign",
+    company: "Concept Social Campaign",
+    role: "Visual & Motion Design",
+    category: "content",
+    type: "social-media",
+    platform: "Instagram, X & Threads",
+    badge: "AD",
+    featured: false,
+    image: "/real-graphics/brand-identity-post.png",
+    review: "Bold visual hierarchy, striking neon color grading, and commercial-grade social media art direction.",
+    tags: ["Social Media Post", "Photoshop", "Ad Creative", "Neon Grading"],
+    metrics: ["140K+ Organic Reach", "+85% Profile Visits", "Top Engagement Post"],
+    description: "Futuristic concept footwear and product reveal social sequence with glowing cyan/magenta rim lighting, floating telemetry statistics, and high-energy square framing for social discovery feeds.",
+    deliverables: ["Concept Feed Post", "Countdown Story Stickers", "Motion Teaser Loop", "Twitter Header & Banner"]
+  },
+  {
+    id: "smm-web3-ai-summit",
+    clientName: "Global AI & Web3 Summit",
+    company: "Keynote Conference Series",
+    role: "Branding & Social Visuals",
+    category: "content",
+    type: "social-media",
+    platform: "LinkedIn & Twitter/X",
+    badge: "GS",
+    featured: false,
+    image: "/real-graphics/web-dev-post.png",
+    review: "The visual kit and speaker announcement posts elevated our conference identity across LinkedIn and Twitter.",
+    tags: ["Event Poster", "Social Kit", "Figma", "Speaker Cards"],
+    metrics: ["8,500+ Registrations", "1.4M Total Impressions", "Viral Speaker Reshares"],
+    description: "Complete social media promotional kit for an international technology conference. Included speaker reveal cards, daily agenda carousels, sponsor spotlight graphics, and live event countdown assets.",
+    deliverables: ["Speaker Reveal Graphics", "Agenda Carousel Slides", "VIP Ticket Ad Creatives", "Live Event Templates"]
+  },
+  {
+    id: "smm-educational-carousel",
+    clientName: "Digital Expertise Multi-Slide Carousel",
+    company: "B2B Educational Social Series",
+    role: "Content Strategy & Visual Kit",
+    category: "growth",
+    type: "social-media",
+    platform: "LinkedIn & Instagram Carousels",
+    badge: "ES",
+    featured: false,
+    image: "/real-graphics/digital-expertise.webp",
+    review: "The carousel slides generated our highest engagement month and brought in inbound consultation leads.",
+    tags: ["Instagram Carousel", "LinkedIn Document", "Content Marketing", "B2B Social"],
+    metrics: ["5.2x Organic Saves", "+4,100 New Followers", "16.4% Engagement Rate"],
+    description: "Educational multi-slide carousel format designed to maximize saves and reposts. Breaks down actionable digital strategy, SEO fundamentals, and web development frameworks into digestible visual steps.",
+    deliverables: ["5-Slide Seamless Carousel", "PDF Slide Deck", "Infographic Summary", "Caption & Hashtag Strategy"]
+  }
+];
+
 export const certificates = [
   {
     id: "cert-1",
@@ -487,8 +711,10 @@ export const testimonials = [
 export const navLinks = [
   { label: "Home", href: "#home" },
   { label: "About", href: "#about" },
+  { label: "Websites", href: "#websites" },
+  { label: "Graphic Design", href: "#graphic-design" },
+  { label: "Social Media", href: "#social-media" },
   { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
   { label: "Services", href: "#services" },
   { label: "Certificates", href: "#certificates" },
   { label: "Experience", href: "#experience" },

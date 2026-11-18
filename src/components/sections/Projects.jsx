@@ -49,20 +49,21 @@ export function Projects() {
     : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <section id="projects" className="relative py-24 z-10">
+    <section id="websites" className="relative py-24 z-10 scroll-mt-20">
+      <div id="projects" className="absolute -top-24" />
       <div className="container mx-auto max-w-7xl px-6">
         
         {/* Section Header */}
         <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-12">
           <span className="text-xs font-mono uppercase tracking-[0.3em] text-cyan-400 flex items-center gap-2">
-            <Sparkles className="h-3.5 w-3.5" />
-            Selected Works &amp; Case Studies
+            <Globe className="h-3.5 w-3.5" />
+            Client Websites &amp; Production Stores
           </span>
           <h2 className="mt-2 text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-            Projects &amp; Client Results
+            Websites &amp; Web Applications
           </h2>
           <p className="mt-4 text-sm sm:text-base text-slate-400">
-            Production e-commerce storefronts, clothing &amp; fashion platforms, and enterprise business web applications.
+            Production clothing &amp; fashion e-commerce storefronts, digital retail stores, and enterprise business web applications.
           </p>
         </div>
 
