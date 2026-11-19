@@ -44,6 +44,7 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   background-color: var(--bg-primary);
   color: var(--text-main);
@@ -51,12 +52,14 @@ body {
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 211, 238, 0.45) var(--bg-primary);
 }
 
-/* Custom Neon Scrollbar */
+/* Custom Sleek Cyber Scrollbar - Matches Store & Portfolio Aesthetics */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -64,12 +67,28 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--bg-tertiary);
+  background: linear-gradient(180deg, rgba(34, 211, 238, 0.5) 0%, rgba(99, 102, 241, 0.6) 100%);
   border-radius: var(--radius-full);
+  border: 2px solid var(--bg-primary);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-cyan);
+  background: linear-gradient(180deg, var(--accent-cyan) 0%, #818cf8 100%);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.6);
+}
+
+::-webkit-scrollbar-thumb:active {
+  background: linear-gradient(180deg, #38bdf8 0%, #6366f1 100%);
+}
+
+::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--bg-primary);
 }
 
 a {
