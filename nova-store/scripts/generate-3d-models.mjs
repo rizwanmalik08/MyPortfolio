@@ -33,11 +33,11 @@ if (!fs.existsSync(modelsDir)) {
 }
 
 // ----------------------------------------------------------------------
-// 1. GENERATE LUXURY OVER-EAR WIRELESS HEADPHONES (NOVA AUDIO APEX)
+// 1. GENERATE LUXURY OVER-EAR WIRELESS HEADPHONES (KANSO AUDIO APEX)
 // ----------------------------------------------------------------------
 function buildHeadphones() {
   const root = new THREE.Group();
-  root.name = 'NovaHeadphones';
+  root.name = 'KansoHeadphones';
 
   // Materials
   const bodyMaterial = new THREE.MeshStandardMaterial({
@@ -55,7 +55,7 @@ function buildHeadphones() {
   });
 
   const metalAccentMaterial = new THREE.MeshStandardMaterial({
-    color: 0xd4af37, // Gold accent default
+    color: 0xd4af37, // Royal gold accent
     metalness: 0.95,
     roughness: 0.15,
     name: 'AccentMaterial',
@@ -68,82 +68,120 @@ function buildHeadphones() {
     name: 'HeadbandMaterial',
   });
 
-  // Headband Arch (Curved Torus Segment)
-  const headbandGeo = new THREE.TorusGeometry(1.4, 0.08, 24, 64, Math.PI * 0.95);
-  const headband = new THREE.Mesh(headbandGeo, bodyMaterial);
+  // 1. Continuous Symmetric Headband Arch
+  const archPoints = [
+    new THREE.Vector3(-1.32, -0.15, 0),
+    new THREE.Vector3(-1.30, 0.35, 0),
+    new THREE.Vector3(-1.18, 0.90, 0),
+    new THREE.Vector3(-0.72, 1.38, 0),
+    new THREE.Vector3(0.00, 1.48, 0),
+    new THREE.Vector3(0.72, 1.38, 0),
+    new THREE.Vector3(1.18, 0.90, 0),
+    new THREE.Vector3(1.30, 0.35, 0),
+    new THREE.Vector3(1.32, -0.15, 0)
+  ];
+  const archCurve = new THREE.CatmullRomCurve3(archPoints);
+  const archGeo = new THREE.TubeGeometry(archCurve, 64, 0.065, 20, false);
+  const headband = new THREE.Mesh(archGeo, bodyMaterial);
   headband.name = 'headband_arch';
-  headband.rotation.z = -Math.PI * 0.475;
-  headband.position.y = 0.4;
   root.add(headband);
 
-  // Headband Cushion Padding
-  const padGeo = new THREE.TorusGeometry(1.36, 0.09, 16, 48, Math.PI * 0.7);
-  const headPad = new THREE.Mesh(padGeo, headbandPaddedMaterial);
+  // 2. Headband Cushion (Padded Crown Section)
+  const cushionPoints = [
+    new THREE.Vector3(-0.85, 1.32, 0),
+    new THREE.Vector3(-0.45, 1.46, 0),
+    new THREE.Vector3(0.00, 1.50, 0),
+    new THREE.Vector3(0.45, 1.46, 0),
+    new THREE.Vector3(0.85, 1.32, 0)
+  ];
+  const cushionCurve = new THREE.CatmullRomCurve3(cushionPoints);
+  const cushionGeo = new THREE.TubeGeometry(cushionCurve, 36, 0.11, 20, false);
+  const headPad = new THREE.Mesh(cushionGeo, headbandPaddedMaterial);
   headPad.name = 'headband_cushion';
-  headPad.rotation.z = -Math.PI * 0.35;
-  headPad.position.y = 0.42;
   root.add(headPad);
 
-  // Function to create an earcup assembly
+  // 3. Earcup assemblies (Left and Right)
   function createEarcup(side) {
     const earcupGroup = new THREE.Group();
     earcupGroup.name = `earcup_${side}`;
-    const xMult = side === 'left' ? -1 : 1;
-    earcupGroup.position.set(xMult * 1.38, -0.35, 0);
+    const sign = side === 'left' ? -1 : 1;
+    earcupGroup.position.set(sign * 1.32, -0.45, 0);
 
-    // Hinge / Pivot Fork
-    const hingeGeo = new THREE.CylinderGeometry(0.06, 0.06, 0.35, 24);
-    const hinge = new THREE.Mesh(hingeGeo, metalAccentMaterial);
-    hinge.name = `hinge_${side}`;
-    hinge.rotation.z = xMult * 0.25;
-    hinge.position.y = 0.4;
-    earcupGroup.add(hinge);
+    // Stem Slider Collar (Connecting Headband to Gimbal)
+    const collarGeo = new THREE.CylinderGeometry(0.09, 0.09, 0.22, 24);
+    const collar = new THREE.Mesh(collarGeo, metalAccentMaterial);
+    collar.name = `collar_${side}`;
+    collar.position.set(0, 0.32, 0);
+    earcupGroup.add(collar);
 
-    // Outer Shell (Beveled Cylinder)
-    const shellGeo = new THREE.CylinderGeometry(0.65, 0.62, 0.32, 48);
+    // Gimbal Yoke Pivot (Machined disc holding the cup)
+    const pivotGeo = new THREE.CylinderGeometry(0.14, 0.14, 0.08, 24);
+    const pivot = new THREE.Mesh(pivotGeo, metalAccentMaterial);
+    pivot.name = `pivot_${side}`;
+    pivot.rotation.z = Math.PI / 2;
+    pivot.position.set(sign * 0.16, 0.12, 0);
+    earcupGroup.add(pivot);
+
+    // Outer Acoustic Shell
+    const shellGeo = new THREE.CylinderGeometry(0.64, 0.62, 0.28, 48);
     const shell = new THREE.Mesh(shellGeo, bodyMaterial);
     shell.name = `shell_${side}`;
     shell.rotation.z = Math.PI / 2;
+    shell.position.x = sign * 0.05;
     earcupGroup.add(shell);
 
-    // Decorative Accent Ring
-    const ringGeo = new THREE.TorusGeometry(0.64, 0.025, 16, 48);
+    // Outer Decorative Faceplate Disc
+    const faceplateGeo = new THREE.CylinderGeometry(0.58, 0.58, 0.04, 48);
+    const faceplate = new THREE.Mesh(faceplateGeo, bodyMaterial);
+    faceplate.name = `faceplate_${side}`;
+    faceplate.rotation.z = Math.PI / 2;
+    faceplate.position.x = sign * 0.20;
+    earcupGroup.add(faceplate);
+
+    // Polished Metallic Chamfer Accent Ring
+    const ringGeo = new THREE.TorusGeometry(0.62, 0.026, 20, 48);
     const ring = new THREE.Mesh(ringGeo, metalAccentMaterial);
     ring.name = `accent_ring_${side}`;
     ring.rotation.y = Math.PI / 2;
-    ring.position.x = xMult * 0.12;
+    ring.position.x = sign * 0.18;
     earcupGroup.add(ring);
 
-    // Ear Cushion (Plush Memory Foam Torus)
-    const cushionGeo = new THREE.TorusGeometry(0.55, 0.22, 24, 48);
-    const cushion = new THREE.Mesh(cushionGeo, cushionMaterial);
+    // Inner Memory Foam Ear Cushion (Faces inwards towards head)
+    const padTorusGeo = new THREE.TorusGeometry(0.55, 0.20, 24, 48);
+    const cushion = new THREE.Mesh(padTorusGeo, cushionMaterial);
     cushion.name = `cushion_${side}`;
     cushion.rotation.y = Math.PI / 2;
-    cushion.position.x = -xMult * 0.12;
+    cushion.position.x = -sign * 0.08;
     earcupGroup.add(cushion);
 
-    // Inner Driver Grille
+    // Speaker Grille Cloth
     const grilleGeo = new THREE.CircleGeometry(0.48, 32);
     const grilleMat = new THREE.MeshStandardMaterial({
       color: 0x08080a,
       metalness: 0.6,
       roughness: 0.4,
-      name: 'GrilleMaterial',
+      name: 'GrilleMaterial'
     });
     const grille = new THREE.Mesh(grilleGeo, grilleMat);
     grille.name = `grille_${side}`;
-    grille.rotation.y = -xMult * (Math.PI / 2);
-    grille.position.x = -xMult * 0.18;
+    grille.rotation.y = -sign * (Math.PI / 2);
+    grille.position.x = -sign * 0.13;
     earcupGroup.add(grille);
 
-    // Controls on right ear
+    // Rotary Dial and Controls on Right Cup
     if (side === 'right') {
-      const dialGeo = new THREE.CylinderGeometry(0.12, 0.12, 0.08, 24);
+      const dialGeo = new THREE.CylinderGeometry(0.11, 0.11, 0.08, 24);
       const dial = new THREE.Mesh(dialGeo, metalAccentMaterial);
       dial.name = 'volume_dial';
       dial.rotation.z = Math.PI / 2;
-      dial.position.set(0.18, -0.22, 0.42);
+      dial.position.set(0.24, -0.20, 0.32);
       earcupGroup.add(dial);
+
+      const btnGeo = new THREE.BoxGeometry(0.05, 0.14, 0.06);
+      const btn = new THREE.Mesh(btnGeo, metalAccentMaterial);
+      btn.name = 'power_btn';
+      btn.position.set(0.22, 0.16, 0.34);
+      earcupGroup.add(btn);
     }
 
     return earcupGroup;

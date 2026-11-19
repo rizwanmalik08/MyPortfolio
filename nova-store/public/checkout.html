@@ -133,7 +133,9 @@
 
   <!-- Announcement Bar -->
   <div class="announcement-bar">
-    <span>✦ COMPLIMENTARY EXPEDITED SHIPPING ON ORDERS OVER $150 ✦ 30-DAY CONCIERGE RETURNS</span>
+    <span>Complimentary Worldwide Courier on Orders Over $150</span>
+    <span class="announcement-sep">/</span>
+    <span>30-Day Concierge Returns</span>
   </div>
 
   <!-- Global Header -->
@@ -288,7 +290,7 @@
 
         <button type="submit" id="place-order-btn" class="btn btn-primary"
           style="width: 100%; padding: 18px; font-size: 16px; font-weight: 600;">
-          Complete & Place Order ✦
+          Complete & Place Order →
         </button>
       </form>
 
@@ -465,13 +467,13 @@
         } else {
           store.showToast(res.message || 'Order failed. Please check inputs.', 'error');
           placeBtn.disabled = false;
-          placeBtn.innerHTML = 'Complete & Place Order ✦';
+          placeBtn.innerHTML = 'Complete & Place Order →';
         }
       } catch (err) {
         console.error('Order submission error:', err);
         store.showToast('Network error during order checkout.', 'error');
         placeBtn.disabled = false;
-        placeBtn.innerHTML = 'Complete & Place Order ✦';
+        placeBtn.innerHTML = 'Complete & Place Order →';
       }
     });
   </script>

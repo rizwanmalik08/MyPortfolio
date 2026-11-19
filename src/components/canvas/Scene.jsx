@@ -1,7 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
-import { FluidAurora } from './FluidAurora';
 import { ParticleWave } from './ParticleWave';
 import { ArchitecturalConstellation } from './ArchitecturalConstellation';
 import { AmbientDust } from './AmbientDust';
@@ -209,10 +208,7 @@ export function Scene({ loading = false, scrollRef: propScrollRef, scrollProgres
             prefersReducedMotion={prefersReducedMotion}
           />
 
-          {/* 1. Silky GLSL Fluid Aurora (Liquid Obsidian Silk with Chromatic Refraction) */}
-          <FluidAurora scrollRef={scrollRef} scrollProgress={scrollProgress} isMobile={isMobile} />
-
-          {/* 2. Topographic Kinetic Horizon Grid (Undulating mathematical contour wave) */}
+          {/* Topographic Kinetic Horizon Grid (Undulating mathematical contour wave) */}
           <ParticleWave scrollRef={scrollRef} scrollProgress={scrollProgress} isMobile={isMobile} />
 
           {/* 3. Architectural Constellation Lattice (Deep space network of disciplines) */}

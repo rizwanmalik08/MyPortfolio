@@ -282,59 +282,114 @@ export class ProductViewer3D {
       name: 'AccentMaterial'
     });
 
-    // Headband Arch
-    const headbandGeo = new THREE.TorusGeometry(1.4, 0.08, 24, 64, Math.PI * 0.95);
-    const headband = new THREE.Mesh(headbandGeo, bodyMat);
+    const headbandPaddedMat = new THREE.MeshStandardMaterial({
+      color: 0x181920,
+      metalness: 0.2,
+      roughness: 0.65,
+      name: 'HeadbandMaterial'
+    });
+
+    // 1. Continuous Symmetric Headband Arch
+    const archPoints = [
+      new THREE.Vector3(-1.32, -0.15, 0),
+      new THREE.Vector3(-1.30, 0.35, 0),
+      new THREE.Vector3(-1.18, 0.90, 0),
+      new THREE.Vector3(-0.72, 1.38, 0),
+      new THREE.Vector3(0.00, 1.48, 0),
+      new THREE.Vector3(0.72, 1.38, 0),
+      new THREE.Vector3(1.18, 0.90, 0),
+      new THREE.Vector3(1.30, 0.35, 0),
+      new THREE.Vector3(1.32, -0.15, 0)
+    ];
+    const archCurve = new THREE.CatmullRomCurve3(archPoints);
+    const archGeo = new THREE.TubeGeometry(archCurve, 64, 0.065, 20, false);
+    const headband = new THREE.Mesh(archGeo, bodyMat);
     headband.name = 'headband_arch';
-    headband.rotation.z = -Math.PI * 0.475;
-    headband.position.y = 0.4;
     root.add(headband);
 
-    // Headband Cushion
-    const padGeo = new THREE.TorusGeometry(1.36, 0.09, 16, 48, Math.PI * 0.7);
-    const headPad = new THREE.Mesh(padGeo, cushionMat);
-    headPad.rotation.z = -Math.PI * 0.35;
-    headPad.position.y = 0.42;
+    // 2. Headband Cushion Padding
+    const cushionPoints = [
+      new THREE.Vector3(-0.85, 1.32, 0),
+      new THREE.Vector3(-0.45, 1.46, 0),
+      new THREE.Vector3(0.00, 1.50, 0),
+      new THREE.Vector3(0.45, 1.46, 0),
+      new THREE.Vector3(0.85, 1.32, 0)
+    ];
+    const cushionCurve = new THREE.CatmullRomCurve3(cushionPoints);
+    const cushionGeo = new THREE.TubeGeometry(cushionCurve, 36, 0.11, 20, false);
+    const headPad = new THREE.Mesh(cushionGeo, headbandPaddedMat);
+    headPad.name = 'headband_cushion';
     root.add(headPad);
 
-    // Earcups
+    // 3. Earcups (Symmetric & Fully Connected)
     ['left', 'right'].forEach(side => {
       const earcup = new THREE.Group();
       earcup.name = `earcup_${side}`;
-      const xMult = side === 'left' ? -1 : 1;
-      earcup.position.set(xMult * 1.38, -0.35, 0);
+      const sign = side === 'left' ? -1 : 1;
+      earcup.position.set(sign * 1.32, -0.45, 0);
 
-      // Pivot Hinge
-      const hinge = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.35, 24), accentMat);
-      hinge.rotation.z = xMult * 0.25;
-      hinge.position.y = 0.4;
-      earcup.add(hinge);
+      // Connecting Stem / Collar
+      const collar = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 0.22, 24), accentMat);
+      collar.name = `collar_${side}`;
+      collar.position.set(0, 0.32, 0);
+      earcup.add(collar);
 
-      // Outer Shell
-      const shell = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.62, 0.32, 48), bodyMat);
+      // Gimbal Pivot Hub
+      const pivot = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 0.08, 24), accentMat);
+      pivot.name = `pivot_${side}`;
+      pivot.rotation.z = Math.PI / 2;
+      pivot.position.set(sign * 0.16, 0.12, 0);
+      earcup.add(pivot);
+
+      // Outer Acoustic Shell
+      const shell = new THREE.Mesh(new THREE.CylinderGeometry(0.64, 0.62, 0.28, 48), bodyMat);
       shell.name = `shell_${side}`;
       shell.rotation.z = Math.PI / 2;
+      shell.position.x = sign * 0.05;
       earcup.add(shell);
 
-      // Accent Ring
-      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.64, 0.025, 16, 48), accentMat);
-      ring.name = `ring_${side}`;
+      // Outer Decorative Faceplate Disc
+      const faceplate = new THREE.Mesh(new THREE.CylinderGeometry(0.58, 0.58, 0.04, 48), bodyMat);
+      faceplate.name = `faceplate_${side}`;
+      faceplate.rotation.z = Math.PI / 2;
+      faceplate.position.x = sign * 0.20;
+      earcup.add(faceplate);
+
+      // Metallic Accent Ring
+      const ring = new THREE.Mesh(new THREE.TorusGeometry(0.62, 0.026, 20, 48), accentMat);
+      ring.name = `accent_ring_${side}`;
       ring.rotation.y = Math.PI / 2;
-      ring.position.x = xMult * 0.12;
+      ring.position.x = sign * 0.18;
       earcup.add(ring);
 
-      // Cushion
-      const cushion = new THREE.Mesh(new THREE.TorusGeometry(0.55, 0.22, 24, 48), cushionMat);
+      // Inner Ear Cushion (Facing Inwards towards Head)
+      const cushion = new THREE.Mesh(new THREE.TorusGeometry(0.55, 0.20, 24, 48), cushionMat);
+      cushion.name = `cushion_${side}`;
       cushion.rotation.y = Math.PI / 2;
-      cushion.position.x = -xMult * 0.12;
+      cushion.position.x = -sign * 0.08;
       earcup.add(cushion);
 
-      // Grille
+      // Speaker Grille Cloth
       const grilleMat = new THREE.MeshStandardMaterial({ color: 0x08080a, metalness: 0.6, roughness: 0.4 });
       const grille = new THREE.Mesh(new THREE.CircleGeometry(0.48, 32), grilleMat);
-      grille.rotation.y = -xMult * (Math.PI / 2);
-      grille.position.x = -xMult * 0.18;
+      grille.name = `grille_${side}`;
+      grille.rotation.y = -sign * (Math.PI / 2);
+      grille.position.x = -sign * 0.13;
       earcup.add(grille);
+
+      // Controls on right cup
+      if (side === 'right') {
+        const dial = new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.11, 0.08, 24), accentMat);
+        dial.name = 'volume_dial';
+        dial.rotation.z = Math.PI / 2;
+        dial.position.set(0.24, -0.20, 0.32);
+        earcup.add(dial);
+
+        const btn = new THREE.Mesh(new THREE.BoxGeometry(0.05, 0.14, 0.06), accentMat);
+        btn.name = 'power_btn';
+        btn.position.set(0.22, 0.16, 0.34);
+        earcup.add(btn);
+      }
 
       root.add(earcup);
     });
@@ -408,9 +463,9 @@ export class ProductViewer3D {
 
         if (
           name.includes('shell') ||
+          name.includes('faceplate') ||
           name.includes('watch_case') ||
           name.includes('headband_arch') ||
-          name.includes('earcup') ||
           matName.includes('bodymaterial') ||
           matName.includes('watchcasematerial')
         ) {
