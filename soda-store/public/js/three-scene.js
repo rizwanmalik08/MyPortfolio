@@ -206,12 +206,19 @@ export class SodaScene {
         const center = box.getCenter(new THREE.Vector3());
         root.position.sub(center);
 
-        const targetHeight = 2.62;
+        const targetHeight = 3.25;
         const scaleFactor = targetHeight / (size.y || 1);
         root.scale.set(scaleFactor, scaleFactor, scaleFactor);
 
         // Orient main product logo facing forward
         root.rotation.y = 0;
+
+        // Base diagonal tilt matching reference image
+        this.baseTiltZ = -0.42; // ~ -24 degrees
+        this.baseTiltX = 0.16;  // tilt forward slightly to see rim
+        this.baseTiltY = 0.05;
+        this.canGroup.position.set(0.12, -0.05, 0);
+        this.canGroup.rotation.set(this.baseTiltX, this.baseTiltY, this.baseTiltZ);
 
         this.canGroup.add(root);
         checkAllLoaded();
@@ -224,37 +231,35 @@ export class SodaScene {
       }
     );
 
+    // Berry positions matching reference image layout
+    const berryPositions = [
+      { pos: [-0.22, 1.45, 0.9], targetSize: 0.44, rot: [0.3, 0.5, 0.1], speed: 1.1 },
+      { pos: [-0.75, 1.90, 0.35], targetSize: 0.38, rot: [0.5, 0.2, -0.4], speed: 0.85 },
+      { pos: [-1.48, 0.35, 1.05], targetSize: 0.68, rot: [0.2, 0.6, 0.2], speed: 1.15 },
+      { pos: [1.38, 0.38, 1.25], targetSize: 0.78, rot: [-0.4, 0.5, -0.2], speed: 1.1 },
+      { pos: [-0.45, -1.25, 0.95], targetSize: 0.48, rot: [0.6, -0.4, 0.3], speed: 0.95 },
+      { pos: [1.42, -0.75, 0.8], targetSize: 0.65, rot: [0.3, -0.6, 0.4], speed: 1.3 },
+      { pos: [-1.68, -1.85, 0.6], targetSize: 0.42, rot: [-0.5, 0.3, 0.5], speed: 0.9 }
+    ];
+
     // 2. Load Cherries Model
     gltfLoader.load('/assets/models/cherry.glb', (gltf) => {
-      this.createFloatingClusters(gltf.scene, this.cherriesGroup, [
-        { pos: [-2.1, 1.2, 0.4], targetSize: 0.55, rot: [0.2, 0.5, 0.1], speed: 1.2 },
-        { pos: [-1.8, -1.3, 0.8], targetSize: 0.45, rot: [0.8, -0.3, 0.4], speed: 0.9 },
-        { pos: [2.0, 1.4, -0.6], targetSize: 0.50, rot: [-0.4, 0.6, -0.2], speed: 1.1 },
-        { pos: [1.7, -1.1, 0.5], targetSize: 0.42, rot: [0.3, -0.7, 0.5], speed: 1.4 },
-        { pos: [-0.8, 2.1, -0.5], targetSize: 0.38, rot: [0.5, 0.2, -0.4], speed: 0.8 }
-      ]);
+      this.createFloatingClusters(gltf.scene, this.cherriesGroup, berryPositions);
       checkAllLoaded();
     }, undefined, () => checkAllLoaded());
 
     // 3. Load Blueberries Model
     gltfLoader.load('/assets/models/blueberry.glb', (gltf) => {
-      this.createFloatingClusters(gltf.scene, this.blueberriesGroup, [
-        { pos: [-2.0, 1.3, 0.5], targetSize: 0.58, rot: [0.3, 0.4, 0.2], speed: 1.1 },
-        { pos: [-1.7, -1.2, 0.7], targetSize: 0.48, rot: [0.6, -0.5, 0.3], speed: 0.95 },
-        { pos: [2.1, 1.3, -0.5], targetSize: 0.52, rot: [-0.3, 0.7, -0.1], speed: 1.15 },
-        { pos: [1.8, -1.0, 0.6], targetSize: 0.44, rot: [0.4, -0.6, 0.4], speed: 1.3 },
-        { pos: [-0.7, 2.2, -0.4], targetSize: 0.40, rot: [0.6, 0.3, -0.3], speed: 0.85 }
-      ]);
+      this.createFloatingClusters(gltf.scene, this.blueberriesGroup, berryPositions);
       checkAllLoaded();
     }, undefined, () => checkAllLoaded());
 
     // 4. Load Leaves Model
     gltfLoader.load('/assets/models/leaves.glb', (gltf) => {
       this.createFloatingClusters(gltf.scene, this.leavesGroup, [
-        { pos: [-2.4, 0.4, -0.2], targetSize: 0.62, rot: [0.4, 0.8, 0.2], speed: 0.7 },
-        { pos: [2.3, -0.3, 0.3], targetSize: 0.55, rot: [-0.5, -0.4, 0.6], speed: 0.8 },
-        { pos: [1.2, 2.1, -0.8], targetSize: 0.48, rot: [0.2, 1.2, -0.3], speed: 0.6 },
-        { pos: [-1.4, -1.9, 0.2], targetSize: 0.45, rot: [-0.6, 0.5, 0.4], speed: 0.75 }
+        { pos: [1.6, 0.9, -0.2], targetSize: 0.58, rot: [0.3, 0.8, 0.2], speed: 0.7 },
+        { pos: [-2.1, -0.4, 0.2], targetSize: 0.60, rot: [-0.5, -0.4, 0.5], speed: 0.8 },
+        { pos: [1.7, -1.4, 0.1], targetSize: 0.52, rot: [0.2, 1.1, -0.3], speed: 0.65 }
       ]);
       checkAllLoaded();
     }, undefined, () => checkAllLoaded());
@@ -350,6 +355,7 @@ export class SodaScene {
     if (window.gsap) {
       const tl = window.gsap.timeline({
         onComplete: () => {
+          this.canGroup.rotation.y = this.baseTiltY || 0.05;
           this.isSwitching = false;
         }
       });
@@ -357,8 +363,7 @@ export class SodaScene {
       // 1. Can Spin 720° (Math.PI * 4) with dramatic momentum
       tl.to(this.canGroup.rotation, {
         y: this.canGroup.rotation.y + Math.PI * 4,
-        x: 0.15,
-        duration: 1.1,
+        duration: 1.15,
         ease: 'power3.inOut'
       }, 0);
 
@@ -396,7 +401,8 @@ export class SodaScene {
 
       // 5. Restore Can gentle tilt
       tl.to(this.canGroup.rotation, {
-        x: 0,
+        x: this.baseTiltX || 0.16,
+        z: this.baseTiltZ || -0.42,
         duration: 0.4,
         ease: 'power1.out'
       }, 1.0);
@@ -434,16 +440,21 @@ export class SodaScene {
 
     // 2. Can Floating & Cursor Tilt (when not mid-spin)
     if (!this.isSwitching) {
-      const floatY = Math.sin(elapsedTime * 1.6) * 0.12;
+      const floatY = Math.sin(elapsedTime * 1.5) * 0.1;
       this.canGroup.position.y = (window.innerWidth < 768 ? 0.2 : -0.05) + floatY;
 
-      // Mouse-driven tilt and rotation
-      const targetRotY = this.mouse.x * 0.45;
-      const targetRotX = -this.mouse.y * 0.25;
+      // Mouse-driven tilt and rotation relative to base tilted pose
+      const bTiltX = this.baseTiltX || 0.16;
+      const bTiltY = this.baseTiltY || 0.05;
+      const bTiltZ = this.baseTiltZ || -0.42;
+
+      const targetRotY = bTiltY + this.mouse.x * 0.35;
+      const targetRotX = bTiltX + -this.mouse.y * 0.2;
+      const targetRotZ = bTiltZ + Math.sin(elapsedTime * 1.2) * 0.03;
 
       this.canGroup.rotation.y += (targetRotY - this.canGroup.rotation.y) * 0.06;
       this.canGroup.rotation.x += (targetRotX - this.canGroup.rotation.x) * 0.06;
-      this.canGroup.rotation.z = Math.sin(elapsedTime * 1.2) * 0.04;
+      this.canGroup.rotation.z += (targetRotZ - this.canGroup.rotation.z) * 0.06;
     }
 
     // 3. Floating Berries & Leaves Animation with Cursor Repulsion

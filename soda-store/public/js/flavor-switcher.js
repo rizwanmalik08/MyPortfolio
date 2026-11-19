@@ -30,7 +30,7 @@ export class FlavorSwitcher {
 
   init() {
     // 1. Flavor Cards
-    const cards = document.querySelectorAll('.flavor-card');
+    const cards = document.querySelectorAll('.flavor-card, .flavor-card-pill');
     cards.forEach((card) => {
       card.addEventListener('click', () => {
         const flavorSlug = card.dataset.flavor;
@@ -77,7 +77,7 @@ export class FlavorSwitcher {
     }
 
     // 2. Update Hero Flavor Cards
-    const cards = document.querySelectorAll('.flavor-card');
+    const cards = document.querySelectorAll('.flavor-card, .flavor-card-pill');
     cards.forEach((card) => {
       const match = card.dataset.flavor === flavorSlug;
       card.classList.toggle('active', match);

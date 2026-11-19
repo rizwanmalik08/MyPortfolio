@@ -6,10 +6,10 @@
   <title>SODA — 3D Product Experience | Pure Zero Sparkling Beverage</title>
   <meta name="description" content="Immersive 3D product website for SODA, featuring real-time Three.js 720° flavor switching, metallic can physics, interactive floating fruit, and zero-sugar sparkling refreshments." />
   
-  <!-- Google Fonts: Space Grotesk & Outfit & Playfair Display / Caveat -->
+  <!-- Google Fonts: Space Grotesk, Outfit & Satisfy / Caveat -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Satisfy&family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
   <!-- CSS Styles -->
   <link rel="stylesheet" href="/css/style.css" />
@@ -125,129 +125,84 @@
     <!-- Three.js 3D Viewport Container -->
     <div id="soda-canvas-wrap" class="soda-three-canvas-wrap"></div>
 
-    <div class="hero-content-grid">
+    <!-- Hero Interactive Overlay Layer (matches reference layout) -->
+    <div class="hero-stage-overlay">
       
-      <!-- HERO LEFT COLUMN: Branding, Pure Zero, Shop Button -->
-      <div class="hero-left-col">
+      <!-- HERO LEFT: Pure Zero, Body Text, Pink Plus Button, Awards Footer -->
+      <div class="hero-left-stage">
+        <h1 class="hero-script-brand">Pure<br>Zero</h1>
         
-        <div class="hero-tagline-badge glass-pill">
-          <span class="sparkle-dot"></span>
-          <span>100% MOUNTAIN SPRING INFUSION</span>
-        </div>
-
-        <h1 class="hero-cursive-title font-cursive">Pure Zero</h1>
-
-        <p class="hero-desc">
-          Zero sugar. Pure glacial effervescence. Crafted with wild botanical kola, cold-extracted fruit essences, and natural cellular hydration.
+        <p class="hero-script-desc">
+          Experience the crisp taste of zero sugar.<br>
+          Refreshment redefined in every bubble —<br>
+          wrapped in sleek design.
         </p>
 
-        <div class="hero-cta-group">
-          <a href="#order" id="hero-shop-btn" class="btn btn-primary hero-btn">
-            <span>Shop Now</span>
-            <svg viewBox="0 0 20 20" fill="currentColor" class="btn-arrow-icon">
-              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-            </svg>
-          </a>
-          <a href="#ingredients" class="btn btn-secondary">
-            <span>Discover Formula</span>
-          </a>
-        </div>
+        <a href="#order" id="hero-plus-btn" class="hero-pink-circle-btn" aria-label="Explore Details &amp; Shop">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="plus-icon">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+        </a>
 
-        <!-- Awards & Recognition Badge -->
-        <div class="hero-award-badge glass-panel">
-          <div class="award-icon">★</div>
-          <div class="award-text">
-            <span class="award-title">Awwwards Site of the Day</span>
-            <span class="award-sub">Best Digital Product Experience 2026</span>
-          </div>
+        <div class="hero-left-awards">
+          <span class="award-label">DESIGN AWARDS</span>
+          <span class="award-sublabel">BEST PREMIUM BEVERAGE 2026</span>
         </div>
-
       </div>
 
-      <!-- HERO CENTER SPACER: Dedicated to 3D Can Visuals -->
-      <div class="hero-center-col" aria-hidden="true">
-        <!-- Three.js Canvas floats in this central viewing portal -->
-      </div>
-
-      <!-- HERO RIGHT COLUMN: Interactive Flavor Cards -->
-      <div class="hero-right-col">
+      <!-- HERO RIGHT: Flavor Cards Carousel (Top) & Massive Script Headline (Bottom) -->
+      <div class="hero-right-stage">
         
-        <div class="flavor-carousel-header">
-          <div class="header-text-block">
-            <span class="flavor-kicker font-mono">// FLAVOR ARCHIVE</span>
-            <h2 class="flavor-main-heading">Refreshingly Clean</h2>
+        <!-- Flavor Cards (Top Right) -->
+        <div class="hero-flavor-deck-wrap">
+          <div class="flavor-cards-row">
+            
+            <!-- Diet Classic Card -->
+            <article class="flavor-card-pill" data-flavor="diet-classic" role="button" tabindex="0">
+              <div class="card-pill-image">
+                <img src="/assets/images/Green_Soda.png" alt="Diet Classic" />
+              </div>
+              <div class="card-pill-meta">
+                <h3 class="card-pill-name">Diet Classic</h3>
+                <span class="card-pill-price">$2.99</span>
+              </div>
+            </article>
+
+            <!-- Zero Lime Card -->
+            <article class="flavor-card-pill active" data-flavor="zero-lime" role="button" tabindex="0">
+              <div class="card-pill-image">
+                <img src="/assets/images/Blue_Soda.png" alt="Zero Lime" />
+              </div>
+              <div class="card-pill-meta">
+                <h3 class="card-pill-name">Zero Lime</h3>
+                <span class="card-pill-price">$2.99</span>
+              </div>
+            </article>
+
           </div>
-          
-          <!-- Prev / Next Controls -->
-          <div class="carousel-nav-controls">
-            <button id="flavor-prev" class="carousel-arrow-btn" aria-label="Previous Flavor">
+
+          <!-- Carousel Arrow Controls -->
+          <div class="flavor-carousel-arrows">
+            <button id="flavor-prev" class="carousel-arrow-circle" aria-label="Previous Flavor">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
             </button>
-            <button id="flavor-next" class="carousel-arrow-btn" aria-label="Next Flavor">
+            <button id="flavor-next" class="carousel-arrow-circle" aria-label="Next Flavor">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
             </button>
           </div>
         </div>
 
-        <!-- Flavor Cards Deck -->
-        <div class="flavor-cards-container">
-          
-          <!-- Flavor 1: Diet Classic -->
-          <article class="flavor-card glass-panel active" data-flavor="diet-classic" role="button" tabindex="0">
-            <div class="card-image-box">
-              <img src="/assets/images/Green_Soda.png" alt="Diet Classic Soda" class="flavor-card-img" />
-            </div>
-            <div class="card-details">
-              <div class="card-badge classic-badge">Diet Classic</div>
-              <h3 class="card-title">Botanical Kola</h3>
-              <p class="card-notes">Wild kola nut, vanilla bean &amp; crisp effervescence</p>
-              <div class="card-footer">
-                <span class="card-price">$2.99</span>
-                <button type="button" class="card-quick-add-btn" data-flavor="diet-classic" title="Quick Add to Bag">
-                  <span>+ Quick Add</span>
-                </button>
-              </div>
-            </div>
-          </article>
-
-          <!-- Flavor 2: Zero Lime -->
-          <article class="flavor-card glass-panel" data-flavor="zero-lime" role="button" tabindex="0">
-            <div class="card-image-box">
-              <img src="/assets/images/Blue_Soda.png" alt="Zero Lime Soda" class="flavor-card-img" />
-            </div>
-            <div class="card-details">
-              <div class="card-badge lime-badge">Zero Lime</div>
-              <h3 class="card-title">Persian Lime</h3>
-              <p class="card-notes">Cold-pressed lime, kaffir leaf &amp; icy citrus fizz</p>
-              <div class="card-footer">
-                <span class="card-price">$2.99</span>
-                <button type="button" class="card-quick-add-btn" data-flavor="zero-lime" title="Quick Add to Bag">
-                  <span>+ Quick Add</span>
-                </button>
-              </div>
-            </div>
-          </article>
-
-        </div>
-
-        <!-- Nutritional Quick Strip -->
-        <div class="hero-nutrition-strip glass-pill">
-          <div class="nutrition-pill"><strong>0</strong> Calories</div>
-          <div class="nutrition-pill"><strong>0g</strong> Sugar</div>
-          <div class="nutrition-pill"><strong>100%</strong> Recyclable</div>
+        <!-- Massive Script Headline (Bottom Right) -->
+        <div class="hero-bottom-script-wrap">
+          <h2 class="hero-script-clean">
+            Refreshingly<br>Clean
+          </h2>
         </div>
 
       </div>
 
     </div>
-
-    <!-- Mouse Scroll Down Hint -->
-    <a href="#ingredients" class="scroll-down-cue" aria-label="Scroll down to ingredients">
-      <div class="mouse-icon">
-        <div class="wheel-dot"></div>
-      </div>
-      <span class="font-mono text-[11px] tracking-widest text-slate-400">SCROLL TO EXPLORE</span>
-    </a>
 
   </section>
 
@@ -258,7 +213,7 @@
     <div class="section-container">
       
       <div class="section-header text-center">
-        <span class="section-kicker font-mono">// REFINED BOTANICAL INGREDIENTS</span>
+        <span class="section-kicker">Refined Botanical Formula</span>
         <h2 class="section-title">Pure Nature. Zero Compromise.</h2>
         <p class="section-desc">
           Every can of SODA is created using only real ingredients sourced from high-elevation bio-reserves. No artificial sweeteners, no artificial dyes, and zero synthetic preservatives.
@@ -315,7 +270,7 @@
     <div class="section-container">
       
       <div class="section-header text-center">
-        <span class="section-kicker font-mono">// TASTE ARCHITECTURE</span>
+        <span class="section-kicker">Sensory Taste Profile</span>
         <h2 class="section-title">Two Profiles. One High Standard.</h2>
         <p class="section-desc">
           Compare our signature flavors engineered to elevate your daily refreshment.
@@ -401,7 +356,7 @@
       
       <div class="eco-showcase-panel glass-panel">
         <div class="eco-content">
-          <span class="section-kicker font-mono text-emerald-400">// PLANET FIRST PACKAGING</span>
+          <span class="section-kicker text-emerald-400">Infinite Recyclability</span>
           <h2 class="eco-title">Infinitely Recyclable Aluminum</h2>
           <p class="eco-desc">
             75% of all aluminum ever produced is still in active circulation today. Every SODA can is 100% plastic-free, infinitely recyclable, and can be recycled and back on grocery shelves within 60 days.
@@ -441,7 +396,7 @@
       
       <div class="section-header-flex">
         <div>
-          <span class="section-kicker font-mono">// VERIFIED REVIEWS</span>
+          <span class="section-kicker">Customer Reviews &amp; Tasting Notes</span>
           <h2 class="section-title">Loved by Thousands of Tasters</h2>
           <div class="overall-rating-badge">
             <span class="rating-stars">★★★★★</span>
@@ -484,7 +439,7 @@
 
         <!-- Product Customizer Details -->
         <div class="order-controls-wrap">
-          <span class="section-kicker font-mono">// DIRECT CELLAR ORDER</span>
+          <span class="section-kicker">Reserve Your Pack</span>
           <h2 class="order-product-name">SODA Sparkling Beverage</h2>
           <p class="order-lead-desc">
             Freshly canned in small artisanal batches. Carbonated at peak pressure for sustained effervescence.
@@ -644,7 +599,7 @@
         
         <!-- Order Summary Preview -->
         <div class="checkout-summary-box glass-panel">
-          <div class="summary-title font-mono text-xs uppercase tracking-wider text-cyan-300">Order Summary</div>
+          <div class="summary-title text-xs uppercase tracking-wider text-slate-300 font-semibold">Order Summary</div>
           <div id="checkout-items-list" class="checkout-items-compact"></div>
           <div class="checkout-totals-compact">
             <div class="c-row"><span>Subtotal:</span> <strong id="checkout-subtotal">$0.00</strong></div>

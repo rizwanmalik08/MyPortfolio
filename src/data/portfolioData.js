@@ -193,22 +193,6 @@ export const projects = [
     metrics: ["Real-Time 3D WebGL", "100% Server Validated", "Zero Mock Data (Live DB)"]
   },
   {
-    id: "new-jersey-pk",
-    clientName: "New Jersey Clothing",
-    company: "New Jersey PK",
-    role: "Frontend Development & UI/UX",
-    category: "ecommerce",
-    type: "website",
-    badge: "NJ",
-    review: "DigiServiceZone delivered beyond our expectations. Fast, modern, responsive e-commerce experience.",
-    link: "https://newjersey.pk/",
-    image: "/new_jersey.png",
-    featured: true,
-    tags: ["React", "Tailwind CSS", "Clothing Store", "Responsive UI"],
-    description: "Production e-commerce storefront for New Jersey apparel. Engineered responsive component architecture, optimized asset pipelines, intuitive clothing collection browsing, and seamless checkout flows across all devices.",
-    metrics: ["100% Mobile Responsive", "< 1.2s Load Speed", "Live Production Store"]
-  },
-  {
     id: "digiservicezone-platform",
     clientName: "DigiServiceZone Agency",
     company: "DigiServiceZone",
@@ -223,38 +207,6 @@ export const projects = [
     tags: ["React", "Next.js", "Tailwind CSS", "Corporate Agency"],
     description: "Official web platform for DigiServiceZone digital agency. Features dark cyber aesthetic, dynamic client case studies, service inquiry systems, and optimized SEO structure that drives commercial client acquisition.",
     metrics: ["Modern Web Architecture", "High-Converting UI", "Live Agency Platform"]
-  },
-  {
-    id: "noor-chemicals-web",
-    clientName: "Noor Chemical Services",
-    company: "Noor Chemicals Corp",
-    role: "Digital Marketing & Web Strategy",
-    category: "agency",
-    type: "website",
-    badge: "NC",
-    review: "Excellent communication, modern design, and exceptional ongoing digital marketing support throughout.",
-    link: "https://www.facebook.com/profile.php?id=100090117847386",
-    image: "/noor_chemicals.png",
-    featured: false,
-    tags: ["Industrial B2B", "Web Strategy", "Meta Ads", "SEO"],
-    description: "Corporate digital presence and marketing funnel for Noor Chemicals. Established professional branding, product line catalogs, and lead generation channels that expanded market visibility in industrial chemicals.",
-    metrics: ["300%+ Reach Growth", "Verified Industrial Brand", "Active Lead Pipeline"]
-  },
-  {
-    id: "shaban-chemicals-web",
-    clientName: "Shaban Chemical Industries",
-    company: "Shaban Chemicals",
-    role: "B2B Web Presence & Marketing",
-    category: "agency",
-    type: "website",
-    badge: "SC",
-    review: "A great team to work with. They understood our industrial requirements perfectly.",
-    link: "https://www.facebook.com/shabanchemical/",
-    image: "/shaban_chemical.png",
-    featured: false,
-    tags: ["B2B Portal", "Industrial SEO", "Brand Content", "Social Growth"],
-    description: "B2B digital marketing and industrial product portfolio for Shaban Chemicals. Created unified corporate visuals, product catalog presentations, and client communication touchpoints.",
-    metrics: ["Consistent Brand Voice", "Enhanced Engagement", "Verified Industrial Presence"]
   }
 ];
 

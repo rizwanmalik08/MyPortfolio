@@ -33,46 +33,57 @@
     display: block;
   }
 
-  .hero-content-grid {
-    grid-template-columns: 1fr;
+  .hero-stage-overlay {
+    position: relative;
+    padding: 110px 24px 40px;
+    flex-direction: column;
+    align-items: center;
+    gap: 320px;
+    pointer-events: auto;
+  }
+
+  .hero-left-stage {
+    align-items: center;
     text-align: center;
-    gap: 40px;
-    padding-top: 40px;
-  }
-
-  .hero-left-col {
-    align-items: center;
-    order: 1;
-  }
-
-  .hero-desc {
-    max-width: 520px;
-  }
-
-  .hero-center-col {
-    order: 2;
-    min-height: 420px;
-  }
-
-  .hero-right-col {
-    align-items: center;
-    order: 3;
-  }
-
-  .flavor-carousel-header {
-    justify-content: center;
-    gap: 24px;
-  }
-
-  .flavor-cards-container {
-    flex-direction: row;
     max-width: 100%;
-    justify-content: center;
   }
 
-  .flavor-card {
-    flex: 1;
-    max-width: 320px;
+  .hero-script-brand {
+    font-size: 5rem;
+  }
+
+  .hero-script-desc {
+    max-width: 100%;
+  }
+
+  .hero-pink-circle-btn {
+    margin: 0 auto 20px;
+  }
+
+  .hero-left-awards {
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .hero-right-stage {
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    gap: 30px;
+  }
+
+  .hero-flavor-deck-wrap {
+    align-items: center;
+    margin-top: 0;
+  }
+
+  .hero-bottom-script-wrap {
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  .hero-script-clean {
+    font-size: 5rem;
   }
 
   .taste-comparison-grid {
