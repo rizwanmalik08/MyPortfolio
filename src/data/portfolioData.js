@@ -145,6 +145,30 @@ export const projectCategories = [
 
 export const projects = [
   {
+    id: "soda-3d-experience",
+    clientName: "Soda — 3D Product Experience",
+    company: "Futuristic Zero-Sugar Beverage Brand",
+    role: "Creative Developer & Three.js / GSAP Specialist",
+    category: "ecommerce",
+    type: "website",
+    badge: "SD",
+    review: "An extraordinary 3D product showcase inspired by high-end beverage advertising, featuring realistic 720° can rotations, interactive fruit physics, GSAP timeline choreography, and an Express.js backend.",
+    link: "http://localhost:5002/",
+    image: "/projects/soda-showcase.png",
+    featured: true,
+    tags: ["HTML5", "CSS3", "JavaScript", "Three.js", "GSAP", "Node.js", "Express.js"],
+    description: "Immersive 3D product website and interactive advertising showcase featuring Three.js WebGL rendering, realistic metallic PBR materials, cursor-driven camera physics, continuous floating animation, and a dramatic 720-degree GSAP flavor switcher that transitions can textures, fruit meshes (cherries to blueberries), and atmospheric themes between Diet Classic and Zero Lime. Complete with a zero-trust Express.js cart calculation engine, SQLite database persistence, customer review portal, and live admin telemetry dashboard.",
+    deliverables: [
+      "Interactive Three.js 3D Soda Can (Metallic PBR, Realistic Studio Lighting & Reflections)",
+      "Dynamic 720° GSAP Flavor Switch Animation with Mid-Spin Texture & Fruit Swaps",
+      "Floating 3D Cherries, Blueberries, and Leaves with Interactive Cursor Repulsion Physics",
+      "Effervescent Rising Bubble Background System & Smooth Atmospheric Gradient Transitions",
+      "Zero-Trust Express.js REST API with Server-Side Pricing, Inventory & Coupon Calculations",
+      "Executive Administration Command Center with Live Telemetry KPIs & Order Management"
+    ],
+    metrics: ["720° Interactive 3D Spin", "100% Procedural & PBR", "Zero-Trust Server Cart"]
+  },
+  {
     id: "nova-store-3d",
     clientName: "Kanso Collective",
     company: "Luxury 3D E-Commerce Platform",

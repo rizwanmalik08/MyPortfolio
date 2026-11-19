@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SODA — Administration Dashboard</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/responsive.css" />
+
+  <style>
+    .admin-body {
+      background: #020b0a;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+    .admin-container {
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .admin-title-box h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .admin-title-box p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .telemetry-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .telemetry-card {
+      padding: 20px;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 18px;
+    }
+    .telemetry-card .t-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-cyan);
+      margin-bottom: 6px;
+    }
+    .telemetry-card .t-val {
+      font-family: var(--font-mono);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .admin-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 12px;
+    }
+    .admin-tab-btn {
+      background: none;
+      border: 1px solid transparent;
+      padding: 8px 20px;
+      border-radius: 9999px;
+      color: #94a3b8;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .admin-tab-btn:hover {
+      color: #fff;
+    }
+    .admin-tab-btn.active {
+      background: rgba(34, 211, 238, 0.15);
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+    }
+    .admin-table-wrap {
+      overflow-x: auto;
+      background: rgba(15, 23, 42, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 20px;
+    }
+    table.admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+    table.admin-table th {
+      padding: 12px 16px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent-cyan);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    table.admin-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #cbd5e1;
+    }
+    .status-select {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: #fff;
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .edit-input {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: #fff;
+      padding: 4px 8px;
+      width: 70px;
+      text-align: center;
+      font-family: var(--font-mono);
+    }
+    .btn-table-action {
+      padding: 4px 12px;
+      font-size: 0.78rem;
+    }
+  </style>
+</head>
+<body class="admin-body">
+
+  <div class="admin-container">
+    
+    <!-- Admin Top Header -->
+    <header class="admin-header">
+      <div class="admin-title-box">
+        <h1>SODA Admin Command Center</h1>
+        <p>Live inventory, telemetry, and order fulfillment connected to SQLite database</p>
+      </div>
+      <div>
+        <a href="/" class="btn btn-outline btn-sm">← Back to Store</a>
+      </div>
+    </header>
+
+    <!-- Telemetry Stats Cards -->
+    <section class="telemetry-grid">
+      <div class="telemetry-card">
+        <div class="t-label">Total Gross Revenue</div>
+        <div id="stat-revenue" class="t-val text-emerald-400">$0.00</div>
+      </div>
+      <div class="telemetry-card">
+        <div class="t-label">Total Orders Placed</div>
+        <div id="stat-orders" class="t-val">0</div>
+      </div>
+      <div class="telemetry-card">
+        <div class="t-label">Average Order Value</div>
+        <div id="stat-aov" class="t-val text-cyan-400">$0.00</div>
+      </div>
+      <div class="telemetry-card">
+        <div class="t-label">Pending Orders</div>
+        <div id="stat-pending" class="t-val text-pink-400">0</div>
+      </div>
+      <div class="telemetry-card">
+        <div class="t-label">Customer Reviews</div>
+        <div id="stat-reviews" class="t-val">0</div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <div class="admin-tabs">
+      <button class="admin-tab-btn active" data-tab="orders">Customer Orders</button>
+      <button class="admin-tab-btn" data-tab="products">Inventory &amp; Pricing</button>
+      <button class="admin-tab-btn" data-tab="reviews">Review Moderation</button>
+      <button class="admin-tab-btn" data-tab="contacts">Inquiries &amp; Messages</button>
+    </div>
+
+    <!-- TAB 1: Orders -->
+    <div id="tab-orders" class="admin-tab-content">
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Order #</th>
+              <th>Customer</th>
+              <th>Items &amp; Packs</th>
+              <th>Total</th>
+              <th>Payment</th>
+              <th>Status Action</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="orders-tbody">
+            <tr><td colspan="7">Loading live orders...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 2: Products & Inventory -->
+    <div id="tab-products" class="admin-tab-content" style="display: none;">
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Product Name</th>
+              <th>Flavor Slug</th>
+              <th>Price ($)</th>
+              <th>Current Stock</th>
+              <th>Volume / Specs</th>
+              <th>Save Updates</th>
+            </tr>
+          </thead>
+          <tbody id="products-tbody">
+            <tr><td colspan="7">Loading live inventory...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 3: Reviews -->
+    <div id="tab-reviews" class="admin-tab-content" style="display: none;">
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Customer</th>
+              <th>Flavor</th>
+              <th>Rating</th>
+              <th>Headline</th>
+              <th>Comment</th>
+              <th>Moderate</th>
+            </tr>
+          </thead>
+          <tbody id="reviews-tbody">
+            <tr><td colspan="6">Loading customer reviews...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 4: Inquiries -->
+    <div id="tab-contacts" class="admin-tab-content" style="display: none;">
+      <div class="admin-table-wrap">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Subject</th>
+              <th>Message</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="contacts-tbody">
+            <tr><td colspan="5">Loading contact messages...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/js/admin.js"></script>
+</body>
+</html>

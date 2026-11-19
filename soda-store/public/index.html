@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SODA — 3D Product Experience | Pure Zero Sparkling Beverage</title>
+  <meta name="description" content="Immersive 3D product website for SODA, featuring real-time Three.js 720° flavor switching, metallic can physics, interactive floating fruit, and zero-sugar sparkling refreshments." />
+  
+  <!-- Google Fonts: Space Grotesk & Outfit & Playfair Display / Caveat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- CSS Styles -->
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="/css/responsive.css" />
+
+  <!-- Three.js ES Module Importmap (100% Native & Offline from Local Vendor) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "/vendor/three.module.js",
+        "three/addons/": "/vendor/"
+      }
+    }
+  </script>
+
+  <!-- GSAP Animation Library -->
+  <script src="/vendor/gsap.min.js"></script>
+</head>
+<body data-active-flavor="diet-classic">
+
+  <!-- Ambient Dynamic Gradient Canvas Background -->
+  <div id="soda-bg-canvas" class="soda-background-gradient">
+    <!-- Rising Effervescent Bubbles Layer -->
+    <div id="bubbles-container" class="bubbles-layer" aria-hidden="true"></div>
+  </div>
+
+  <!-- Loading Screen -->
+  <div id="soda-loader" class="soda-preloader">
+    <div class="loader-content">
+      <div class="loader-can-icon">
+        <svg viewBox="0 0 48 48" fill="none" class="spin-icon">
+          <rect x="12" y="8" width="24" height="32" rx="6" stroke="#22d3ee" stroke-width="2.5"/>
+          <path d="M18 4H30" stroke="#fbcfe8" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="24" cy="24" r="5" stroke="#22d3ee" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="loader-brand font-outfit">SODA</div>
+      <div class="loader-bar-wrap">
+        <div class="loader-bar"></div>
+      </div>
+      <p class="loader-caption">Rendering 3D Studio Physics...</p>
+    </div>
+  </div>
+
+  <!-- Header / Navigation Bar -->
+  <header class="soda-header">
+    <div class="header-container">
+      
+      <!-- Brand Logo -->
+      <a href="#home" class="soda-logo-wrap">
+        <div class="logo-icon-box">
+          <svg viewBox="0 0 28 28" fill="none" class="logo-svg">
+            <rect x="7" y="4" width="14" height="20" rx="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M10 2H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="14" cy="14" r="3" fill="currentColor"/>
+          </svg>
+        </div>
+        <span class="logo-text">SODA</span>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="desktop-nav glass-nav">
+        <a href="#home" class="nav-link active">Home</a>
+        <a href="#ingredients" class="nav-link">Ingredients</a>
+        <a href="#taste" class="nav-link">Taste</a>
+        <a href="#eco" class="nav-link">Eco</a>
+        <a href="#reviews" class="nav-link">Reviews</a>
+        <a href="#order" class="nav-link">Order</a>
+      </nav>
+
+      <!-- Action Items: Contact Button & Shopping Bag Counter -->
+      <div class="header-actions">
+        <button type="button" class="btn btn-outline open-contact-btn header-contact-btn">
+          Contact Us
+        </button>
+
+        <button type="button" class="cart-toggle-btn glass-pill-btn" aria-label="Open Shopping Bag">
+          <svg class="cart-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span class="cart-count-badge" style="display: none;">0</span>
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button type="button" id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="Toggle mobile menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Mobile Drawer Nav -->
+    <div id="mobile-menu-drawer" class="mobile-drawer glass-panel">
+      <nav class="mobile-nav-list">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#ingredients" class="nav-link">Ingredients</a>
+        <a href="#taste" class="nav-link">Taste Experience</a>
+        <a href="#eco" class="nav-link">Eco Sustainability</a>
+        <a href="#reviews" class="nav-link">Customer Reviews</a>
+        <a href="#order" class="nav-link">Order Soda</a>
+        <button class="btn btn-primary open-contact-btn w-full mt-4">Contact Us</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============================================== -->
+  <!-- MAIN FULL-SCREEN HERO SECTION                  -->
+  <!-- ============================================== -->
+  <section id="home" class="soda-hero-section">
+    
+    <!-- Three.js 3D Viewport Container -->
+    <div id="soda-canvas-wrap" class="soda-three-canvas-wrap"></div>
+
+    <div class="hero-content-grid">
+      
+      <!-- HERO LEFT COLUMN: Branding, Pure Zero, Shop Button -->
+      <div class="hero-left-col">
+        
+        <div class="hero-tagline-badge glass-pill">
+          <span class="sparkle-dot"></span>
+          <span>100% MOUNTAIN SPRING INFUSION</span>
+        </div>
+
+        <h1 class="hero-cursive-title font-cursive">Pure Zero</h1>
+
+        <p class="hero-desc">
+          Zero sugar. Pure glacial effervescence. Crafted with wild botanical kola, cold-extracted fruit essences, and natural cellular hydration.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#order" id="hero-shop-btn" class="btn btn-primary hero-btn">
+            <span>Shop Now</span>
+            <svg viewBox="0 0 20 20" fill="currentColor" class="btn-arrow-icon">
+              <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+          </a>
+          <a href="#ingredients" class="btn btn-secondary">
+            <span>Discover Formula</span>
+          </a>
+        </div>
+
+        <!-- Awards & Recognition Badge -->
+        <div class="hero-award-badge glass-panel">
+          <div class="award-icon">★</div>
+          <div class="award-text">
+            <span class="award-title">Awwwards Site of the Day</span>
+            <span class="award-sub">Best Digital Product Experience 2026</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- HERO CENTER SPACER: Dedicated to 3D Can Visuals -->
+      <div class="hero-center-col" aria-hidden="true">
+        <!-- Three.js Canvas floats in this central viewing portal -->
+      </div>
+
+      <!-- HERO RIGHT COLUMN: Interactive Flavor Cards -->
+      <div class="hero-right-col">
+        
+        <div class="flavor-carousel-header">
+          <div class="header-text-block">
+            <span class="flavor-kicker font-mono">// FLAVOR ARCHIVE</span>
+            <h2 class="flavor-main-heading">Refreshingly Clean</h2>
+          </div>
+          
+          <!-- Prev / Next Controls -->
+          <div class="carousel-nav-controls">
+            <button id="flavor-prev" class="carousel-arrow-btn" aria-label="Previous Flavor">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            </button>
+            <button id="flavor-next" class="carousel-arrow-btn" aria-label="Next Flavor">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Flavor Cards Deck -->
+        <div class="flavor-cards-container">
+          
+          <!-- Flavor 1: Diet Classic -->
+          <article class="flavor-card glass-panel active" data-flavor="diet-classic" role="button" tabindex="0">
+            <div class="card-image-box">
+              <img src="/assets/images/Green_Soda.png" alt="Diet Classic Soda" class="flavor-card-img" />
+            </div>
+            <div class="card-details">
+              <div class="card-badge classic-badge">Diet Classic</div>
+              <h3 class="card-title">Botanical Kola</h3>
+              <p class="card-notes">Wild kola nut, vanilla bean &amp; crisp effervescence</p>
+              <div class="card-footer">
+                <span class="card-price">$2.99</span>
+                <button type="button" class="card-quick-add-btn" data-flavor="diet-classic" title="Quick Add to Bag">
+                  <span>+ Quick Add</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <!-- Flavor 2: Zero Lime -->
+          <article class="flavor-card glass-panel" data-flavor="zero-lime" role="button" tabindex="0">
+            <div class="card-image-box">
+              <img src="/assets/images/Blue_Soda.png" alt="Zero Lime Soda" class="flavor-card-img" />
+            </div>
+            <div class="card-details">
+              <div class="card-badge lime-badge">Zero Lime</div>
+              <h3 class="card-title">Persian Lime</h3>
+              <p class="card-notes">Cold-pressed lime, kaffir leaf &amp; icy citrus fizz</p>
+              <div class="card-footer">
+                <span class="card-price">$2.99</span>
+                <button type="button" class="card-quick-add-btn" data-flavor="zero-lime" title="Quick Add to Bag">
+                  <span>+ Quick Add</span>
+                </button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <!-- Nutritional Quick Strip -->
+        <div class="hero-nutrition-strip glass-pill">
+          <div class="nutrition-pill"><strong>0</strong> Calories</div>
+          <div class="nutrition-pill"><strong>0g</strong> Sugar</div>
+          <div class="nutrition-pill"><strong>100%</strong> Recyclable</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Mouse Scroll Down Hint -->
+    <a href="#ingredients" class="scroll-down-cue" aria-label="Scroll down to ingredients">
+      <div class="mouse-icon">
+        <div class="wheel-dot"></div>
+      </div>
+      <span class="font-mono text-[11px] tracking-widest text-slate-400">SCROLL TO EXPLORE</span>
+    </a>
+
+  </section>
+
+  <!-- ============================================== -->
+  <!-- INGREDIENTS SECTION                            -->
+  <!-- ============================================== -->
+  <section id="ingredients" class="soda-section ingredients-section">
+    <div class="section-container">
+      
+      <div class="section-header text-center">
+        <span class="section-kicker font-mono">// REFINED BOTANICAL INGREDIENTS</span>
+        <h2 class="section-title">Pure Nature. Zero Compromise.</h2>
+        <p class="section-desc">
+          Every can of SODA is created using only real ingredients sourced from high-elevation bio-reserves. No artificial sweeteners, no artificial dyes, and zero synthetic preservatives.
+        </p>
+      </div>
+
+      <div class="ingredients-grid">
+        
+        <div class="ingredient-card glass-panel">
+          <div class="ingredient-icon-box">🏔️</div>
+          <h3 class="ingredient-name">Glacial Spring Water</h3>
+          <p class="ingredient-detail">
+            Naturally filtered through alpine mineral rock for superior purity, high alkalinity, and ultra-crisp effervescence.
+          </p>
+          <span class="ingredient-tag">High Altitude Source</span>
+        </div>
+
+        <div class="ingredient-card glass-panel">
+          <div class="ingredient-icon-box">🌿</div>
+          <h3 class="ingredient-name">Stevia Leaf Extract</h3>
+          <p class="ingredient-detail">
+            Pure organic stevia leaf extract that delivers crisp sweetness without caloric spike or artificial aftertaste.
+          </p>
+          <span class="ingredient-tag">0 Glycemic Index</span>
+        </div>
+
+        <div class="ingredient-card glass-panel">
+          <div class="ingredient-icon-box">🍒</div>
+          <h3 class="ingredient-name">Cold-Pressed Essence</h3>
+          <p class="ingredient-detail">
+            Cold-extracted wild cherries, Persian limes, and kola nuts delivering authentic aromatic fragrance and deep flavor depth.
+          </p>
+          <span class="ingredient-tag">100% Real Botanicals</span>
+        </div>
+
+        <div class="ingredient-card glass-panel">
+          <div class="ingredient-icon-box">⚡</div>
+          <h3 class="ingredient-name">Electrolyte Balance</h3>
+          <p class="ingredient-detail">
+            Infused with natural magnesium, potassium, and Himalayan pink salt to maintain active hydration and clean energy.
+          </p>
+          <span class="ingredient-tag">Cellular Hydration</span>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- TASTE & FLAVOR COMPARISON SECTION              -->
+  <!-- ============================================== -->
+  <section id="taste" class="soda-section taste-section">
+    <div class="section-container">
+      
+      <div class="section-header text-center">
+        <span class="section-kicker font-mono">// TASTE ARCHITECTURE</span>
+        <h2 class="section-title">Two Profiles. One High Standard.</h2>
+        <p class="section-desc">
+          Compare our signature flavors engineered to elevate your daily refreshment.
+        </p>
+      </div>
+
+      <div class="taste-comparison-grid">
+        
+        <!-- Classic Profile -->
+        <div class="taste-card glass-panel classic-side">
+          <div class="taste-badge">Diet Classic Profile</div>
+          <h3 class="taste-title">Botanical Kola Essence</h3>
+          <p class="taste-desc">
+            A rich, complex, layered profile inspired by original 19th-century apothecary recipes. Notes of toasted spices, Madagascar vanilla, and organic kola.
+          </p>
+          
+          <div class="radar-bars-wrap">
+            <div class="metric-row">
+              <span class="metric-label">Fizz / Effervescence</span>
+              <div class="metric-track"><div class="metric-fill" style="width: 88%;"></div></div>
+              <span class="metric-score">8.8</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Botanical Sweetness</span>
+              <div class="metric-track"><div class="metric-fill" style="width: 65%;"></div></div>
+              <span class="metric-score">6.5</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Spiced Warmth</span>
+              <div class="metric-track"><div class="metric-fill" style="width: 92%;"></div></div>
+              <span class="metric-score">9.2</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Smooth Finish</span>
+              <div class="metric-track"><div class="metric-fill" style="width: 95%;"></div></div>
+              <span class="metric-score">9.5</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Lime Profile -->
+        <div class="taste-card glass-panel lime-side">
+          <div class="taste-badge lime">Zero Lime Profile</div>
+          <h3 class="taste-title">Zesty Persian Citrus</h3>
+          <p class="taste-desc">
+            An exhilarating surge of fresh citrus zest. High tartness, electric carbonation, and an icy finish that resets the palate instantaneously.
+          </p>
+          
+          <div class="radar-bars-wrap">
+            <div class="metric-row">
+              <span class="metric-label">Fizz / Effervescence</span>
+              <div class="metric-track"><div class="metric-fill lime-fill" style="width: 96%;"></div></div>
+              <span class="metric-score">9.6</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Zesty Tartness</span>
+              <div class="metric-track"><div class="metric-fill lime-fill" style="width: 94%;"></div></div>
+              <span class="metric-score">9.4</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Citrus Aroma</span>
+              <div class="metric-track"><div class="metric-fill lime-fill" style="width: 90%;"></div></div>
+              <span class="metric-score">9.0</span>
+            </div>
+            <div class="metric-row">
+              <span class="metric-label">Crisp Chill Finish</span>
+              <div class="metric-track"><div class="metric-fill lime-fill" style="width: 98%;"></div></div>
+              <span class="metric-score">9.8</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- ECO SUSTAINABILITY SECTION                     -->
+  <!-- ============================================== -->
+  <section id="eco" class="soda-section eco-section">
+    <div class="section-container">
+      
+      <div class="eco-showcase-panel glass-panel">
+        <div class="eco-content">
+          <span class="section-kicker font-mono text-emerald-400">// PLANET FIRST PACKAGING</span>
+          <h2 class="eco-title">Infinitely Recyclable Aluminum</h2>
+          <p class="eco-desc">
+            75% of all aluminum ever produced is still in active circulation today. Every SODA can is 100% plastic-free, infinitely recyclable, and can be recycled and back on grocery shelves within 60 days.
+          </p>
+
+          <div class="eco-stats-row">
+            <div class="eco-stat-item">
+              <div class="eco-number font-outfit">100%</div>
+              <div class="eco-label">Plastic-Free Can &amp; Shipping</div>
+            </div>
+            <div class="eco-stat-item">
+              <div class="eco-number font-outfit">60 Days</div>
+              <div class="eco-label">Can-to-Can Closed Loop Cycle</div>
+            </div>
+            <div class="eco-stat-item">
+              <div class="eco-number font-outfit">0g</div>
+              <div class="eco-label">Single-Use Ocean Waste</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="eco-badge-card glass-panel">
+          <div class="eco-leaf-icon">🌱</div>
+          <h4>Solar-Powered Canning</h4>
+          <p>Produced at our facility operating on 100% clean solar energy and recycled water circuits.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- CUSTOMER REVIEWS SECTION                       -->
+  <!-- ============================================== -->
+  <section id="reviews" class="soda-section reviews-section">
+    <div class="section-container">
+      
+      <div class="section-header-flex">
+        <div>
+          <span class="section-kicker font-mono">// VERIFIED REVIEWS</span>
+          <h2 class="section-title">Loved by Thousands of Tasters</h2>
+          <div class="overall-rating-badge">
+            <span class="rating-stars">★★★★★</span>
+            <span class="rating-val">4.96 / 5.0</span>
+            <span class="rating-count">(380+ Verified Customers)</span>
+          </div>
+        </div>
+
+        <button id="open-review-modal-btn" class="btn btn-outline">
+          ★ Leave a Review
+        </button>
+      </div>
+
+      <!-- Dynamic Reviews Grid from SQLite -->
+      <div id="reviews-grid" class="reviews-grid">
+        <div class="loading-reviews-placeholder">Loading customer reviews...</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- ORDER SODA / PRODUCT DETAIL SECTION            -->
+  <!-- ============================================== -->
+  <section id="order" class="soda-section order-section">
+    <div class="section-container">
+      
+      <div class="order-box-grid glass-panel">
+        
+        <!-- Product Visual Preview -->
+        <div class="order-visual-wrap">
+          <div class="visual-badge">HAND-PACKED &amp; SEALED</div>
+          <div class="order-can-image-box">
+            <img id="order-preview-img" src="/assets/images/Green_Soda.png" alt="SODA Can Package" />
+          </div>
+          <div class="order-flavor-indicator">
+            Selected: <strong id="active-flavor-name">Diet Classic</strong>
+          </div>
+        </div>
+
+        <!-- Product Customizer Details -->
+        <div class="order-controls-wrap">
+          <span class="section-kicker font-mono">// DIRECT CELLAR ORDER</span>
+          <h2 class="order-product-name">SODA Sparkling Beverage</h2>
+          <p class="order-lead-desc">
+            Freshly canned in small artisanal batches. Carbonated at peak pressure for sustained effervescence.
+          </p>
+
+          <!-- Flavor Choice Radios -->
+          <div class="order-option-group">
+            <label class="option-label">Select Flavor</label>
+            <div class="flavor-radio-group">
+              <label class="flavor-radio-pill">
+                <input type="radio" name="flavor-select" value="diet-classic" checked />
+                <span class="radio-custom-box">
+                  <span class="radio-circle"></span>
+                  <span>Diet Classic (Kola &amp; Vanilla)</span>
+                </span>
+              </label>
+              <label class="flavor-radio-pill">
+                <input type="radio" name="flavor-select" value="zero-lime" />
+                <span class="radio-custom-box">
+                  <span class="radio-circle"></span>
+                  <span>Zero Lime (Persian Lime)</span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Pack Size Selection -->
+          <div class="order-option-group">
+            <label class="option-label">Select Pack Size</label>
+            <div class="pack-buttons-grid">
+              <button type="button" class="pack-select-btn active" data-pack="Single Can" data-price="2.99">
+                <span class="pack-title">Single Can</span>
+                <span class="pack-price">$2.99</span>
+                <span class="pack-sub">330ml Can</span>
+              </button>
+              <button type="button" class="pack-select-btn" data-pack="6-Pack Box" data-price="15.99">
+                <span class="pack-title">6-Pack Box</span>
+                <span class="pack-price">$15.99</span>
+                <span class="pack-sub">$2.66 / can</span>
+              </button>
+              <button type="button" class="pack-select-btn" data-pack="12-Pack Case" data-price="28.99">
+                <span class="pack-title">12-Pack Case</span>
+                <span class="pack-price">$28.99</span>
+                <span class="pack-sub">$2.41 / can • Free Ship</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quantity and Add to Bag Bar -->
+          <div class="order-bottom-actions">
+            <div class="qty-counter-box">
+              <button type="button" id="product-qty-minus" class="qty-btn" aria-label="Decrease quantity">−</button>
+              <input type="number" id="product-qty-input" value="1" min="1" max="24" readonly />
+              <button type="button" id="product-qty-plus" class="qty-btn" aria-label="Increase quantity">+</button>
+            </div>
+
+            <div class="order-price-display">
+              <span class="price-label">Total:</span>
+              <span id="selected-pack-price" class="current-price">$2.99</span>
+            </div>
+
+            <button type="button" id="add-to-bag-btn" class="btn btn-primary add-to-bag-btn">
+              <span>Add to Bag</span>
+              <svg viewBox="0 0 20 20" fill="currentColor" class="bag-icon">
+                <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+              </svg>
+            </button>
+          </div>
+
+          <div class="order-guarantee-strip">
+            <span>✓ Same-Day Dispatch</span>
+            <span>✓ Temperature Controlled</span>
+            <span>✓ Zero Leak Guarantee</span>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- CART SLIDE-OVER DRAWER                         -->
+  <!-- ============================================== -->
+  <div id="cart-overlay" class="cart-overlay" aria-hidden="true"></div>
+  <aside id="cart-drawer" class="cart-drawer glass-panel" aria-label="Shopping Bag">
+    <div class="cart-drawer-header">
+      <div class="cart-drawer-title">
+        <h3>Shopping Bag</h3>
+        <span class="cart-count-badge">0</span>
+      </div>
+      <button id="close-cart-btn" class="drawer-close-btn" aria-label="Close Shopping Bag">×</button>
+    </div>
+
+    <!-- Empty State -->
+    <div id="cart-empty-state" class="cart-empty-state">
+      <div class="empty-icon">🥤</div>
+      <h4>Your Bag is Empty</h4>
+      <p>Discover our refreshing flavors and add cans to your cellar bag.</p>
+      <button class="btn btn-primary" onclick="document.getElementById('close-cart-btn').click(); document.getElementById('home').scrollIntoView({behavior:'smooth'});">
+        Explore Flavors
+      </button>
+    </div>
+
+    <!-- Active Cart Items Container -->
+    <div id="cart-items-container" class="cart-items-list"></div>
+
+    <!-- Cart Footer & Totals -->
+    <div id="cart-drawer-footer" class="cart-drawer-footer" style="display: none;">
+      
+      <!-- Coupon Field -->
+      <div class="coupon-box">
+        <input type="text" id="cart-coupon-input" placeholder="Coupon Code (e.g. REFRESH15)" />
+        <button id="apply-coupon-btn" class="btn btn-outline btn-sm">Apply</button>
+      </div>
+      <div id="coupon-message" class="coupon-msg"></div>
+
+      <!-- Financial Totals -->
+      <div class="cart-totals-breakdown">
+        <div class="totals-row">
+          <span>Subtotal</span>
+          <span id="cart-subtotal-val">$0.00</span>
+        </div>
+        <div id="cart-discount-row" class="totals-row discount-row" style="display: none;">
+          <span>Coupon Discount</span>
+          <span id="cart-discount-val">-$0.00</span>
+        </div>
+        <div class="totals-row">
+          <span>Shipping (Free over $25)</span>
+          <span id="cart-shipping-val">$3.50</span>
+        </div>
+        <div class="totals-row final-total-row">
+          <span>Total</span>
+          <span id="cart-total-val" class="highlight-total">$0.00</span>
+        </div>
+      </div>
+
+      <button id="proceed-checkout-btn" class="btn btn-primary w-full checkout-proceed-btn">
+        Proceed to Checkout →
+      </button>
+
+    </div>
+  </aside>
+
+  <!-- ============================================== -->
+  <!-- CHECKOUT MODAL                                 -->
+  <!-- ============================================== -->
+  <div id="checkout-modal" class="soda-modal" role="dialog" aria-modal="true">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <h3>Secure Checkout</h3>
+        <button id="close-checkout-btn" class="modal-close-btn" aria-label="Close checkout">×</button>
+      </div>
+
+      <div id="checkout-modal-body" class="modal-body">
+        
+        <!-- Order Summary Preview -->
+        <div class="checkout-summary-box glass-panel">
+          <div class="summary-title font-mono text-xs uppercase tracking-wider text-cyan-300">Order Summary</div>
+          <div id="checkout-items-list" class="checkout-items-compact"></div>
+          <div class="checkout-totals-compact">
+            <div class="c-row"><span>Subtotal:</span> <strong id="checkout-subtotal">$0.00</strong></div>
+            <div id="checkout-discount-row" class="c-row text-emerald-400" style="display:none;"><span>Discount:</span> <strong id="checkout-discount">-$0.00</strong></div>
+            <div class="c-row"><span>Shipping:</span> <strong id="checkout-shipping">$0.00</strong></div>
+            <div class="c-row font-bold text-white text-base"><span>Final Total:</span> <strong id="checkout-total" class="text-cyan-400">$0.00</strong></div>
+          </div>
+        </div>
+
+        <!-- Checkout Form -->
+        <form id="checkout-form" class="checkout-form space-y-4">
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Full Name *</label>
+              <input type="text" name="name" required placeholder="Elena Vance" />
+            </div>
+            <div class="form-group flex-1">
+              <label>Email Address *</label>
+              <input type="email" name="email" required placeholder="elena@example.com" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-1">
+              <label>Phone Number</label>
+              <input type="tel" name="phone" placeholder="+1 (555) 000-0000" />
+            </div>
+            <div class="form-group flex-1">
+              <label>City *</label>
+              <input type="text" name="city" required placeholder="San Francisco" />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group flex-2">
+              <label>Delivery Address *</label>
+              <input type="text" name="address" required placeholder="123 Glacial Mountain Way" />
+            </div>
+            <div class="form-group flex-1">
+              <label>Postal Code</label>
+              <input type="text" name="postalCode" placeholder="94107" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Payment Method</label>
+            <select name="paymentMethod" class="soda-select">
+              <option value="cash_on_delivery">Cash on Delivery (Free Demo Fulfillment)</option>
+              <option value="credit_card_demo">Demo Test Card (Instant Approval)</option>
+              <option value="apple_pay_demo">Apple Pay (Test Sandbox)</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-full py-3.5 text-base font-bold">
+            Complete Order
+          </button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- LEAVE A REVIEW MODAL                           -->
+  <!-- ============================================== -->
+  <div id="review-modal" class="soda-modal" role="dialog" aria-modal="true">
+    <div class="modal-card glass-panel max-w-md">
+      <div class="modal-header">
+        <h3>Share Your Tasting Experience</h3>
+        <button id="close-review-modal-btn" class="modal-close-btn">×</button>
+      </div>
+      <form id="review-form" class="modal-body space-y-4">
+        <div class="form-group">
+          <label>Your Name *</label>
+          <input type="text" name="name" required placeholder="Jane Doe" />
+        </div>
+        <div class="form-group">
+          <label>Flavor *</label>
+          <select name="flavor" class="soda-select">
+            <option value="Diet Classic">Diet Classic</option>
+            <option value="Zero Lime">Zero Lime</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Rating *</label>
+          <select name="rating" class="soda-select">
+            <option value="5">★★★★★ (5 Stars - Exceptional)</option>
+            <option value="4">★★★★☆ (4 Stars - Great)</option>
+            <option value="3">★★★☆☆ (3 Stars - Average)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Review Headline *</label>
+          <input type="text" name="title" required placeholder="Best soda replacement ever" />
+        </div>
+        <div class="form-group">
+          <label>Your Review *</label>
+          <textarea name="comment" required rows="3" placeholder="Tell us how the carbonation and flavor felt..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-full">Submit Review</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- CONTACT US MODAL                               -->
+  <!-- ============================================== -->
+  <div id="contact-modal" class="soda-modal" role="dialog" aria-modal="true">
+    <div class="modal-card glass-panel max-w-md">
+      <div class="modal-header">
+        <h3>Contact SODA Support</h3>
+        <button id="close-contact-modal-btn" class="modal-close-btn">×</button>
+      </div>
+      <form id="contact-form" class="modal-body space-y-4">
+        <div class="form-group">
+          <label>Your Name *</label>
+          <input type="text" name="name" required placeholder="Alexander Vance" />
+        </div>
+        <div class="form-group">
+          <label>Email Address *</label>
+          <input type="email" name="email" required placeholder="alexander@example.com" />
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <input type="text" name="subject" placeholder="Distribution inquiry, press, or question" />
+        </div>
+        <div class="form-group">
+          <label>Message *</label>
+          <textarea name="message" required rows="4" placeholder="How can our beverage team help you?"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-full">Send Message</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================== -->
+  <!-- FOOTER                                         -->
+  <!-- ============================================== -->
+  <footer class="soda-footer">
+    <div class="footer-container">
+      <div class="footer-brand-col">
+        <div class="footer-logo">
+          <span class="logo-text">SODA</span>
+        </div>
+        <p class="footer-bio">
+          Next-generation sparkling beverage brand engineered for zero sugar, pure botanical purity, and 100% infinitely recyclable aluminum packaging.
+        </p>
+        <div class="footer-badges">
+          <span>✓ B-Corp Certified</span>
+          <span>✓ 100% Solar Powered</span>
+          <span>✓ Non-GMO</span>
+        </div>
+      </div>
+
+      <div class="footer-links-col">
+        <h4>Navigation</h4>
+        <a href="#home">Home Experience</a>
+        <a href="#ingredients">Ingredients</a>
+        <a href="#taste">Taste Profiles</a>
+        <a href="#eco">Eco Sustainability</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#order">Order Cans</a>
+      </div>
+
+      <div class="footer-links-col">
+        <h4>Admin &amp; Architecture</h4>
+        <a href="/admin.html" target="_blank">Store Administration</a>
+        <a href="/api/products" target="_blank">REST API Products</a>
+        <a href="/api/flavors" target="_blank">REST API Flavors</a>
+        <a href="/api/health" target="_blank">System Health</a>
+      </div>
+
+      <div class="footer-links-col">
+        <h4>Connect</h4>
+        <button class="footer-btn open-contact-btn">Direct Inquiry</button>
+        <p class="footer-subtext mt-3">Distribution centers in Portland, San Francisco, and Austin.</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div>&copy; 2026 SODA Beverage Co. All rights reserved. Crafted by Rizwan Malik.</div>
+      <a href="#home" class="back-to-top-link">↑ Back to Top</a>
+    </div>
+  </footer>
+
+  <!-- Application Main Script (ES Module) -->
+  <script type="module" src="/js/main.js"></script>
+
+</body>
+</html>
