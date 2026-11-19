@@ -7,7 +7,10 @@ import {
   CheckCircle2, 
   Quote, 
   Share2, 
-  Sparkles
+  Sparkles,
+  Globe,
+  Palette,
+  Laptop
 } from 'lucide-react';
 
 export function ProjectModal({ project, onClose }) {
@@ -34,6 +37,40 @@ export function ProjectModal({ project, onClose }) {
   if (!project || !mounted) return null;
 
   const isClient = project.category === 'clients';
+  const isWebsite = project.type === 'website' || project.category === 'ecommerce' || project.category === 'agency';
+  const isDesign = project.type === 'graphic-design';
+
+  // Dynamic pill badge and icon
+  let BadgeIcon = Share2;
+  let badgeLabel = project.platform || (isClient ? 'Client Account' : 'Social Campaign');
+  if (isWebsite) {
+    BadgeIcon = Globe;
+    badgeLabel = project.category === 'ecommerce' ? '3D E-Commerce Platform' : 'Corporate Web Platform';
+  } else if (isDesign) {
+    BadgeIcon = Palette;
+    badgeLabel = 'Visual Design System';
+  }
+
+  // Dynamic overview title
+  const overviewTitle = isWebsite 
+    ? 'Project Architecture & Overview' 
+    : isDesign 
+    ? 'Creative Direction & Overview' 
+    : 'Campaign Overview';
+
+  // Dynamic tags title
+  const tagsTitle = isWebsite 
+    ? 'Technology Stack & Infrastructure' 
+    : isDesign 
+    ? 'Design Tools & Deliverables' 
+    : 'Scope & Channels';
+
+  // Dynamic button label
+  const buttonLabel = isWebsite 
+    ? 'Launch Live Demo' 
+    : isClient 
+    ? 'Visit Client Page' 
+    : 'Visit Official Link';
 
   return createPortal(
     <div 
@@ -63,9 +100,15 @@ export function ProjectModal({ project, onClose }) {
         <div className="flex items-center justify-between gap-4 border-b border-white/10 pb-4 shrink-0">
           <div className="min-w-0">
             <div className="flex items-center gap-2 flex-wrap mb-1">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-3 py-1 text-xs font-medium text-emerald-400">
-                <Share2 className="h-3 w-3" />
-                {project.platform || (isClient ? 'Client Account' : 'Social Campaign')}
+              <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium ${
+                isWebsite 
+                  ? 'bg-cyan-500/10 border border-cyan-500/30 text-cyan-400' 
+                  : isDesign 
+                  ? 'bg-purple-500/10 border border-purple-500/30 text-purple-400' 
+                  : 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400'
+              }`}>
+                <BadgeIcon className="h-3 w-3" />
+                {badgeLabel}
               </span>
             </div>
             <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
@@ -107,11 +150,11 @@ export function ProjectModal({ project, onClose }) {
                 </div>
               ) : (
                 /* Clean High-Resolution Creative Showcase */
-                <div className="relative w-full aspect-square max-h-[460px] overflow-hidden rounded-2xl border border-white/10 bg-slate-950 flex items-center justify-center shadow-xl">
+                <div className="relative w-full aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 bg-slate-950 flex items-center justify-center shadow-xl">
                   <img
                     src={project.image}
                     alt={project.clientName}
-                    className="max-h-full max-w-full object-contain"
+                    className="max-h-full max-w-full object-cover"
                   />
                 </div>
               )}
@@ -122,13 +165,13 @@ export function ProjectModal({ project, onClose }) {
               
               {/* Client Feedback Quote */}
               {project.review && (
-                <div className="rounded-2xl border border-emerald-500/20 bg-emerald-950/20 p-4 sm:p-5 backdrop-blur-sm">
-                  <Quote className="h-4 w-4 text-emerald-400 mb-1 opacity-80" />
-                  <p className="text-xs sm:text-sm italic text-emerald-200/90 leading-relaxed">
+                <div className="rounded-2xl border border-cyan-500/20 bg-cyan-950/20 p-4 sm:p-5 backdrop-blur-sm">
+                  <Quote className="h-4 w-4 text-cyan-400 mb-1 opacity-80" />
+                  <p className="text-xs sm:text-sm italic text-cyan-100/90 leading-relaxed">
                     "{project.review}"
                   </p>
-                  <div className="mt-2 text-xs font-semibold text-emerald-400">
-                    Verified Client Feedback
+                  <div className="mt-2 text-xs font-semibold text-cyan-400">
+                    Verified Project Endorsement
                   </div>
                 </div>
               )}
@@ -136,7 +179,7 @@ export function ProjectModal({ project, onClose }) {
               {/* Work Overview */}
               <div>
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
-                  Campaign Overview
+                  {overviewTitle}
                 </h4>
                 <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                   {project.description}
@@ -152,7 +195,7 @@ export function ProjectModal({ project, onClose }) {
                   <div className="space-y-1.5">
                     {project.deliverables.map((item, i) => (
                       <div key={i} className="flex items-center gap-2 text-xs text-slate-300">
-                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 shrink-0" />
+                        <CheckCircle2 className="h-3.5 w-3.5 text-cyan-400 shrink-0" />
                         <span>{item}</span>
                       </div>
                     ))}
@@ -163,7 +206,7 @@ export function ProjectModal({ project, onClose }) {
               {/* Tags */}
               <div>
                 <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">
-                  Scope &amp; Platforms
+                  {tagsTitle}
                 </h4>
                 <div className="flex flex-wrap gap-1.5">
                   {project.tags.map((tag, i) => (
@@ -196,9 +239,9 @@ export function ProjectModal({ project, onClose }) {
                 href={project.link}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-2.5 text-xs font-semibold text-white shadow-lg shadow-emerald-950/40 hover:opacity-95 transition"
+                className="inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-cyan-600 to-blue-600 px-5 py-2.5 text-xs font-semibold text-white shadow-lg shadow-cyan-950/40 hover:opacity-95 transition"
               >
-                <span>{isClient ? 'Visit Client Page' : 'Visit Official Link'}</span>
+                <span>{buttonLabel}</span>
                 <ExternalLink className="h-3.5 w-3.5" />
               </a>
             )}

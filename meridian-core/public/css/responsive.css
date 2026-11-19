@@ -1,0 +1,116 @@
+/* ==========================================================================
+   MERIDIAN CORE — Responsive Stylesheet
+   ========================================================================== */
+
+@media (max-width: 1200px) {
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+  .hero-left-content {
+    max-width: 100%;
+  }
+  .hero-webgl-wrapper {
+    position: relative;
+    width: 100%;
+    height: 380px;
+    order: -1;
+  }
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .footer-top-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px;
+  }
+}
+
+@media (max-width: 992px) {
+  .desktop-nav {
+    display: none;
+  }
+  .mobile-menu-btn {
+    display: flex;
+  }
+  .mobile-nav-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 300px;
+    background: #0d0d12;
+    border-left: 1px solid var(--border-light);
+    padding: 80px 32px 40px;
+    z-index: 999;
+    transform: translateX(100%);
+    transition: transform 0.35s var(--ease-out);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .mobile-nav-drawer.open {
+    transform: translateX(0);
+  }
+  .mobile-nav-link {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .mobile-nav-link:hover {
+    color: var(--accent-red);
+  }
+  .ventures-grid {
+    grid-template-columns: 1fr;
+  }
+  .impact-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .contact-grid {
+    grid-template-columns: 1fr;
+    padding: 40px 32px;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  .testimonial-card-single {
+    padding: 36px 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 2.1rem;
+  }
+  .hero-headline {
+    font-size: 2.6rem;
+  }
+  .hero-cta-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero-stats-strip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .expertise-grid,
+  .insights-grid {
+    grid-template-columns: 1fr;
+  }
+  .about-pillars {
+    grid-template-columns: 1fr;
+  }
+  .footer-top-grid {
+    grid-template-columns: 1fr;
+  }
+  .footer-bottom-bar {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+}

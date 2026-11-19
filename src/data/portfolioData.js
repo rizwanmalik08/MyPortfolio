@@ -207,6 +207,30 @@ export const projects = [
     tags: ["React", "Next.js", "Tailwind CSS", "Corporate Agency"],
     description: "Official web platform for DigiServiceZone digital agency. Features dark cyber aesthetic, dynamic client case studies, service inquiry systems, and optimized SEO structure that drives commercial client acquisition.",
     metrics: ["Modern Web Architecture", "High-Converting UI", "Live Agency Platform"]
+  },
+  {
+    id: "marcus-vane-portfolio",
+    clientName: "Marcus Vane — Executive Portfolio",
+    company: "Vane Capital & Founder Advisory",
+    role: "Lead Architect & Full-Stack Creative Developer",
+    category: "agency",
+    type: "website",
+    badge: "MV",
+    review: "I start companies that shouldn't be possible — then make them inevitable. Four exits, one playbook: conviction before consensus.",
+    link: "http://localhost:5003/",
+    image: "/projects/meridian-showcase.png",
+    featured: true,
+    tags: ["HTML5", "CSS3", "JavaScript", "Three.js", "Node.js", "Express.js", "SQLite"],
+    description: "High-fashion editorial executive portfolio and venture platform showcasing Marcus Vane (Founder, Investor, Operator, Contrarian). Features an iconic full-bleed hero with oversized Anton typography layered behind an isolated transparent cutout portrait; Three.js WebGL ambient particle physics; operating principles marquee; curated venture case studies (Helix Robotics, Northwind Energy, Cadence Health, Vane Capital) with modal deep-dives; animated impact statistics ($3.2B value created, 120M+ people served); interactive partner voices; and a working enterprise inquiry pipeline powered by an Express.js backend with SQLite persistence.",
+    deliverables: [
+      "Iconic Editorial Hero Architecture with Layered Typography & Cutout Portrait",
+      "Three.js Interactive 3D WebGL Particle Dust & Mouse Parallax Physics",
+      "Curated Case Studies for 4 High-Growth Exits & Capital Vehicles with Modal Deep Dives",
+      "Live Express.js REST API with Server-Side Validation & SQLite Database Engine",
+      "Interactive Partner Endorsement Selector with Fluid Transitions",
+      "Production-Grade Responsive Design System in Anton & Onest"
+    ],
+    metrics: ["$3.2B Value Created", "4 Exits & Listings", "100% Pixel-Accurate Build"]
   }
 ];
 

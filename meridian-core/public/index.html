@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marcus Vane — Founder, Investor, Operator &amp; Contrarian</title>
+  
+  <meta name="description" content="Personal portfolio and executive venture showcase of Marcus Vane: Founder, Investor, Operator, and Contrarian. Four exits, one playbook: conviction before consensus." />
+  <meta name="theme-color" content="#08080a" />
+
+  <!-- Google Fonts: Anton (Display Headlines & Hero) and Onest (Body & Editorial) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Onest:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="/css/style.css" />
+
+  <!-- Three.js (CDN for interactive 3D WebGL atmosphere & particles) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body class="bg-main">
+
+  <!-- Interactive Three.js 3D Background Canvas -->
+  <div id="three-canvas-container" class="three-canvas-container" aria-hidden="true"></div>
+
+  <!-- Ambient Dark Glow Layers -->
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <!-- ============================================== -->
+  <!-- NAVIGATION                                     -->
+  <!-- ============================================== -->
+  <nav class="site-nav" aria-label="Primary">
+    <a href="#top" class="logo">
+      <span class="monogram">MV</span>
+      <span class="logo-name">Marcus Vane</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#story" class="nav-link">Story</a></li>
+      <li><a href="#ventures" class="nav-link">Ventures</a></li>
+      <li><a href="#impact" class="nav-link">Impact</a></li>
+      <li><a href="#voices" class="nav-link">Voices</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+
+    <button id="mobile-menu-toggle" class="burger" aria-label="Toggle menu" aria-expanded="false">
+      <i></i><i></i><i></i>
+    </button>
+  </nav>
+
+  <!-- Mobile Drawer -->
+  <div id="mobile-drawer" class="mobile-menu" aria-hidden="true">
+    <a href="#story" class="mobile-nav-link">Story</a>
+    <a href="#ventures" class="mobile-nav-link">Ventures</a>
+    <a href="#impact" class="mobile-nav-link">Impact</a>
+    <a href="#voices" class="mobile-nav-link">Voices</a>
+    <a href="#contact" class="mobile-nav-link">Contact</a>
+  </div>
+
+  <main class="main">
+
+    <!-- ============================================== -->
+    <!-- HERO SECTION (MATCHING USER REFERENCE DESIGN)   -->
+    <!-- ============================================== -->
+    <section id="top" class="hero">
+      
+      <!-- Top Content Row -->
+      <div class="hero-top">
+        <h2 class="hero-roles" aria-label="Founder Investor Operator Contrarian">
+          <span class="w">Founder</span>
+          <span class="w">Investor</span>
+          <span class="w">Operator</span>
+          <span class="w">Contrarian</span>
+        </h2>
+        <p class="hero-desc">
+          I start companies that shouldn't be possible — then make them inevitable. Four exits, one playbook: conviction before consensus.
+        </p>
+      </div>
+
+      <!-- Giant Bold Red Display Typography (Layered Behind Founder) -->
+      <h1 class="hero-name" aria-label="Marcus Vane">
+        <span class="hn-line">MARCUS</span>
+        <span class="hn-line">VANE</span>
+      </h1>
+
+      <!-- Full-Height Cutout Founder Visual (Layered in Front) -->
+      <div class="hero-portrait">
+        <figure class="liquid bare fill">
+          <img 
+            src="/assets/images/marcus-portrait.webp" 
+            alt="Marcus Vane portrait" 
+            class="portrait-media" 
+            loading="eager"
+          />
+        </figure>
+      </div>
+
+      <!-- Bottom Gradient Mask to seamlessly fade founder's trousers into black -->
+      <div class="hero-fade" aria-hidden="true"></div>
+
+      <!-- Scroll Indicator -->
+      <div class="scroll-cue">
+        <span class="rule"></span>
+        <span>Scroll to enter</span>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- MARQUEE TICKER: OPERATING PRINCIPLES           -->
+    <!-- ============================================== -->
+    <section aria-label="Operating principles" class="marquee">
+      <div class="marquee-track">
+        <span class="marquee-item"><span>Build Bold</span><i></i></span>
+        <span class="marquee-item"><span>Scale Relentlessly</span><i></i></span>
+        <span class="marquee-item"><span>Think In Decades</span><i></i></span>
+        <span class="marquee-item"><span>Bet On People</span><i></i></span>
+        <span class="marquee-item"><span>Ship The Future</span><i></i></span>
+        <span class="marquee-item"><span>Build Bold</span><i></i></span>
+        <span class="marquee-item"><span>Scale Relentlessly</span><i></i></span>
+        <span class="marquee-item"><span>Think In Decades</span><i></i></span>
+        <span class="marquee-item"><span>Bet On People</span><i></i></span>
+        <span class="marquee-item"><span>Ship The Future</span><i></i></span>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- STORY SECTION                                  -->
+    <!-- ============================================== -->
+    <section id="story" class="section">
+      <div class="story-grid">
+        <div class="story-left">
+          <p class="eyebrow"><span class="dot"></span>The Story</p>
+          <h2 class="h-story">Conviction is a competitive advantage.</h2>
+          <p class="story-lead">
+            For twenty years I've backed the version of the future most people couldn't see yet. From a dorm-room prototype to companies serving a hundred million people, the through-line never changed: find the hard problem everyone avoids, assemble the team nobody else could, and out-stubborn the doubt.
+          </p>
+        </div>
+
+        <ul class="story-right">
+          <li class="principle">
+            <span class="p-num">01</span>
+            <div>
+              <h3>Move before it's obvious</h3>
+              <p>The best opportunities look like mistakes right up until they look inevitable. I commit while the room is still hesitating.</p>
+            </div>
+          </li>
+          <li class="principle">
+            <span class="p-num">02</span>
+            <div>
+              <h3>Hire founders, not employees</h3>
+              <p>I build teams of people who would start their own thing — then give them a reason not to. Ownership compounds faster than talent alone.</p>
+            </div>
+          </li>
+          <li class="principle">
+            <span class="p-num">03</span>
+            <div>
+              <h3>Distribution is the product</h3>
+              <p>Genius unshipped is a hobby. Every venture is engineered around how it reaches the people it was built for.</p>
+            </div>
+          </li>
+          <li class="principle">
+            <span class="p-num">04</span>
+            <div>
+              <h3>Play the long game loudly</h3>
+              <p>Patience and ambition are not opposites. I think in decades and act with urgency every single day.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- VENTURES SECTION                               -->
+    <!-- ============================================== -->
+    <section id="ventures" class="section">
+      <div class="head-row">
+        <div>
+          <p class="eyebrow"><span class="dot"></span>Selected Ventures</p>
+          <h2 class="h-ventures">The work that moved markets.</h2>
+        </div>
+        <p class="label count-label">04 / Companies</p>
+      </div>
+
+      <ul class="venture-grid">
+        <!-- Venture 1 -->
+        <li class="venture" data-slug="helix-robotics">
+          <article class="group">
+            <figure class="venture-img-wrap">
+              <img src="/assets/images/mv-venture-01.webp" alt="Helix Robotics" class="venture-img" loading="lazy" />
+              <div class="venture-hover-overlay">
+                <span>View Case Study ↗</span>
+              </div>
+            </figure>
+            <div class="venture-row">
+              <div>
+                <h3 class="hover-accent">Helix Robotics</h3>
+                <p class="venture-blurb">Reinvented warehouse logistics with autonomous fleets now running in 40 countries.</p>
+              </div>
+              <div class="venture-meta">
+                <p class="label">2019</p>
+                <p class="outcome">Acquired — $1.1B</p>
+              </div>
+            </div>
+            <p class="label venture-cat">Industrial Automation</p>
+          </article>
+        </li>
+
+        <!-- Venture 2 -->
+        <li class="venture odd" data-slug="northwind-energy">
+          <article class="group">
+            <figure class="venture-img-wrap">
+              <img src="/assets/images/mv-venture-02.webp" alt="Northwind Energy" class="venture-img" loading="lazy" />
+              <div class="venture-hover-overlay">
+                <span>View Case Study ↗</span>
+              </div>
+            </figure>
+            <div class="venture-row">
+              <div>
+                <h3 class="hover-accent">Northwind Energy</h3>
+                <p class="venture-blurb">Brought utility-scale storage to the grid years before the market believed it was viable.</p>
+              </div>
+              <div class="venture-meta">
+                <p class="label">2015</p>
+                <p class="outcome">IPO — NYSE: NWND</p>
+              </div>
+            </div>
+            <p class="label venture-cat">Climate Infrastructure</p>
+          </article>
+        </li>
+
+        <!-- Venture 3 -->
+        <li class="venture" data-slug="cadence-health">
+          <article class="group">
+            <figure class="venture-img-wrap">
+              <img src="/assets/images/mv-venture-03.webp" alt="Cadence Health" class="venture-img" loading="lazy" />
+              <div class="venture-hover-overlay">
+                <span>View Case Study ↗</span>
+              </div>
+            </figure>
+            <div class="venture-row">
+              <div>
+                <h3 class="hover-accent">Cadence Health</h3>
+                <p class="venture-blurb">Put a clinician in every pocket and rewired how chronic care gets delivered.</p>
+              </div>
+              <div class="venture-meta">
+                <p class="label">2011</p>
+                <p class="outcome">Acquired — $640M</p>
+              </div>
+            </div>
+            <p class="label venture-cat">Digital Medicine</p>
+          </article>
+        </li>
+
+        <!-- Venture 4 -->
+        <li class="venture odd" data-slug="vane-capital">
+          <article class="group">
+            <figure class="venture-img-wrap">
+              <img src="/assets/images/mv-venture-04.webp" alt="Vane Capital" class="venture-img" loading="lazy" />
+              <div class="venture-hover-overlay">
+                <span>View Case Study ↗</span>
+              </div>
+            </figure>
+            <div class="venture-row">
+              <div>
+                <h3 class="hover-accent">Vane Capital</h3>
+                <p class="venture-blurb">Backing the next generation of contrarian founders building hard, durable companies.</p>
+              </div>
+              <div class="venture-meta">
+                <p class="label">2008</p>
+                <p class="outcome">Active — $900M AUM</p>
+              </div>
+            </div>
+            <p class="label venture-cat">Venture Investing</p>
+          </article>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- IMPACT SECTION (BY THE NUMBERS)                -->
+    <!-- ============================================== -->
+    <section id="impact" class="section">
+      <div class="head-row">
+        <div>
+          <p class="eyebrow"><span class="dot"></span>By The Numbers</p>
+          <h2 class="h-impact">Two decades, measured.</h2>
+        </div>
+      </div>
+
+      <dl class="stats">
+        <div class="stat">
+          <dd class="stat-fig" data-target="4">4</dd>
+          <dt class="stat-label">Companies founded &amp; exited</dt>
+        </div>
+        <div class="stat">
+          <dd class="stat-fig" data-prefix="$" data-target="3.2" data-suffix="B">$3.2B</dd>
+          <dt class="stat-label">Enterprise value created</dt>
+        </div>
+        <div class="stat">
+          <dd class="stat-fig" data-target="120" data-suffix="M+">120M+</dd>
+          <dt class="stat-label">People served by his products</dt>
+        </div>
+        <div class="stat">
+          <dd class="stat-fig" data-target="2400" data-format="comma">2,400</dd>
+          <dt class="stat-label">Jobs created across ventures</dt>
+        </div>
+      </dl>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- VOICES SECTION (INTERACTIVE TESTIMONIALS)      -->
+    <!-- ============================================== -->
+    <section id="voices" class="section">
+      <div class="head-row">
+        <div>
+          <p class="eyebrow"><span class="dot"></span>Voices</p>
+          <h2 class="h-voices">What they say.</h2>
+        </div>
+      </div>
+
+      <div class="voices-grid">
+        <ul class="voice-list">
+          <li>
+            <button class="voice-btn active" data-index="0">
+              <span class="v-idx">01</span>
+              <span class="v-who">
+                <span class="v-name">Elena Cardoso</span>
+                <span class="v-role">Managing Partner, Meridian Ventures</span>
+              </span>
+              <span class="v-rule"></span>
+            </button>
+          </li>
+          <li>
+            <button class="voice-btn" data-index="1">
+              <span class="v-idx">02</span>
+              <span class="v-who">
+                <span class="v-name">David Okonkwo</span>
+                <span class="v-role">Founder &amp; CEO, Cadence Health</span>
+              </span>
+              <span class="v-rule"></span>
+            </button>
+          </li>
+          <li>
+            <button class="voice-btn" data-index="2">
+              <span class="v-idx">03</span>
+              <span class="v-who">
+                <span class="v-name">Priya Nandakumar</span>
+                <span class="v-role">CEO, Northwind Energy</span>
+              </span>
+              <span class="v-rule"></span>
+            </button>
+          </li>
+        </ul>
+
+        <div class="voice-panel">
+          <div class="voice-text">
+            <blockquote>
+              <p id="voice-quote" class="quote">
+                “Marcus saw the market three years before the rest of us. Betting alongside him changed the trajectory of my entire career.”
+              </p>
+            </blockquote>
+            <footer id="voice-attribution" class="voice-by">
+              Elena Cardoso — Managing Partner, Meridian Ventures
+            </footer>
+          </div>
+
+          <div class="voice-portrait">
+            <figure class="voice-img-wrap">
+              <img id="voice-image" src="/assets/images/mv-voice-01.webp" alt="Elena Cardoso" class="voice-img" />
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- CONTACT SECTION & INQUIRY FORM                 -->
+    <!-- ============================================== -->
+    <footer id="contact" class="contact">
+      <div class="contact-header-wrap">
+        <p class="eyebrow"><span class="dot"></span>Let's Build</p>
+        <h2 class="h-contact">Have something the world says can't be done?</h2>
+        <p class="contact-lead">That's usually where I start. I read every message I'm sent.</p>
+        
+        <a href="mailto:hello@marcusvane.com" class="email">
+          <span>hello@marcusvane.com</span>
+          <span class="arrow">↗</span>
+        </a>
+      </div>
+
+      <!-- Working Consultation Inquiry Form (Direct DB Submission) -->
+      <div class="inquiry-form-card">
+        <form id="inquiry-form" class="inquiry-form" novalidate>
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="form-name">Your Full Name *</label>
+              <input type="text" id="form-name" name="name" required placeholder="Elena Rostova" />
+            </div>
+            <div class="form-group">
+              <label for="form-email">Corporate Email *</label>
+              <input type="email" id="form-email" name="email" required placeholder="elena@venture.com" />
+            </div>
+            <div class="form-group">
+              <label for="form-company">Company / Venture (Optional)</label>
+              <input type="text" id="form-company" name="company" placeholder="Horizon Technologies" />
+            </div>
+            <div class="form-group">
+              <label for="form-subject">Inquiry Subject *</label>
+              <input type="text" id="form-subject" name="subject" required placeholder="Seed Investment / Strategic Advisory" />
+            </div>
+            <div class="form-group full-width">
+              <label for="form-message">Confidential Message *</label>
+              <textarea id="form-message" name="message" rows="4" required placeholder="Outline the contrarian problem you are tackling..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-action-row">
+            <button type="submit" id="submit-inquiry-btn" class="submit-btn">
+              <span>Transmit Strategic Inquiry</span>
+              <span class="submit-arrow">→</span>
+            </button>
+            <div id="form-status" class="form-status" aria-live="polite"></div>
+          </div>
+        </form>
+      </div>
+
+      <div class="footer-bar">
+        <div class="fb-left">
+          <p class="signature">Marcus Vane</p>
+          <p class="label fb-tag">Designed &amp; built with conviction.</p>
+        </div>
+
+        <nav aria-label="Social" class="fb-mid">
+          <ul>
+            <li><a href="https://www.linkedin.com" target="_blank" rel="noreferrer noopener" class="social">LinkedIn</a></li>
+            <li><a href="https://x.com" target="_blank" rel="noreferrer noopener" class="social">X / Twitter</a></li>
+            <li><a href="https://substack.com" target="_blank" rel="noreferrer noopener" class="social">Substack</a></li>
+          </ul>
+        </nav>
+
+        <p class="label fb-right">© 2026 Marcus Vane. Portfolio integration for Rizwan Malik.</p>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- ============================================== -->
+  <!-- VENTURE DETAILS MODAL                          -->
+  <!-- ============================================== -->
+  <div id="venture-modal" class="mv-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card">
+      <button id="close-modal-btn" class="modal-close" aria-label="Close dialog">×</button>
+      <div id="modal-body" class="modal-body"></div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="/js/three-hero.js"></script>
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>
