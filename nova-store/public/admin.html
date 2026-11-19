@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — NOVA STORE | Executive Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .admin-wrapper {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      min-height: calc(100vh - 65px);
+    }
+    .admin-sidebar {
+      background: var(--bg-secondary);
+      border-right: 1px solid var(--border-subtle);
+      padding: 28px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .admin-sidebar-header {
+      padding-bottom: 24px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .admin-menu-btn {
+      width: 100%;
+      text-align: left;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: var(--transition);
+    }
+    .admin-menu-btn:hover, .admin-menu-btn.active {
+      background: rgba(129, 140, 248, 0.12);
+      color: var(--accent-violet);
+    }
+    .admin-main {
+      padding: 36px 40px;
+      background: var(--bg-primary);
+      overflow-y: auto;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 36px;
+    }
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      backdrop-filter: blur(14px);
+    }
+    .kpi-title {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .kpi-value {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--text-main);
+      font-family: var(--font-mono);
+    }
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .admin-table th {
+      text-align: left;
+      padding: 14px 18px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-subtle);
+      background: rgba(12, 14, 23, 0.6);
+    }
+    .admin-table td {
+      padding: 16px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+    }
+    .status-select {
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-secondary);
+      color: var(--text-main);
+      border: 1px solid var(--border-subtle);
+      cursor: pointer;
+    }
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 580px;
+      padding: 32px;
+      box-shadow: var(--shadow-lg);
+    }
+    @media (max-width: 1024px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .admin-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .admin-sidebar {
+        flex-direction: row;
+        overflow-x: auto;
+      }
+    }
+    @media (max-width: 600px) {
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+      .admin-main {
+        padding: 20px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Admin Login Gate (if not logged in as admin) -->
+  <div id="admin-gate" style="display: none; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px;">
+    <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 40px; max-width: 440px; width: 100%; text-align: center; backdrop-filter: blur(20px);">
+      <div style="width: 54px; height: 54px; border-radius: var(--radius-full); background: rgba(129, 140, 248, 0.15); color: var(--accent-violet); display: inline-flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 20px; border: 1px solid var(--border-accent);">
+        🔒
+      </div>
+      <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 6px;">Executive Portal Access</h2>
+      <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 24px;">Please authenticate with store administrator credentials.</p>
+
+      <form id="gate-login-form" style="text-align: left;">
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">ADMIN EMAIL</label>
+          <input type="email" id="gate-email" value="admin@novastore.com" required style="width: 100%;">
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">PASSWORD</label>
+          <input type="password" id="gate-password" value="admin123" required style="width: 100%;">
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; padding: 14px; background: var(--accent-violet); border-color: var(--accent-violet); color: #fff;">
+          Authorize Access ✦
+        </button>
+      </form>
+
+      <div style="margin-top: 20px; font-size: 12px; color: var(--text-muted); padding-top: 16px; border-top: 1px solid var(--border-subtle);">
+        Pre-filled with database demo admin: <code style="color: var(--accent-cyan);">admin@novastore.com</code> / <code style="color: var(--accent-cyan);">admin123</code>
+      </div>
+    </div>
+  </div>
+
+  <!-- Authenticated Admin Layout -->
+  <div id="admin-app" style="display: none;">
+    <!-- Global Header -->
+    <header class="header" style="background: rgba(6, 7, 12, 0.95);">
+      <div class="container header-container" style="max-width: 100%; padding: 0 30px;">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <a href="/" class="logo">
+            <div class="logo-mark" style="background: linear-gradient(135deg, var(--accent-violet), var(--accent-cyan));">N</div>
+            <span>NOVA<span style="color: var(--accent-violet); font-weight: 300;">ADMIN</span></span>
+          </a>
+          <span class="badge" style="background: rgba(129, 140, 248, 0.15); color: var(--accent-violet); font-size: 11px;">STORE CONTROL PANEL</span>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <a href="/" class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px;">← Live Storefront</a>
+          <a href="/shop" class="btn btn-secondary" style="padding: 8px 16px; font-size: 12px;">Catalog</a>
+          <button id="admin-logout-btn" class="btn" style="color: var(--accent-rose); font-size: 13px;">Sign Out</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-wrapper">
+      <!-- Sidebar Navigation -->
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar-header">
+          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">Logged In As</div>
+          <div id="admin-user-display" style="font-weight: 600; font-size: 14px; color: var(--text-main); margin-top: 2px;">Administrator</div>
+        </div>
+
+        <button class="admin-menu-btn active" data-view="dashboard">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          Overview & Telemetry
+        </button>
+        <button class="admin-menu-btn" data-view="orders">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          Orders Management
+        </button>
+        <button class="admin-menu-btn" data-view="products">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+          Products & Inventory
+        </button>
+        <button class="admin-menu-btn" data-view="coupons">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+          Coupons & Discounts
+        </button>
+        <button class="admin-menu-btn" data-view="settings">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          Store Settings
+        </button>
+      </aside>
+
+      <!-- Main Content Area -->
+      <main class="admin-main">
+        <!-- 1. OVERVIEW & TELEMETRY PANE -->
+        <div id="view-dashboard" class="admin-pane">
+          <div style="margin-bottom: 28px;">
+            <h1 style="font-size: 26px; font-weight: 700;">Executive Dashboard</h1>
+            <p style="color: var(--text-muted); font-size: 14px;">Real-time database analytics and store health indicators.</p>
+          </div>
+
+          <!-- KPI Metrics Cards -->
+          <div class="kpi-grid">
+            <div class="kpi-card">
+              <div class="kpi-title">Total Revenue</div>
+              <div class="kpi-value" id="kpi-revenue" style="color: var(--accent-cyan);">$0.00</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-title">Total Orders</div>
+              <div class="kpi-value" id="kpi-orders">0</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-title">Registered Customers</div>
+              <div class="kpi-value" id="kpi-customers">0</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-title">Low Stock Alerts</div>
+              <div class="kpi-value" id="kpi-low-stock" style="color: var(--accent-rose);">0</div>
+            </div>
+          </div>
+
+          <!-- Dual tables: Recent Orders & Low Inventory -->
+          <div style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px;">
+            <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px;">
+              <h3 style="font-size: 16px; margin-bottom: 16px;">Recent Orders</h3>
+              <div id="dash-recent-orders">Loading...</div>
+            </div>
+            <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px;">
+              <h3 style="font-size: 16px; margin-bottom: 16px; color: var(--accent-rose);">Low Inventory Warnings</h3>
+              <div id="dash-low-stock">Loading...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. ORDERS MANAGEMENT PANE -->
+        <div id="view-orders" class="admin-pane" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
+            <div>
+              <h1 style="font-size: 26px; font-weight: 700;">Orders Management</h1>
+              <p style="color: var(--text-muted); font-size: 14px;">Track client purchases and dispatch lifecycle.</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <select id="orders-filter-status" class="status-select" style="padding: 8px 14px;">
+                <option value="all">All Statuses</option>
+                <option value="pending">Pending</option>
+                <option value="processing">Processing</option>
+                <option value="shipped">Shipped</option>
+                <option value="delivered">Delivered</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Order #</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Total</th>
+                  <th>Payment</th>
+                  <th>Date</th>
+                  <th>Fulfillment Status</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body">
+                <tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">Loading orders...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 3. PRODUCTS MANAGEMENT PANE -->
+        <div id="view-products" class="admin-pane" style="display: none;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px;">
+            <div>
+              <h1 style="font-size: 26px; font-weight: 700;">Products & Inventory</h1>
+              <p style="color: var(--text-muted); font-size: 14px;">Direct database CRUD catalog management.</p>
+            </div>
+            <button id="btn-add-product" class="btn btn-primary">+ Add New Product</button>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden;">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Stock</th>
+                  <th>Badges</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="products-table-body">
+                <tr><td colspan="6" style="text-align: center; color: var(--text-muted); padding: 40px;">Loading catalog items...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 4. COUPONS PANE -->
+        <div id="view-coupons" class="admin-pane" style="display: none;">
+          <div style="margin-bottom: 28px;">
+            <h1 style="font-size: 26px; font-weight: 700;">Coupons & Promotions</h1>
+            <p style="color: var(--text-muted); font-size: 14px;">Manage dynamic promotional vouchers validated at checkout.</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px;">
+            <!-- Create Coupon Form -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px;">
+              <h3 style="font-size: 16px; margin-bottom: 18px;">Create Promo Voucher</h3>
+              <form id="coupon-form">
+                <div style="margin-bottom: 14px;">
+                  <label style="display: block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">COUPON CODE (UPPERCASE)</label>
+                  <input type="text" id="cpn-code" placeholder="e.g. SUMMER25" required style="width: 100%; text-transform: uppercase;">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+                  <div>
+                    <label style="display: block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">DISCOUNT TYPE</label>
+                    <select id="cpn-type" style="width: 100%;">
+                      <option value="percent">Percentage (%)</option>
+                      <option value="fixed">Fixed Cash ($)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label style="display: block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">VALUE</label>
+                    <input type="number" id="cpn-val" placeholder="20" required min="1" step="any" style="width: 100%;">
+                  </div>
+                </div>
+                <div style="margin-bottom: 20px;">
+                  <label style="display: block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">MIN SPEND ($)</label>
+                  <input type="number" id="cpn-min" value="50" min="0" style="width: 100%;">
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Create Coupon Code</button>
+              </form>
+            </div>
+
+            <!-- Existing Coupons Table -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px;">
+              <h3 style="font-size: 16px; margin-bottom: 18px;">Active Database Vouchers</h3>
+              <div id="coupons-table-container">Loading coupons...</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. SETTINGS PANE -->
+        <div id="view-settings" class="admin-pane" style="display: none;">
+          <div style="margin-bottom: 28px;">
+            <h1 style="font-size: 26px; font-weight: 700;">Store Configuration</h1>
+            <p style="color: var(--text-muted); font-size: 14px;">Tweak core business rules, shipping rates, and taxes.</p>
+          </div>
+
+          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 32px; max-width: 600px;">
+            <form id="settings-form">
+              <div style="margin-bottom: 18px;">
+                <label style="display: block; font-size: 12px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">STORE NAME</label>
+                <input type="text" id="set-store-name" value="NOVA STORE" required style="width: 100%;">
+              </div>
+              <div style="margin-bottom: 18px;">
+                <label style="display: block; font-size: 12px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">FREE SHIPPING THRESHOLD ($)</label>
+                <input type="number" id="set-free-ship" value="150" required style="width: 100%;">
+              </div>
+              <div style="margin-bottom: 18px;">
+                <label style="display: block; font-size: 12px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">FLAT SHIPPING RATE ($)</label>
+                <input type="number" id="set-flat-ship" value="15" required style="width: 100%;">
+              </div>
+              <div style="margin-bottom: 24px;">
+                <label style="display: block; font-size: 12px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">ESTIMATED TAX RATE (e.g. 0.08 for 8%)</label>
+                <input type="number" id="set-tax-rate" value="0.08" step="0.01" required style="width: 100%;">
+              </div>
+              <button type="submit" class="btn btn-primary">Save Configuration</button>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Add Product Modal -->
+  <div class="modal-overlay" id="add-product-modal">
+    <div class="modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="font-size: 18px; font-weight: 700;">Add New Luxury Product</h3>
+        <button id="btn-close-modal" style="font-size: 20px; color: var(--text-muted); cursor: pointer;">✕</button>
+      </div>
+
+      <form id="new-product-form">
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">PRODUCT NAME *</label>
+          <input type="text" id="np-name" required placeholder="Nova Apex Acoustic Headphones" style="width: 100%;">
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+          <div>
+            <label style="display: block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">CATEGORY *</label>
+            <select id="np-category" style="width: 100%;">
+              <option value="electronics">Electronics</option>
+              <option value="watches">Watches</option>
+              <option value="fashion">Fashion</option>
+              <option value="accessories">Accessories</option>
+              <option value="home-living">Home & Living</option>
+              <option value="lifestyle">Lifestyle</option>
+            </select>
+          </div>
+          <div>
+            <label style="display: block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">STOCK QUANTITY *</label>
+            <input type="number" id="np-stock" value="45" min="0" required style="width: 100%;">
+          </div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+          <div>
+            <label style="display: block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">REGULAR PRICE ($) *</label>
+            <input type="number" id="np-price" placeholder="499" step="0.01" min="1" required style="width: 100%;">
+          </div>
+          <div>
+            <label style="display: block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">SALE PRICE ($)</label>
+            <input type="number" id="np-sale-price" placeholder="Optional" step="0.01" style="width: 100%;">
+          </div>
+        </div>
+        <div style="margin-bottom: 14px;">
+          <label style="display: block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">IMAGE URL (OR PLACEHOLDER)</label>
+          <input type="text" id="np-image" placeholder="https://images.unsplash.com/..." style="width: 100%;">
+        </div>
+        <div style="margin-bottom: 20px;">
+          <label style="display: block; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 6px;">DESCRIPTION *</label>
+          <textarea id="np-desc" rows="3" required placeholder="Describe craftsmanship, materials, and acoustic fidelity..." style="width: 100%;"></textarea>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 12px;">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save to Database</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import { api } from '/js/api.js';
+    import { store } from '/js/store.js';
+
+    const gate = document.getElementById('admin-gate');
+    const app = document.getElementById('admin-app');
+    let token = store.getToken();
+    let user = store.getUser();
+
+    // Check admin authorization
+    if (token && user && user.role === 'admin') {
+      showAdminApp();
+    } else {
+      gate.style.display = 'flex';
+      app.style.display = 'none';
+    }
+
+    // Gate Login
+    document.getElementById('gate-login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('gate-email').value;
+      const pass = document.getElementById('gate-password').value;
+
+      try {
+        const res = await api.login(email, pass);
+        if (res.success && res.token) {
+          if (res.user.role !== 'admin') {
+            store.showToast('Access Denied: Account lacks admin permissions.', 'error');
+            return;
+          }
+          store.setAuth(res.token, res.user);
+          token = res.token;
+          user = res.user;
+          gate.style.display = 'none';
+          showAdminApp();
+        } else {
+          store.showToast(res.message || 'Login failed.', 'error');
+        }
+      } catch (err) {
+        store.showToast('Authentication network error.', 'error');
+      }
+    });
+
+    document.getElementById('admin-logout-btn').addEventListener('click', () => {
+      store.logout();
+    });
+
+    function showAdminApp() {
+      app.style.display = 'block';
+      gate.style.display = 'none';
+      document.getElementById('admin-user-display').textContent = user.name;
+
+      // Load initial overview
+      loadStats();
+
+      // Navigation setup
+      const menuBtns = document.querySelectorAll('.admin-menu-btn');
+      const panes = {
+        dashboard: document.getElementById('view-dashboard'),
+        orders: document.getElementById('view-orders'),
+        products: document.getElementById('view-products'),
+        coupons: document.getElementById('view-coupons'),
+        settings: document.getElementById('view-settings')
+      };
+
+      menuBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          menuBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const view = btn.dataset.view;
+
+          Object.keys(panes).forEach(k => {
+            panes[k].style.display = k === view ? 'block' : 'none';
+          });
+
+          if (view === 'dashboard') loadStats();
+          if (view === 'orders') loadOrders();
+          if (view === 'products') loadProducts();
+          if (view === 'coupons') loadCoupons();
+        });
+      });
+    }
+
+    // 1. Dashboard Overview
+    async function loadStats() {
+      try {
+        const res = await api.getAdminStats(token);
+        if (res.success && res.stats) {
+          const s = res.stats;
+          document.getElementById('kpi-revenue').textContent = store.formatPrice(s.totalRevenue);
+          document.getElementById('kpi-orders').textContent = s.totalOrders;
+          document.getElementById('kpi-customers').textContent = s.totalCustomers;
+          document.getElementById('kpi-low-stock').textContent = s.lowStockCount;
+
+          // Recent orders table
+          const recOrders = document.getElementById('dash-recent-orders');
+          if (s.recentOrders && s.recentOrders.length > 0) {
+            recOrders.innerHTML = `
+              <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                <thead>
+                  <tr style="border-bottom: 1px solid var(--border-subtle); color: var(--text-muted); font-family: var(--font-mono); font-size: 11px;">
+                    <th style="text-align: left; padding: 8px 0;">ORDER</th>
+                    <th style="text-align: left; padding: 8px 0;">CUSTOMER</th>
+                    <th style="text-align: right; padding: 8px 0;">TOTAL</th>
+                    <th style="text-align: right; padding: 8px 0;">STATUS</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${s.recentOrders.map(o => `
+                    <tr style="border-bottom: 1px solid var(--border-subtle);">
+                      <td style="padding: 10px 0; font-family: var(--font-mono); color: var(--accent-cyan); font-weight: 600;">${o.order_number}</td>
+                      <td style="padding: 10px 0;">${o.customer_name}</td>
+                      <td style="padding: 10px 0; text-align: right; font-family: var(--font-mono);">${store.formatPrice(o.total_amount)}</td>
+                      <td style="padding: 10px 0; text-align: right;">
+                        <span class="badge ${o.status === 'delivered' ? 'badge-in-stock' : 'badge-featured'}" style="font-size: 10px;">${o.status.toUpperCase()}</span>
+                      </td>
+                    </tr>
+                  `).join('')}
+                </tbody>
+              </table>
+            `;
+          } else {
+            recOrders.innerHTML = `<div style="color: var(--text-muted); padding: 20px 0;">No orders placed yet.</div>`;
+          }
+
+          // Low stock products
+          const lowStock = document.getElementById('dash-low-stock');
+          if (s.lowStockProducts && s.lowStockProducts.length > 0) {
+            lowStock.innerHTML = `
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                ${s.lowStockProducts.map(p => `
+                  <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; background: var(--bg-secondary); border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+                    <div>
+                      <div style="font-weight: 600; font-size: 13px;">${p.name}</div>
+                      <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">${p.category_slug}</div>
+                    </div>
+                    <span class="badge badge-low-stock" style="font-size: 11px;">${p.stock} units left</span>
+                  </div>
+                `).join('')}
+              </div>
+            `;
+          } else {
+            lowStock.innerHTML = `<div style="color: var(--accent-emerald);">Inventory levels optimal across all lines.</div>`;
+          }
+        }
+      } catch (err) {
+        console.error('loadStats error:', err);
+      }
+    }
+
+    // 2. Orders Management
+    async function loadOrders() {
+      const tbody = document.getElementById('orders-table-body');
+      const statusFilter = document.getElementById('orders-filter-status').value;
+      try {
+        const res = await api.getAdminOrders(token, statusFilter);
+        if (res.success && res.orders) {
+          if (res.orders.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 40px;">No orders found.</td></tr>`;
+            return;
+          }
+          tbody.innerHTML = res.orders.map(o => `
+            <tr>
+              <td style="font-family: var(--font-mono); font-weight: 600; color: var(--accent-cyan);">${o.order_number}</td>
+              <td>
+                <div style="font-weight: 600;">${o.customer_name}</div>
+                <div style="font-size: 11px; color: var(--text-muted);">${o.customer_email}</div>
+              </td>
+              <td style="font-family: var(--font-mono);">${(o.items || []).length} items</td>
+              <td style="font-family: var(--font-mono); font-weight: 600;">${store.formatPrice(o.total_amount)}</td>
+              <td style="text-transform: uppercase; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">${o.payment_method}</td>
+              <td style="color: var(--text-muted); font-size: 12px;">${new Date(o.created_at).toLocaleDateString()}</td>
+              <td>
+                <select class="status-select" data-order-id="${o.id}">
+                  <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Pending</option>
+                  <option value="processing" ${o.status === 'processing' ? 'selected' : ''}>Processing</option>
+                  <option value="shipped" ${o.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                  <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                  <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                </select>
+              </td>
+            </tr>
+          `).join('');
+
+          // Bind status change events
+          tbody.querySelectorAll('.status-select').forEach(sel => {
+            sel.addEventListener('change', async (e) => {
+              const orderId = sel.dataset.orderId;
+              const newStatus = sel.value;
+              try {
+                const updateRes = await api.updateOrderStatus(orderId, newStatus, token);
+                if (updateRes.success) {
+                  store.showToast(`Order status updated to ${newStatus}.`, 'success');
+                } else {
+                  store.showToast('Failed to update status.', 'error');
+                }
+              } catch (err) {
+                store.showToast('Update error.', 'error');
+              }
+            });
+          });
+        }
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="7" style="color: var(--accent-rose); text-align: center; padding: 20px;">Failed to load orders.</td></tr>`;
+      }
+    }
+
+    document.getElementById('orders-filter-status').addEventListener('change', loadOrders);
+
+    // 3. Products Management
+    async function loadProducts() {
+      const tbody = document.getElementById('products-table-body');
+      try {
+        const res = await api.getAdminProducts(token);
+        if (res.success && res.products) {
+          tbody.innerHTML = res.products.map(p => `
+            <tr>
+              <td>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                  <img src="${p.primary_image || '/assets/images/placeholder.jpg'}" alt="${p.name}" style="width: 44px; height: 44px; border-radius: var(--radius-sm); object-fit: cover; background: var(--bg-tertiary);">
+                  <div>
+                    <div style="font-weight: 600;">${p.name}</div>
+                    <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">${p.slug}</div>
+                  </div>
+                </div>
+              </td>
+              <td style="text-transform: capitalize; color: var(--text-muted);">${p.category_name || p.category_slug}</td>
+              <td style="font-family: var(--font-mono); font-weight: 600;">
+                ${p.sale_price ? `<span style="color: var(--accent-cyan);">${store.formatPrice(p.sale_price)}</span> <s style="color: var(--text-subtle); font-size: 11px;">${store.formatPrice(p.price)}</s>` : store.formatPrice(p.price)}
+              </td>
+              <td>
+                <span class="badge ${p.stock <= 15 ? 'badge-low-stock' : 'badge-in-stock'}">${p.stock} units</span>
+              </td>
+              <td>
+                ${p.is_featured ? '<span class="badge badge-featured">FEATURED</span> ' : ''}
+                ${p.is_trending ? '<span class="badge badge-new">TRENDING</span>' : ''}
+              </td>
+              <td>
+                <button class="btn btn-delete-product" data-product-id="${p.id}" style="color: var(--accent-rose); font-size: 12px; padding: 4px 8px; border: 1px solid rgba(244, 63, 94, 0.3); border-radius: var(--radius-sm);">
+                  Delete
+                </button>
+              </td>
+            </tr>
+          `).join('');
+
+          // Bind delete buttons
+          tbody.querySelectorAll('.btn-delete-product').forEach(btn => {
+            btn.addEventListener('click', async () => {
+              const pid = btn.dataset.productId;
+              if (confirm(`Are you sure you want to delete product #${pid}?`)) {
+                try {
+                  const delRes = await api.deleteProduct(pid, token);
+                  if (delRes.success) {
+                    store.showToast('Product deleted from database.', 'success');
+                    loadProducts();
+                  } else {
+                    store.showToast('Failed to delete product.', 'error');
+                  }
+                } catch (err) {
+                  store.showToast('Error deleting product.', 'error');
+                }
+              }
+            });
+          });
+        }
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="6" style="color: var(--accent-rose); text-align: center; padding: 20px;">Failed to load products.</td></tr>`;
+      }
+    }
+
+    // Add Product Modal Triggers
+    const modal = document.getElementById('add-product-modal');
+    document.getElementById('btn-add-product').addEventListener('click', () => modal.style.display = 'flex');
+    document.getElementById('btn-close-modal').addEventListener('click', () => modal.style.display = 'none');
+    document.getElementById('btn-cancel-modal').addEventListener('click', () => modal.style.display = 'none');
+
+    document.getElementById('new-product-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        name: document.getElementById('np-name').value,
+        categorySlug: document.getElementById('np-category').value,
+        price: document.getElementById('np-price').value,
+        salePrice: document.getElementById('np-sale-price').value || null,
+        stock: document.getElementById('np-stock').value,
+        imageUrl: document.getElementById('np-image').value || 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?auto=format&fit=crop&w=800&q=80',
+        description: document.getElementById('np-desc').value,
+        isFeatured: 1,
+        isTrending: 1
+      };
+
+      try {
+        const res = await api.createProduct(payload, token);
+        if (res.success) {
+          store.showToast('New product added to catalog!', 'success');
+          modal.style.display = 'none';
+          document.getElementById('new-product-form').reset();
+          loadProducts();
+        } else {
+          store.showToast(res.message || 'Creation failed.', 'error');
+        }
+      } catch (err) {
+        store.showToast('Error creating product.', 'error');
+      }
+    });
+
+    // 4. Coupons Management
+    async function loadCoupons() {
+      const container = document.getElementById('coupons-table-container');
+      try {
+        const res = await api.getAdminCoupons(token);
+        if (res.success && res.coupons) {
+          container.innerHTML = `
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Discount</th>
+                  <th>Min Spend</th>
+                  <th>Redeemed</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${res.coupons.map(c => `
+                  <tr>
+                    <td style="font-family: var(--font-mono); font-weight: 700; color: var(--accent-cyan);">${c.code}</td>
+                    <td style="font-family: var(--font-mono);">${c.discount_type === 'percent' ? `${c.discount_value}%` : `$${c.discount_value}`}</td>
+                    <td style="font-family: var(--font-mono);">${store.formatPrice(c.min_spend)}</td>
+                    <td style="font-family: var(--font-mono);">${c.used_count} times</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          `;
+        }
+      } catch (err) {
+        container.innerHTML = `<div style="color: var(--accent-rose);">Failed to retrieve coupons.</div>`;
+      }
+    }
+
+    document.getElementById('coupon-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        code: document.getElementById('cpn-code').value.trim(),
+        discountType: document.getElementById('cpn-type').value,
+        discountValue: document.getElementById('cpn-val').value,
+        minSpend: document.getElementById('cpn-min').value
+      };
+
+      try {
+        const res = await api.createCoupon(payload, token);
+        if (res.success) {
+          store.showToast(`Coupon ${payload.code} created!`, 'success');
+          document.getElementById('coupon-form').reset();
+          loadCoupons();
+        } else {
+          store.showToast(res.message || 'Coupon creation failed.', 'error');
+        }
+      } catch (err) {
+        store.showToast('Error creating coupon.', 'error');
+      }
+    });
+
+    // 5. Store Settings
+    document.getElementById('settings-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const settings = {
+        store_name: document.getElementById('set-store-name').value,
+        free_shipping_threshold: document.getElementById('set-free-ship').value,
+        flat_shipping_rate: document.getElementById('set-flat-ship').value,
+        tax_rate: document.getElementById('set-tax-rate').value
+      };
+
+      try {
+        const res = await api.updateStoreSettings(settings, token);
+        if (res.success) {
+          store.showToast('Store settings saved to database.', 'success');
+        } else {
+          store.showToast('Settings update failed.', 'error');
+        }
+      } catch (err) {
+        store.showToast('Settings update error.', 'error');
+      }
+    });
+  </script>
+</body>
+</html>

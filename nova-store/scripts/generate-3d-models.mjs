@@ -3,6 +3,30 @@ import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
 import fs from 'fs';
 import path from 'path';
 
+// Node.js web standard polyfills for GLTFExporter
+if (typeof globalThis.FileReader === 'undefined') {
+  globalThis.FileReader = class FileReader {
+    readAsArrayBuffer(blob) {
+      blob.arrayBuffer().then(buf => {
+        this.result = buf;
+        if (this.onload) this.onload({ target: this });
+        if (this.onloadend) this.onloadend({ target: this });
+      }).catch(err => {
+        if (this.onerror) this.onerror(err);
+      });
+    }
+    readAsDataURL(blob) {
+      blob.arrayBuffer().then(buf => {
+        this.result = 'data:' + (blob.type || 'application/octet-stream') + ';base64,' + Buffer.from(buf).toString('base64');
+        if (this.onload) this.onload({ target: this });
+        if (this.onloadend) this.onloadend({ target: this });
+      }).catch(err => {
+        if (this.onerror) this.onerror(err);
+      });
+    }
+  };
+}
+
 const modelsDir = path.resolve('nova-store/public/assets/models');
 if (!fs.existsSync(modelsDir)) {
   fs.mkdirSync(modelsDir, { recursive: true });
@@ -215,19 +239,11 @@ function buildSmartwatch() {
 // ----------------------------------------------------------------------
 async function exportModel(scene, filename) {
   const exporter = new GLTFExporter();
-  return new Promise((resolve, reject) => {
-    exporter.parse(
-      scene,
-      (gltf) => {
-        const outPath = path.join(modelsDir, filename);
-        fs.writeFileSync(outPath, Buffer.from(gltf));
-        console.log(`Exported 3D model to: ${outPath} (${fs.statSync(outPath).size} bytes)`);
-        resolve(outPath);
-      },
-      reject,
-      { binary: true }
-    );
-  });
+  const gltf = await exporter.parseAsync(scene, { binary: true });
+  const outPath = path.join(modelsDir, filename);
+  fs.writeFileSync(outPath, Buffer.from(gltf));
+  console.log(`Exported 3D model to: ${outPath} (${fs.statSync(outPath).size} bytes)`);
+  return outPath;
 }
 
 (async () => {

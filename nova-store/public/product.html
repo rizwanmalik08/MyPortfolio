@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details — NOVA STORE</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="announcement-bar">
+    <span class="badge badge-cyan">✦ COMPLIMENTARY WORLDWIDE COURIER SHIPPING OVER $150</span>
+    <span>•</span>
+    <span>USE CODE <strong style="color: #fff;">NOVA20</strong> FOR 20% OFF</span>
+  </div>
+
+  <!-- Header / Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo">
+        <div class="brand-symbol">N</div>
+        <span>NOVA<span style="color: var(--accent-cyan); font-weight: 400;">STORE</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/shop" class="nav-link">Catalog</a></li>
+          <li><a href="/shop?category=electronics" class="nav-link">Electronics</a></li>
+          <li><a href="/shop?category=watches" class="nav-link">Watches</a></li>
+          <li><a href="/shop?category=fashion" class="nav-link">Fashion</a></li>
+          <li><a href="/#3d-studio" class="nav-link">3D Studio</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/account" class="nav-btn" title="User Account">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+
+        <a href="/cart" class="nav-btn" title="Shopping Cart">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="nav-badge cart-count-badge" style="display: none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Product Detail Section -->
+  <main style="padding: 40px 0 80px;">
+    <div class="container">
+      
+      <!-- Breadcrumbs -->
+      <div style="font-size: 12px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 24px;">
+        <a href="/">Home</a> / <a href="/shop" id="bread-cat">Shop</a> / <span id="bread-title" style="color: var(--accent-cyan);">Product</span>
+      </div>
+
+      <!-- Main Product Row -->
+      <div style="display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; margin-bottom: 70px;">
+        
+        <!-- Left Column: 3D Experience or Image Gallery -->
+        <div>
+          <!-- Mode Toggle Tabs (if product supports 3D) -->
+          <div id="media-mode-tabs" style="display: none; gap: 8px; margin-bottom: 16px;">
+            <button id="tab-3d" class="btn btn-primary" style="padding: 8px 16px; font-size: 11px;">
+              <span>✦ 3D Interactive Model</span>
+            </button>
+            <button id="tab-gallery" class="btn btn-secondary" style="padding: 8px 16px; font-size: 11px;">
+              <span>Photo Gallery</span>
+            </button>
+          </div>
+
+          <!-- 3D Viewer Container -->
+          <div id="product-3d-wrap" style="display: none;">
+            <div class="three-viewer-container" id="product-three-canvas-box" style="height: 480px;">
+              <div class="three-hint">
+                <span>ORBIT TO ROTATE • SCROLL TO ZOOM</span>
+              </div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">
+              <span>REAL-TIME PBR SHADERS</span>
+              <button id="product-reset-cam-btn" style="color: var(--accent-cyan); text-transform: uppercase;">Reset Perspective</button>
+            </div>
+          </div>
+
+          <!-- Photographic Gallery View -->
+          <div id="product-gallery-wrap">
+            <div style="width: 100%; aspect-ratio: 1/1; background: #090b14; border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); overflow: hidden; margin-bottom: 14px;">
+              <img id="main-product-img" src="" alt="Product Hero" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div id="gallery-thumbs" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px;">
+              <!-- Thumbnails populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Product Meta, Variants & Purchase Actions -->
+        <div>
+          <span id="product-category-badge" class="product-cat">CATEGORY</span>
+          <h1 id="product-name" style="font-size: 32px; font-weight: 800; margin: 8px 0 12px; line-height: 1.2;">Loading Product...</h1>
+          
+          <!-- Rating & Stock Row -->
+          <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 4px; color: var(--accent-gold); font-size: 14px;">
+              <span id="star-icons">★★★★★</span>
+              <span id="rating-val" style="font-family: var(--font-mono); color: #fff; font-weight: 700; margin-left: 4px;">4.9</span>
+              <span id="review-count" style="color: var(--text-muted); font-size: 12px;">(0 reviews)</span>
+            </div>
+            <span style="color: var(--border-subtle);">|</span>
+            <span id="stock-badge" class="badge badge-emerald">In Stock</span>
+          </div>
+
+          <!-- Price Row -->
+          <div style="display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border-subtle);">
+            <span id="product-current-price" style="font-size: 32px; font-weight: 800; font-family: var(--font-mono); color: var(--text-main);">$0.00</span>
+            <span id="product-original-price" style="font-size: 18px; color: var(--text-subtle); text-decoration: line-through; font-family: var(--font-mono); display: none;"></span>
+          </div>
+
+          <!-- Description -->
+          <p id="product-description" style="color: var(--text-muted); font-size: 14px; line-height: 1.7; margin-bottom: 28px;">
+            Loading description...
+          </p>
+
+          <!-- Color Variations -->
+          <div id="colors-selector-wrap" style="margin-bottom: 24px; display: none;">
+            <label style="display: block; font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;">
+              Select Finish: <strong id="selected-color-label" style="color: #fff;"></strong>
+            </label>
+            <div id="color-swatches-row" style="display: flex; gap: 10px;">
+              <!-- Color buttons injected via JS -->
+            </div>
+          </div>
+
+          <!-- Size Variations -->
+          <div id="sizes-selector-wrap" style="margin-bottom: 28px; display: none;">
+            <label style="display: block; font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;">
+              Select Size: <strong id="selected-size-label" style="color: #fff;"></strong>
+            </label>
+            <div id="size-options-row" style="display: flex; flex-wrap: wrap; gap: 8px;">
+              <!-- Size buttons injected via JS -->
+            </div>
+          </div>
+
+          <!-- Quantity & Purchase Row -->
+          <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 30px;">
+            <!-- Quantity Counter -->
+            <div style="display: flex; align-items: center; border: 1px solid var(--border-subtle); border-radius: var(--radius-full); background: var(--bg-secondary);">
+              <button id="qty-dec" style="padding: 12px 16px; color: var(--text-muted); font-size: 16px;">-</button>
+              <span id="qty-val" style="padding: 0 8px; font-family: var(--font-mono); font-weight: 700; width: 32px; text-align: center;">1</span>
+              <button id="qty-inc" style="padding: 12px 16px; color: var(--text-muted); font-size: 16px;">+</button>
+            </div>
+
+            <!-- Add to Cart -->
+            <button id="add-to-cart-btn" class="btn btn-primary" style="flex: 1; padding: 14px 28px;">
+              <span>Add to Shopping Cart</span>
+            </button>
+
+            <!-- Wishlist Heart -->
+            <button id="wishlist-btn" class="btn btn-secondary" style="width: 50px; height: 50px; padding: 0; border-radius: var(--radius-full);" title="Save to Wishlist">
+              ♥
+            </button>
+          </div>
+
+          <!-- Value Guarantees -->
+          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; text-align: center; font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">
+            <div>✈ WORLDWIDE COURIER</div>
+            <div>🛡 2-YEAR WARRANTY</div>
+            <div>↺ 30-DAY RETURNS</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Tabs: Specifications, Shipping, Reviews -->
+      <section style="margin-top: 40px; border-top: 1px solid var(--border-subtle); padding-top: 40px;">
+        <div style="display: flex; gap: 24px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px; margin-bottom: 28px;">
+          <button class="spec-tab-btn active" data-tab="specs" style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--accent-cyan);">Specifications</button>
+          <button class="spec-tab-btn" data-tab="reviews" style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Verified Reviews</button>
+          <button class="spec-tab-btn" data-tab="shipping" style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Delivery &amp; Care</button>
+        </div>
+
+        <!-- Specifications Tab Pane -->
+        <div id="tab-pane-specs">
+          <div id="specs-table" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <!-- Reviews Tab Pane -->
+        <div id="tab-pane-reviews" style="display: none;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+            <div id="reviews-list" style="display: flex; flex-direction: column; gap: 16px;">
+              <!-- Populated via JS -->
+            </div>
+            
+            <!-- Submit Review Form -->
+            <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px;">
+              <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px;">Write a Review</h3>
+              <form id="add-review-form" style="display: flex; flex-direction: column; gap: 14px;">
+                <div>
+                  <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 6px;">Your Name</label>
+                  <input type="text" id="review-name" required placeholder="Alexander Vance" style="width: 100%;">
+                </div>
+                <div>
+                  <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 6px;">Rating</label>
+                  <select id="review-rating" style="width: 100%;">
+                    <option value="5">★★★★★ — Exceptional</option>
+                    <option value="4">★★★★☆ — Very Good</option>
+                    <option value="3">★★★☆☆ — Satisfactory</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 6px;">Review Feedback</label>
+                  <textarea id="review-comment" required rows="3" placeholder="Share your experience..." style="width: 100%;"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary" style="padding: 10px; font-size: 12px;">Submit Review</button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shipping Tab Pane -->
+        <div id="tab-pane-shipping" style="display: none; font-size: 14px; color: var(--text-muted); line-height: 1.8; max-width: 700px;">
+          <p style="margin-bottom: 12px;">All orders are dispatched from our central architectural logistics hub in custom shockproof packaging. Orders placed before 2:00 PM EST ship the same business day.</p>
+          <p>Complimentary insured express shipping is applied automatically to all orders exceeding $150. A flat $15 rate applies to smaller parcels.</p>
+        </div>
+      </section>
+
+      <!-- Related Products -->
+      <section style="margin-top: 80px; padding-top: 40px; border-top: 1px solid var(--border-subtle);">
+        <h2 style="font-size: 24px; font-weight: 800; margin-bottom: 24px;">You May Also Admire</h2>
+        <div id="related-products-grid" class="product-grid">
+          <!-- Populated via JS -->
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="background: #030408; border-top: 1px solid var(--border-subtle); padding: 40px 0; text-align: center; font-size: 12px; color: var(--text-subtle);">
+    <div class="container">
+      <p>© 2026 NOVA STORE. All rights reserved. Precision Luxury Demonstration.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { api } from '/js/api.js';
+    import { store } from '/js/store.js';
+    import { ProductViewer3D } from '/js/threeViewer.js';
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const productIdOrSlug = urlParams.get('id') || urlParams.get('slug') || 1;
+
+    let currentProduct = null;
+    let selectedColor = null;
+    let selectedSize = null;
+    let quantity = 1;
+    let viewer3D = null;
+
+    async function loadProductDetail() {
+      const data = await api.getProduct(productIdOrSlug);
+      if (!data.success || !data.product) {
+        document.getElementById('product-name').textContent = 'Product Not Found';
+        return;
+      }
+
+      currentProduct = data.product;
+
+      // Update text
+      document.getElementById('bread-title').textContent = currentProduct.name;
+      document.getElementById('bread-cat').textContent = currentProduct.category_name || 'Catalog';
+      document.getElementById('bread-cat').href = `/shop?category=${currentProduct.category_slug}`;
+      document.getElementById('product-category-badge').textContent = currentProduct.category_name || currentProduct.category_slug;
+      document.getElementById('product-name').textContent = currentProduct.name;
+      document.getElementById('rating-val').textContent = currentProduct.rating;
+      document.getElementById('review-count').textContent = `(${currentProduct.review_count} reviews)`;
+      document.getElementById('product-description').textContent = currentProduct.description;
+
+      // Price
+      const effectivePrice = currentProduct.sale_price || currentProduct.price;
+      document.getElementById('product-current-price').textContent = store.formatPrice(effectivePrice);
+      if (currentProduct.sale_price) {
+        const oldPriceEl = document.getElementById('product-original-price');
+        oldPriceEl.textContent = store.formatPrice(currentProduct.price);
+        oldPriceEl.style.display = 'inline';
+      }
+
+      // Stock
+      const stockBadge = document.getElementById('stock-badge');
+      if (currentProduct.stock > 0) {
+        stockBadge.textContent = `${currentProduct.stock} Units in Stock`;
+        stockBadge.className = 'badge badge-emerald';
+      } else {
+        stockBadge.textContent = 'Out of Stock';
+        stockBadge.className = 'badge badge-cyan';
+      }
+
+      // Wishlist initial state
+      const wishBtn = document.getElementById('wishlist-btn');
+      wishBtn.style.color = store.isWishlisted(currentProduct.id) ? 'var(--accent-rose)' : 'inherit';
+      wishBtn.addEventListener('click', () => {
+        const added = store.toggleWishlistLocal(currentProduct.id);
+        wishBtn.style.color = added ? 'var(--accent-rose)' : 'inherit';
+      });
+
+      // Images
+      const mainImg = document.getElementById('main-product-img');
+      const thumbsContainer = document.getElementById('gallery-thumbs');
+      if (currentProduct.images && currentProduct.images.length > 0) {
+        mainImg.src = currentProduct.images[0];
+        thumbsContainer.innerHTML = currentProduct.images.map((img, idx) => `
+          <div style="width: 70px; height: 70px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); overflow: hidden; cursor: pointer;" onclick="document.getElementById('main-product-img').src='${img}'">
+            <img src="${img}" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+        `).join('');
+      }
+
+      // Check 3D Capability
+      if (currentProduct.has_3d && currentProduct.model_url) {
+        document.getElementById('media-mode-tabs').style.display = 'flex';
+        document.getElementById('product-3d-wrap').style.display = 'block';
+        document.getElementById('product-gallery-wrap').style.display = 'none';
+
+        // Init 3D Engine
+        viewer3D = new ProductViewer3D({
+          container: document.getElementById('product-three-canvas-box'),
+          modelUrl: currentProduct.model_url
+        });
+
+        document.getElementById('tab-3d').addEventListener('click', (e) => {
+          document.getElementById('product-3d-wrap').style.display = 'block';
+          document.getElementById('product-gallery-wrap').style.display = 'none';
+          document.getElementById('tab-3d').className = 'btn btn-primary';
+          document.getElementById('tab-gallery').className = 'btn btn-secondary';
+        });
+
+        document.getElementById('tab-gallery').addEventListener('click', (e) => {
+          document.getElementById('product-3d-wrap').style.display = 'none';
+          document.getElementById('product-gallery-wrap').style.display = 'block';
+          document.getElementById('tab-3d').className = 'btn btn-secondary';
+          document.getElementById('tab-gallery').className = 'btn btn-primary';
+        });
+
+        document.getElementById('product-reset-cam-btn')?.addEventListener('click', () => {
+          if (viewer3D) viewer3D.resetCamera();
+        });
+      }
+
+      // Colors setup
+      if (currentProduct.colors && currentProduct.colors.length > 0) {
+        const wrap = document.getElementById('colors-selector-wrap');
+        wrap.style.display = 'block';
+        selectedColor = currentProduct.colors[0].name;
+        document.getElementById('selected-color-label').textContent = selectedColor;
+
+        const row = document.getElementById('color-swatches-row');
+        row.innerHTML = currentProduct.colors.map((c, idx) => `
+          <button class="color-swatch-btn ${idx === 0 ? 'active' : ''}" style="background: ${c.hex};" title="${c.name}" data-color-val="${c.value || c.name}"></button>
+        `).join('');
+
+        row.querySelectorAll('.color-swatch-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            row.querySelectorAll('.color-swatch-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedColor = btn.title;
+            document.getElementById('selected-color-label').textContent = selectedColor;
+
+            if (viewer3D && btn.dataset.colorVal) {
+              viewer3D.setColor(btn.dataset.colorVal.toLowerCase());
+            }
+          });
+        });
+      }
+
+      // Sizes setup
+      if (currentProduct.sizes && currentProduct.sizes.length > 0) {
+        const wrap = document.getElementById('sizes-selector-wrap');
+        wrap.style.display = 'block';
+        selectedSize = currentProduct.sizes[0];
+        document.getElementById('selected-size-label').textContent = selectedSize;
+
+        const row = document.getElementById('size-options-row');
+        row.innerHTML = currentProduct.sizes.map((s, idx) => `
+          <button class="size-pill ${idx === 0 ? 'btn-primary' : 'btn-secondary'}" style="padding: 6px 14px; font-size: 11px; border-radius: var(--radius-sm);">${s}</button>
+        `).join('');
+
+        row.querySelectorAll('.size-pill').forEach(btn => {
+          btn.addEventListener('click', () => {
+            row.querySelectorAll('.size-pill').forEach(b => b.className = 'size-pill btn-secondary');
+            btn.className = 'size-pill btn-primary';
+            selectedSize = btn.textContent;
+            document.getElementById('selected-size-label').textContent = selectedSize;
+          });
+        });
+      }
+
+      // Specifications Table
+      const specsTable = document.getElementById('specs-table');
+      if (currentProduct.specifications && Object.keys(currentProduct.specifications).length > 0) {
+        specsTable.innerHTML = Object.entries(currentProduct.specifications).map(([k, v]) => `
+          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); padding: 14px;">
+            <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">${k}</div>
+            <div style="font-size: 14px; font-weight: 600; color: #fff; margin-top: 4px;">${v}</div>
+          </div>
+        `).join('');
+      } else {
+        specsTable.innerHTML = '<p style="color: var(--text-muted);">Standard manufacturing specifications apply.</p>';
+      }
+
+      // Reviews
+      renderReviews(currentProduct.reviews || []);
+
+      // Related Products
+      if (currentProduct.related && currentProduct.related.length > 0) {
+        document.getElementById('related-products-grid').innerHTML = currentProduct.related.map(p => `
+          <div class="product-card">
+            <div class="product-thumb-wrap">
+              <a href="/product?id=${p.id}">
+                <img src="${p.primary_image}" alt="${p.name}" class="product-thumb" loading="lazy">
+              </a>
+            </div>
+            <div class="product-info">
+              <h3 class="product-title"><a href="/product?id=${p.id}">${p.name}</a></h3>
+              <div class="product-price-row">
+                <div class="product-price">${store.formatPrice(p.sale_price || p.price)}</div>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function renderReviews(reviews) {
+      const list = document.getElementById('reviews-list');
+      if (reviews.length === 0) {
+        list.innerHTML = '<p style="color: var(--text-muted); font-size: 13px;">No customer reviews yet. Be the first to share your thoughts.</p>';
+        return;
+      }
+      list.innerHTML = reviews.map(r => `
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 18px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <strong style="color: #fff; font-size: 14px;">${r.user_name}</strong>
+            <span style="color: var(--accent-gold); font-size: 12px;">${'★'.repeat(r.rating)}</span>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">${r.comment}</p>
+        </div>
+      `).join('');
+    }
+
+    // Tab buttons
+    document.querySelectorAll('.spec-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.spec-tab-btn').forEach(b => {
+          b.classList.remove('active');
+          b.style.color = 'var(--text-muted)';
+        });
+        btn.classList.add('active');
+        btn.style.color = 'var(--accent-cyan)';
+
+        document.getElementById('tab-pane-specs').style.display = btn.dataset.tab === 'specs' ? 'block' : 'none';
+        document.getElementById('tab-pane-reviews').style.display = btn.dataset.tab === 'reviews' ? 'block' : 'none';
+        document.getElementById('tab-pane-shipping').style.display = btn.dataset.tab === 'shipping' ? 'block' : 'none';
+      });
+    });
+
+    // Quantity Counter
+    document.getElementById('qty-inc').addEventListener('click', () => {
+      quantity++;
+      document.getElementById('qty-val').textContent = quantity;
+    });
+    document.getElementById('qty-dec').addEventListener('click', () => {
+      if (quantity > 1) {
+        quantity--;
+        document.getElementById('qty-val').textContent = quantity;
+      }
+    });
+
+    // Add to Cart Action
+    document.getElementById('add-to-cart-btn').addEventListener('click', () => {
+      if (!currentProduct) return;
+      store.addToCart(currentProduct, quantity, selectedColor, selectedSize);
+    });
+
+    // Add Review Form
+    document.getElementById('add-review-form')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const userName = document.getElementById('review-name').value;
+      const rating = document.getElementById('review-rating').value;
+      const comment = document.getElementById('review-comment').value;
+
+      const res = await api.addReview({
+        productId: currentProduct.id,
+        userName,
+        rating,
+        comment
+      }, store.getToken());
+
+      if (res.success) {
+        store.showToast('Review submitted successfully!', 'success');
+        e.target.reset();
+        loadProductDetail();
+      } else {
+        store.showToast(res.message || 'Error submitting review.', 'error');
+      }
+    });
+
+    loadProductDetail();
+  </script>
+</body>
+</html>

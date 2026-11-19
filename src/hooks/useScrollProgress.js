@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 const SECTIONS = [
   'home',
   'about',
+  'websites',
   'social-media',
   'services',
   'skills',

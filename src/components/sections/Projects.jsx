@@ -59,10 +59,10 @@ export function Projects() {
             Client Websites &amp; Production Stores
           </span>
           <h2 className="mt-2 text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-            Websites &amp; Web Applications
+            Website &amp; App Development
           </h2>
           <p className="mt-4 text-sm sm:text-base text-slate-400">
-            Live client websites, production e-commerce platforms, and commercial agency portals.
+            Live client websites, production e-commerce platforms, and interactive 3D WebGL stores.
           </p>
         </div>
 
@@ -230,7 +230,7 @@ export function Projects() {
                           className="flex-1 flex items-center justify-center gap-1.5 rounded-xl border border-white/15 bg-white/5 py-2.5 text-xs font-semibold text-white transition hover:bg-white/15"
                         >
                           <Eye className="h-3.5 w-3.5 text-slate-400" />
-                          <span>Case Study</span>
+                          <span>Project Details</span>
                         </button>
 
                         <a

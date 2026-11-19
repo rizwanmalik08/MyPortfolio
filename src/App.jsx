@@ -5,6 +5,7 @@ import { Preloader } from './components/ui/Preloader';
 import { Navbar } from './components/sections/Navbar';
 import { Hero } from './components/sections/Hero';
 import { About } from './components/sections/About';
+import { Projects } from './components/sections/Projects';
 import { Skills } from './components/sections/Skills';
 import { SocialMediaMarketing } from './components/sections/SocialMediaMarketing';
 import { Services } from './components/sections/Services';
@@ -92,6 +93,7 @@ export default function App() {
       <main className={`relative z-10 transition-opacity duration-500 ${loading ? 'opacity-0' : 'opacity-100'}`}>
         <Hero />
         <About />
+        <Projects />
         <SocialMediaMarketing />
         <Services />
         <Skills />

@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NOVA STORE — Premium 3D E-Commerce Platform</title>
+  <meta name="description" content="Luxury retail storefront with real-time Three.js 3D product customization, REST API backend, and architectural minimalism.">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div id="announcement-bar" class="announcement-bar">
+    <span class="badge badge-cyan">✦ COMPLIMENTARY WORLDWIDE COURIER SHIPPING OVER $150</span>
+    <span>•</span>
+    <span>USE CODE <strong style="color: #fff;">NOVA20</strong> FOR 20% OFF AT CHECKOUT</span>
+  </div>
+
+  <!-- Header / Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <!-- Brand Logo -->
+      <a href="/" class="brand-logo">
+        <div class="brand-symbol">N</div>
+        <span>NOVA<span style="color: var(--accent-cyan); font-weight: 400;">STORE</span></span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/shop" class="nav-link">Catalog</a></li>
+          <li><a href="/shop?category=electronics" class="nav-link">Electronics</a></li>
+          <li><a href="/shop?category=watches" class="nav-link">Watches</a></li>
+          <li><a href="/shop?category=fashion" class="nav-link">Fashion</a></li>
+          <li><a href="#3d-studio" class="nav-link" style="color: var(--accent-cyan);">3D Studio</a></li>
+        </ul>
+      </nav>
+
+      <!-- Nav Action Icons -->
+      <div class="nav-actions">
+        <!-- Search Trigger -->
+        <a href="/shop" class="nav-btn" title="Search Catalog" aria-label="Search">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </a>
+
+        <!-- Account / Admin -->
+        <a href="/account" id="account-nav-btn" class="nav-btn" title="User Account" aria-label="Account">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+
+        <!-- Admin Shortcut -->
+        <a href="/admin" class="nav-btn" title="Admin Terminal" aria-label="Admin" style="border-color: rgba(129, 140, 248, 0.4); color: var(--accent-violet);">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+        </a>
+
+        <!-- Cart Trigger -->
+        <a href="/cart" class="nav-btn" title="Shopping Cart" aria-label="Shopping Cart">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="nav-badge cart-count-badge" style="display: none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       HERO SECTION
+       ====================================================================== -->
+  <section class="hero-section" style="position: relative; padding: 100px 0 80px; overflow: hidden;">
+    <!-- Ambient Radial Glows -->
+    <div style="position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 700px; height: 500px; background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 70%); pointer-events: none; z-index: 0;"></div>
+
+    <div class="container" style="position: relative; z-index: 1;">
+      <div style="max-width: 840px; margin: 0 auto; text-align: center;">
+        <span class="badge badge-cyan" style="margin-bottom: 20px;">
+          ✦ SS/26 LUXURY ARCHITECTURAL COLLECTION
+        </span>
+        <h1 style="font-size: clamp(34px, 6vw, 68px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 22px;">
+          ENGINEERED LUXURY FOR THE <span style="background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-violet) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">MODERN FRONTIER</span>.
+        </h1>
+        <p style="font-size: clamp(15px, 2vw, 18px); color: var(--text-muted); max-width: 680px; margin: 0 auto 36px; line-height: 1.65;">
+          Bespoke acoustic hardware, horological masterpieces, and technical apparel. Explore our live interactive 3D studio with real-time PBR material customization.
+        </p>
+
+        <div style="display: flex; flex-wrap: wrap; items-center; justify-content: center; gap: 16px;">
+          <a href="#3d-studio" class="btn btn-primary">
+            <span>Explore 3D Customizer</span>
+            <span>→</span>
+          </a>
+          <a href="/shop" class="btn btn-secondary">
+            <span>Browse All Collections</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       INTERACTIVE THREE.JS 3D PRODUCT SHOWCASE
+       ====================================================================== -->
+  <section id="3d-studio" class="three-showcase-section">
+    <div class="container">
+      <div style="display: flex; flex-direction: column; align-items: center; text-align: center; margin-bottom: 40px;">
+        <span class="badge badge-cyan" style="margin-bottom: 12px;">
+          ✦ REAL-TIME WEBGL EXPERIENCE
+        </span>
+        <h2 style="font-size: clamp(28px, 4vw, 42px); font-weight: 800; letter-spacing: -0.01em;">
+          Interactive 3D Studio Customizer
+        </h2>
+        <p style="color: var(--text-muted); max-width: 580px; margin-top: 10px;">
+          Rotate, zoom, and inspect genuine 3D models with studio PBR lighting. Click material swatches below to customize colors in real time.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr; gap: 32px; max-width: 1060px; margin: 0 auto;">
+        <!-- 3D Canvas Container -->
+        <div class="three-viewer-container" id="hero-three-container">
+          <div class="three-hint">
+            <span>DRAG TO ROTATE • SCROLL TO ZOOM</span>
+          </div>
+
+          <!-- Color Swatch Overlay -->
+          <div class="three-controls-overlay">
+            <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">Finish:</span>
+            <button class="color-swatch-btn active" data-color="obsidian" style="background: #111319;" title="Obsidian Black"></button>
+            <button class="color-swatch-btn" data-color="silver" style="background: #d1d5db;" title="Celestial Silver"></button>
+            <button class="color-swatch-btn" data-color="gold" style="background: #d4af37;" title="Royal Gold"></button>
+            <button class="color-swatch-btn" data-color="cyan" style="background: #06b6d4;" title="Cyber Cyan"></button>
+            <button class="color-swatch-btn" data-color="emerald" style="background: #10b981;" title="Emerald Green"></button>
+
+            <span style="width: 1px; height: 16px; background: var(--border-subtle); margin: 0 4px;"></span>
+
+            <!-- Auto-Rotate Toggle -->
+            <button id="toggle-rotate-btn" style="color: var(--text-muted); font-size: 11px; font-family: var(--font-mono); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-subtle);">
+              PAUSE ROTATION
+            </button>
+            <button id="reset-cam-btn" style="color: var(--text-muted); font-size: 11px; font-family: var(--font-mono); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-subtle);">
+              RESET
+            </button>
+          </div>
+        </div>
+
+        <!-- 3D Featured Product Actions Card -->
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px; backdrop-filter: blur(15px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;">
+          <div>
+            <span class="product-cat">ACOUSTIC ENGINEERING // FLAGSHIP</span>
+            <h3 style="font-size: 22px; font-weight: 800; margin: 4px 0 8px;">Nova Apex Wireless ANC Headphones</h3>
+            <p style="color: var(--text-muted); font-size: 14px; max-width: 540px;">
+              40mm Beryllium acoustic drivers with dual-chamber hybrid noise cancellation and 42-hour battery life.
+            </p>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="text-align: right;">
+              <div style="font-size: 24px; font-weight: 800; font-family: var(--font-mono); color: var(--text-main);">$349.00</div>
+              <div style="font-size: 13px; color: var(--text-subtle); text-decoration: line-through;">$389.00</div>
+            </div>
+
+            <button id="add-3d-to-cart-btn" class="btn btn-primary">
+              <span>Add Custom 3D Model</span>
+            </button>
+            <a href="/product?id=1" class="btn btn-secondary">
+              <span>Details</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       FEATURED CATEGORIES
+       ====================================================================== -->
+  <section style="padding: 90px 0;">
+    <div class="container">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px;">
+        <div>
+          <span class="badge badge-cyan" style="margin-bottom: 10px;">✦ CURATED DEPARTMENTS</span>
+          <h2 style="font-size: 32px; font-weight: 800;">Featured Collections</h2>
+        </div>
+        <a href="/shop" style="color: var(--accent-cyan); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">
+          Explore All Categories →
+        </a>
+      </div>
+
+      <div id="categories-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px;">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       TRENDING PRODUCTS
+       ====================================================================== -->
+  <section style="padding: 40px 0 90px; background: rgba(12, 14, 23, 0.4); border-top: 1px solid var(--border-subtle);">
+    <div class="container">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px;">
+        <div>
+          <span class="badge badge-emerald" style="margin-bottom: 10px;">✦ HIGH VELOCITY DEMAND</span>
+          <h2 style="font-size: 32px; font-weight: 800;">Trending Products</h2>
+        </div>
+        <a href="/shop" style="color: var(--accent-cyan); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">
+          View Catalog →
+        </a>
+      </div>
+
+      <div id="trending-products-grid" class="product-grid">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       BEST SELLERS
+       ====================================================================== -->
+  <section style="padding: 90px 0;">
+    <div class="container">
+      <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px;">
+        <div>
+          <span class="badge badge-gold" style="margin-bottom: 10px;">✦ VERIFIED FAVORITES</span>
+          <h2 style="font-size: 32px; font-weight: 800;">Best Sellers</h2>
+        </div>
+        <a href="/shop" style="color: var(--accent-cyan); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">
+          Shop Collection →
+        </a>
+      </div>
+
+      <div id="bestsellers-products-grid" class="product-grid">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       CUSTOMER REVIEWS & SOCIAL PROOF
+       ====================================================================== -->
+  <section style="padding: 80px 0; background: var(--bg-secondary); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+    <div class="container">
+      <div style="text-align: center; max-width: 600px; margin: 0 auto 48px;">
+        <span class="badge badge-cyan" style="margin-bottom: 10px;">✦ CLIENT TESTIMONIALS</span>
+        <h2 style="font-size: 32px; font-weight: 800;">Endorsed by Connoisseurs</h2>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px;">
+          <div style="color: var(--accent-gold); margin-bottom: 12px;">★★★★★</div>
+          <p style="font-size: 14px; color: var(--text-main); font-style: italic; margin-bottom: 16px;">
+            "The 3D customizer allowed me to inspect the Nova Apex headphones from every angle before purchasing. The real physical unit arrived in 2 days and the acoustic performance is unmatched."
+          </p>
+          <div style="font-size: 13px; font-weight: 700; color: #fff;">Marcus Thorne</div>
+          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-cyan);">Verified Buyer • New York</div>
+        </div>
+
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px;">
+          <div style="color: var(--accent-gold); margin-bottom: 12px;">★★★★★</div>
+          <p style="font-size: 14px; color: var(--text-main); font-style: italic; margin-bottom: 16px;">
+            "Fast checkout, seamless order tracking, and museum-grade product packaging. The Chrono Horizon titanium smartwatch is my daily driver."
+          </p>
+          <div style="font-size: 13px; font-weight: 700; color: #fff;">Elena Rostova</div>
+          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-cyan);">Verified Buyer • London</div>
+        </div>
+
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px;">
+          <div style="color: var(--accent-gold); margin-bottom: 12px;">★★★★★</div>
+          <p style="font-size: 14px; color: var(--text-main); font-style: italic; margin-bottom: 16px;">
+            "From the live coupon validation to the real-time stock indicators, Nova Store feels like shopping at a premier flagship boutique in Tokyo."
+          </p>
+          <div style="font-size: 13px; font-weight: 700; color: #fff;">Kenji Takahashi</div>
+          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-cyan);">Verified Buyer • Tokyo</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       NEWSLETTER DISPATCH
+       ====================================================================== -->
+  <section style="padding: 80px 0; text-align: center;">
+    <div class="container" style="max-width: 680px;">
+      <span class="badge badge-cyan" style="margin-bottom: 12px;">✦ PRIVATE DISPATCH</span>
+      <h2 style="font-size: 32px; font-weight: 800; margin-bottom: 12px;">Join the Inner Circle</h2>
+      <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 28px;">
+        Receive private allocations, early 3D drops, and VIP coupon releases directly in your inbox.
+      </p>
+
+      <form id="newsletter-form" style="display: flex; gap: 10px; max-width: 500px; margin: 0 auto;">
+        <input type="email" required placeholder="Enter your email address" style="flex: 1;">
+        <button type="submit" class="btn btn-primary" style="padding: 12px 28px;">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ======================================================================
+       FOOTER
+       ====================================================================== -->
+  <footer style="background: #030408; border-top: 1px solid var(--border-subtle); padding: 60px 0 30px;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; margin-bottom: 50px;">
+        <!-- Col 1 -->
+        <div>
+          <a href="/" class="brand-logo" style="margin-bottom: 14px;">
+            <div class="brand-symbol">N</div>
+            <span>NOVA<span style="color: var(--accent-cyan); font-weight: 400;">STORE</span></span>
+          </a>
+          <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+            Precision engineered luxury goods with real-time 3D interactive WebGL visualization and REST backend architecture.
+          </p>
+        </div>
+
+        <!-- Col 2 -->
+        <div>
+          <h4 style="font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.15em; color: #fff; margin-bottom: 16px;">Navigation</h4>
+          <ul style="list-style: none; font-size: 13px; space-y: 8px; color: var(--text-muted);">
+            <li style="margin-bottom: 8px;"><a href="/shop" style="color: inherit;">All Products</a></li>
+            <li style="margin-bottom: 8px;"><a href="/shop?category=electronics" style="color: inherit;">Electronics</a></li>
+            <li style="margin-bottom: 8px;"><a href="/shop?category=watches" style="color: inherit;">Watches</a></li>
+            <li style="margin-bottom: 8px;"><a href="/cart" style="color: inherit;">Shopping Cart</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3 -->
+        <div>
+          <h4 style="font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.15em; color: #fff; margin-bottom: 16px;">Client Portal</h4>
+          <ul style="list-style: none; font-size: 13px; color: var(--text-muted);">
+            <li style="margin-bottom: 8px;"><a href="/account" style="color: inherit;">Customer Account</a></li>
+            <li style="margin-bottom: 8px;"><a href="/admin" style="color: var(--accent-violet);">Admin Panel</a></li>
+            <li style="margin-bottom: 8px;"><a href="/cart" style="color: inherit;">Order Status & Tracking</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4 -->
+        <div>
+          <h4 style="font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.15em; color: #fff; margin-bottom: 16px;">System Telemetry</h4>
+          <p style="font-size: 12px; font-family: var(--font-mono); color: var(--accent-emerald); margin-bottom: 8px;">
+            ● REST API: ONLINE
+          </p>
+          <p style="font-size: 12px; font-family: var(--font-mono); color: var(--text-muted);">
+            DATABASE: SQLITE 3<br>
+            GRAPHICS: THREE.JS WEBGL<br>
+            SERVER: NODE.JS / EXPRESS
+          </p>
+        </div>
+      </div>
+
+      <div style="border-top: 1px solid var(--border-subtle); padding-top: 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-subtle);">
+        <p>© 2026 NOVA STORE. All rights reserved. Portfolio Showcase Demonstration.</p>
+        <p>Built with Three.js, Express.js, and SQLite.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { api } from '/js/api.js';
+    import { store } from '/js/store.js';
+    import { ProductViewer3D } from '/js/threeViewer.js';
+
+    // 1. Initialize 3D Viewer in Showcase Section
+    let activeColor = 'obsidian';
+    const viewerContainer = document.getElementById('hero-three-container');
+    const viewer = new ProductViewer3D({
+      container: viewerContainer,
+      modelUrl: '/assets/models/nova-headphones.glb'
+    });
+
+    // Swatch buttons
+    document.querySelectorAll('.color-swatch-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.color-swatch-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeColor = btn.dataset.color;
+        viewer.setColor(activeColor);
+        store.showToast(`Customized finish: ${btn.title}`, 'info');
+      });
+    });
+
+    document.getElementById('toggle-rotate-btn')?.addEventListener('click', (e) => {
+      const isRotating = viewer.toggleAutoRotate();
+      e.target.textContent = isRotating ? 'PAUSE ROTATION' : 'RESUME ROTATION';
+    });
+
+    document.getElementById('reset-cam-btn')?.addEventListener('click', () => {
+      viewer.resetCamera();
+    });
+
+    // Add 3D customized item to cart
+    document.getElementById('add-3d-to-cart-btn')?.addEventListener('click', () => {
+      store.addToCart({
+        id: 1,
+        name: 'Nova Apex Wireless ANC Headphones',
+        slug: 'nova-apex-wireless-headphones',
+        price: 349.00,
+        primary_image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1000&q=85'
+      }, 1, activeColor.toUpperCase(), 'Universal Fit');
+    });
+
+    // 2. Fetch Categories
+    async function loadCategories() {
+      const data = await api.getCategories();
+      if (!data.success) return;
+      const grid = document.getElementById('categories-grid');
+      grid.innerHTML = data.categories.map(cat => `
+        <a href="/shop?category=${cat.slug}" style="display: block; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 20px; transition: var(--transition);" onmouseover="this.style.borderColor='var(--accent-cyan)'" onmouseout="this.style.borderColor='var(--border-subtle)'">
+          <div style="font-size: 24px; margin-bottom: 8px;">✦</div>
+          <h3 style="font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px;">${cat.name}</h3>
+          <span style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-cyan);">${cat.item_count} PRODUCTS</span>
+        </a>
+      `).join('');
+    }
+
+    // 3. Render Product Card Helper
+    function renderProductCard(p) {
+      return `
+        <div class="product-card">
+          <div class="product-thumb-wrap">
+            <div class="product-badges">
+              ${p.is_new ? '<span class="badge badge-cyan">NEW</span>' : ''}
+              ${p.has_3d ? '<span class="badge badge-emerald">3D MODEL</span>' : ''}
+            </div>
+            <button class="product-wish-btn ${store.isWishlisted(p.id) ? 'active' : ''}" onclick="window.handleWishlist(${p.id}, this)" title="Save to Wishlist">
+              ♥
+            </button>
+            <a href="/product?id=${p.id}">
+              <img src="${p.primary_image}" alt="${p.name}" class="product-thumb" loading="lazy">
+            </a>
+          </div>
+          <div class="product-info">
+            <div>
+              <span class="product-cat">${p.category_name || p.category_slug}</span>
+              <h3 class="product-title">
+                <a href="/product?id=${p.id}">${p.name}</a>
+              </h3>
+            </div>
+            <div class="product-price-row">
+              <div class="product-price">${store.formatPrice(p.sale_price || p.price)}</div>
+              ${p.sale_price ? `<div class="product-old-price">${store.formatPrice(p.price)}</div>` : ''}
+              <button class="btn btn-secondary" style="margin-left: auto; padding: 6px 12px; font-size: 11px;" onclick="window.quickAdd(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.sale_price || p.price}, '${p.primary_image}')">
+                + Cart
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // 4. Fetch Trending & Best Sellers
+    async function loadProducts() {
+      const [trendingData, bestSellersData] = await Promise.all([
+        api.getTrendingProducts(),
+        api.getBestSellers()
+      ]);
+
+      if (trendingData.success) {
+        document.getElementById('trending-products-grid').innerHTML = trendingData.products.map(renderProductCard).join('');
+      }
+
+      if (bestSellersData.success) {
+        document.getElementById('bestsellers-products-grid').innerHTML = bestSellersData.products.map(renderProductCard).join('');
+      }
+    }
+
+    // Global quick add and wishlist hooks
+    window.quickAdd = (id, name, price, image) => {
+      store.addToCart({ id, name, price, primary_image: image }, 1);
+    };
+
+    window.handleWishlist = (id, btn) => {
+      const added = store.toggleWishlistLocal(id);
+      btn.classList.toggle('active', added);
+    };
+
+    // Newsletter form
+    document.getElementById('newsletter-form')?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      store.showToast('Welcome to the NOVA inner circle. Check your inbox.', 'success');
+      e.target.reset();
+    });
+
+    // Check auth status for header
+    if (store.isLoggedIn()) {
+      const user = store.getUser();
+      const accountBtn = document.getElementById('account-nav-btn');
+      if (accountBtn && user) {
+        accountBtn.title = `Logged in as ${user.name}`;
+      }
+    }
+
+    loadCategories();
+    loadProducts();
+  </script>
+</body>
+</html>

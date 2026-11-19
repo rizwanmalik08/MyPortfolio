@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart — NOVA STORE</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="announcement-bar">
+    <span class="badge badge-cyan">✦ COMPLIMENTARY WORLDWIDE COURIER SHIPPING OVER $150</span>
+    <span>•</span>
+    <span>USE PROMO <strong style="color: #fff;">NOVA20</strong> FOR 20% SAVINGS</span>
+  </div>
+
+  <!-- Header / Navbar -->
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo">
+        <div class="brand-symbol">N</div>
+        <span>NOVA<span style="color: var(--accent-cyan); font-weight: 400;">STORE</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/shop" class="nav-link">Catalog</a></li>
+          <li><a href="/shop?category=electronics" class="nav-link">Electronics</a></li>
+          <li><a href="/shop?category=watches" class="nav-link">Watches</a></li>
+          <li><a href="/shop?category=fashion" class="nav-link">Fashion</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/account" class="nav-btn" title="User Account">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </a>
+
+        <a href="/cart" class="nav-btn" title="Shopping Cart" style="border-color: var(--accent-cyan); color: var(--accent-cyan);">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="nav-badge cart-count-badge" style="display: none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Cart Section -->
+  <main style="padding: 40px 0 80px;">
+    <div class="container">
+      
+      <div style="margin-bottom: 32px;">
+        <h1 style="font-size: 36px; font-weight: 800;">Your Shopping Bag</h1>
+        <p style="color: var(--text-muted); font-size: 14px; margin-top: 4px;">
+          Review your items. Real-time inventory and pricing are validated directly with our central database.
+        </p>
+      </div>
+
+      <!-- Empty Cart State -->
+      <div id="cart-empty-view" style="display: none; text-align: center; padding: 80px 20px; background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); max-width: 600px; margin: 0 auto;">
+        <div style="font-size: 48px; margin-bottom: 16px;">🛍️</div>
+        <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 8px;">Your Shopping Bag is Empty</h2>
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 24px;">Discover our luxury collections, 3D customizers, and modern hardware.</p>
+        <a href="/shop" class="btn btn-primary">Start Shopping</a>
+      </div>
+
+      <!-- Active Cart Content -->
+      <div id="cart-active-view" style="display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: start;">
+        
+        <!-- Cart Items List -->
+        <div>
+          <!-- Cart Table Header -->
+          <div style="display: grid; grid-template-columns: 2fr 1fr 1fr 40px; gap: 16px; padding: 12px 20px; background: rgba(255, 255, 255, 0.02); border-radius: var(--radius-sm); font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase; margin-bottom: 16px;">
+            <span>Product</span>
+            <span>Quantity</span>
+            <span style="text-align: right;">Total</span>
+            <span></span>
+          </div>
+
+          <div id="cart-items-container" style="display: flex; flex-direction: column; gap: 16px;">
+            <!-- Rendered via JS -->
+          </div>
+
+          <div style="margin-top: 24px; display: flex; justify-content: space-between; align-items: center;">
+            <a href="/shop" style="color: var(--accent-cyan); font-size: 13px; font-weight: 700;">← Continue Shopping</a>
+            <button id="clear-cart-btn" style="color: var(--accent-rose); font-size: 12px; font-family: var(--font-mono); text-transform: uppercase;">Clear Bag</button>
+          </div>
+        </div>
+
+        <!-- Order Summary & Checkout Card -->
+        <aside style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px; position: sticky; top: 100px;">
+          <h2 style="font-size: 18px; font-weight: 800; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.05em;">Order Summary</h2>
+
+          <!-- Coupon Code Input -->
+          <div style="margin-bottom: 24px;">
+            <label style="display: block; font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; color: var(--text-muted); margin-bottom: 6px;">Promotional Voucher</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="text" id="coupon-input" placeholder="e.g. NOVA20" style="flex: 1; text-transform: uppercase; font-family: var(--font-mono);">
+              <button id="apply-coupon-btn" class="btn btn-secondary" style="padding: 10px 16px; font-size: 11px;">Apply</button>
+            </div>
+            <div id="coupon-message" style="font-size: 12px; margin-top: 6px;"></div>
+          </div>
+
+          <!-- Price Breakdown -->
+          <div style="display: flex; flex-direction: column; gap: 12px; padding-top: 16px; border-top: 1px solid var(--border-subtle); font-size: 14px;">
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Subtotal</span>
+              <span id="summary-subtotal" style="font-family: var(--font-mono); font-weight: 700;">$0.00</span>
+            </div>
+            
+            <div id="summary-discount-row" style="display: none; justify-content: space-between; color: var(--accent-emerald);">
+              <span>Voucher Discount</span>
+              <span id="summary-discount" style="font-family: var(--font-mono); font-weight: 700;">-$0.00</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Courier Shipping</span>
+              <span id="summary-shipping" style="font-family: var(--font-mono); font-weight: 700;">$0.00</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between;">
+              <span style="color: var(--text-muted);">Estimated Sales Tax (8%)</span>
+              <span id="summary-tax" style="font-family: var(--font-mono); font-weight: 700;">$0.00</span>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 16px; margin-top: 8px; border-top: 1px solid var(--border-subtle); font-size: 18px; font-weight: 800;">
+              <span>Total Amount</span>
+              <span id="summary-total" style="font-family: var(--font-mono); color: var(--accent-cyan); font-size: 24px;">$0.00</span>
+            </div>
+          </div>
+
+          <a href="/checkout" id="proceed-checkout-btn" class="btn btn-primary" style="width: 100%; margin-top: 24px; padding: 14px;">
+            <span>Proceed to Checkout</span>
+            <span>→</span>
+          </a>
+
+          <p style="font-size: 11px; font-family: var(--font-mono); color: var(--text-subtle); text-align: center; margin-top: 16px;">
+            🔒 256-Bit Encrypted Secure Checkout
+          </p>
+        </aside>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer style="background: #030408; border-top: 1px solid var(--border-subtle); padding: 40px 0; text-align: center; font-size: 12px; color: var(--text-subtle);">
+    <div class="container">
+      <p>© 2026 NOVA STORE. All rights reserved. Precision Luxury Demonstration.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module">
+    import { api } from '/js/api.js';
+    import { store } from '/js/store.js';
+
+    let currentCoupon = store.getSavedCoupon();
+
+    async function refreshCart() {
+      const cart = store.getCart();
+
+      if (cart.length === 0) {
+        document.getElementById('cart-empty-view').style.display = 'block';
+        document.getElementById('cart-active-view').style.display = 'none';
+        return;
+      }
+
+      document.getElementById('cart-empty-view').style.display = 'none';
+      document.getElementById('cart-active-view').style.display = 'grid';
+
+      // Validate prices and calculate on backend
+      const serverCalc = await api.calculateCart(cart, currentCoupon);
+
+      if (!serverCalc.success) {
+        store.showToast('Error validating cart with server.', 'error');
+        return;
+      }
+
+      // Render Item rows
+      const itemsContainer = document.getElementById('cart-items-container');
+      itemsContainer.innerHTML = serverCalc.items.map(item => `
+        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px; display: grid; grid-template-columns: 2fr 1fr 1fr 40px; gap: 16px; align-items: center;">
+          <div style="display: flex; gap: 14px; align-items: center;">
+            <img src="${item.image}" alt="${item.name}" style="width: 64px; height: 64px; object-fit: cover; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle);">
+            <div>
+              <h3 style="font-size: 14px; font-weight: 700; color: #fff;">
+                <a href="/product?id=${item.productId}">${item.name}</a>
+              </h3>
+              <div style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); margin-top: 4px;">
+                ${item.color ? `Finish: <span style="color: var(--accent-cyan);">${item.color}</span>` : ''}
+                ${item.size ? ` • Size: ${item.size}` : ''}
+              </div>
+              <div style="font-size: 13px; font-family: var(--font-mono); color: var(--text-muted); margin-top: 2px;">
+                ${store.formatPrice(item.price)} each
+              </div>
+            </div>
+          </div>
+
+          <!-- Quantity Controls -->
+          <div style="display: inline-flex; align-items: center; border: 1px solid var(--border-subtle); border-radius: var(--radius-full); background: var(--bg-secondary);">
+            <button onclick="window.changeQty(${item.productId}, ${item.quantity - 1}, '${item.color || ''}', '${item.size || ''}')" style="padding: 6px 12px; color: var(--text-muted);">-</button>
+            <span style="font-family: var(--font-mono); font-weight: 700; font-size: 13px; padding: 0 4px;">${item.quantity}</span>
+            <button onclick="window.changeQty(${item.productId}, ${item.quantity + 1}, '${item.color || ''}', '${item.size || ''}')" style="padding: 6px 12px; color: var(--text-muted);">+</button>
+          </div>
+
+          <!-- Total -->
+          <div style="text-align: right; font-family: var(--font-mono); font-weight: 800; font-size: 15px; color: #fff;">
+            ${store.formatPrice(item.total)}
+          </div>
+
+          <!-- Remove Item -->
+          <button onclick="window.removeItem(${item.productId}, '${item.color || ''}', '${item.size || ''}')" style="color: var(--text-subtle); font-size: 16px; hover:color: var(--accent-rose);" title="Remove Item">
+            ✕
+          </button>
+        </div>
+      `).join('');
+
+      // Summary Breakdown
+      const s = serverCalc.summary;
+      document.getElementById('summary-subtotal').textContent = store.formatPrice(s.subtotal);
+
+      if (s.appliedCoupon) {
+        document.getElementById('summary-discount-row').style.display = 'flex';
+        document.getElementById('summary-discount').textContent = `-${store.formatPrice(s.appliedCoupon.amount)}`;
+        document.getElementById('coupon-message').innerHTML = `<span style="color: var(--accent-emerald);">✓ Promo code ${s.appliedCoupon.code} applied!</span>`;
+      } else {
+        document.getElementById('summary-discount-row').style.display = 'none';
+        if (currentCoupon) {
+          document.getElementById('coupon-message').innerHTML = `<span style="color: var(--accent-rose);">✕ Invalid or expired voucher</span>`;
+        }
+      }
+
+      document.getElementById('summary-shipping').textContent = s.shippingFee === 0 ? 'FREE' : store.formatPrice(s.shippingFee);
+      document.getElementById('summary-tax').textContent = store.formatPrice(s.taxAmount);
+      document.getElementById('summary-total').textContent = store.formatPrice(s.totalAmount);
+
+      // Warning alerts
+      if (serverCalc.warnings && serverCalc.warnings.length > 0) {
+        serverCalc.warnings.forEach(w => store.showToast(w, 'info'));
+      }
+    }
+
+    // Global Hooks
+    window.changeQty = (productId, qty, color, size) => {
+      store.updateQuantity(productId, qty, color || null, size || null);
+      refreshCart();
+    };
+
+    window.removeItem = (productId, color, size) => {
+      store.removeFromCart(productId, color || null, size || null);
+      refreshCart();
+    };
+
+    document.getElementById('clear-cart-btn')?.addEventListener('click', () => {
+      store.clearCart();
+      refreshCart();
+    });
+
+    document.getElementById('apply-coupon-btn')?.addEventListener('click', () => {
+      const code = document.getElementById('coupon-input').value.trim();
+      currentCoupon = code;
+      store.setSavedCoupon(code);
+      refreshCart();
+    });
+
+    if (currentCoupon) {
+      document.getElementById('coupon-input').value = currentCoupon;
+    }
+
+    refreshCart();
+  </script>
+</body>
+</html>
