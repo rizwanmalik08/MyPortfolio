@@ -85,12 +85,48 @@ export function Preloader({ onComplete }) {
       twinkle: Math.random() * Math.PI * 2,
     }));
 
-    // Pre-calculated Grid Parameters
-    const gridCols = 20;
-    const gridRows = 16;
-    const gridSpacingX = 48;
-    const gridSpacingZ = 48;
-    const baseY = 120;
+    // 3D Architectural Constellation Lattice (Synchronized with Main Website Design)
+    const CONSTELLATION_COUNT = 32;
+    const constellationNodes = Array.from({ length: CONSTELLATION_COUNT }, (_, i) => {
+      const seed = (i * 9301 + 49297) % 233280;
+      const r1 = seed / 233280;
+      const r2 = ((seed * 9301 + 49297) % 233280) / 233280;
+      const r3 = (((seed * 9301 + 49297) * 9301 + 49297) % 233280) / 233280;
+
+      const spreadX = 1300;
+      const spreadY = 850;
+      const spreadZ = 450;
+
+      return {
+        x: (r1 - 0.5) * spreadX,
+        y: (r2 - 0.5) * spreadY,
+        z: (r3 - 0.5) * spreadZ - 60,
+        baseY: (r2 - 0.5) * spreadY,
+        speed: 0.25 + r1 * 0.35,
+        phase: r2 * Math.PI * 2,
+        color: i % 3 === 0 ? '#38bdf8' : i % 3 === 1 ? '#818cf8' : '#2dd4bf',
+        lineColor: i % 3 === 0 ? 'rgba(56, 189, 248, 0.12)' : i % 3 === 1 ? 'rgba(129, 140, 248, 0.10)' : 'rgba(45, 212, 191, 0.10)',
+        isRing: i % 5 === 0, // precision micro-ring beacon matching main website
+      };
+    });
+
+    const constellationConns = [];
+    const maxConnDist = 360;
+    for (let i = 0; i < constellationNodes.length; i++) {
+      let connections = 0;
+      for (let j = i + 1; j < constellationNodes.length; j++) {
+        const dx = constellationNodes[i].x - constellationNodes[j].x;
+        const dy = constellationNodes[i].y - constellationNodes[j].y;
+        const dz = constellationNodes[i].z - constellationNodes[j].z;
+        const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+
+        if (dist < maxConnDist && connections < 3) {
+          constellationConns.push({ from: i, to: j });
+          connections++;
+        }
+      }
+    }
+
     const fov = 600;
 
     let time = 0;
@@ -108,77 +144,110 @@ export function Preloader({ onComplete }) {
 
       ctx.clearRect(0, 0, width, height);
 
-      // Deep Space Galactic Gradient
-      const bgGrad = ctx.createRadialGradient(
-        width / 2, height / 2, 40,
-        width / 2, height / 2, Math.max(width, height) * 0.8
-      );
-      bgGrad.addColorStop(0, '#090d1a');
-      bgGrad.addColorStop(0.45, '#04060d');
-      bgGrad.addColorStop(1, '#020306');
-      ctx.fillStyle = bgGrad;
-      ctx.fillRect(0, 0, width, height);
-
       const cx = width / 2;
       const cy = height * 0.49;
 
-      // --- 1. HIGH-PERFORMANCE UNIFIED PERSPECTIVE TERRAIN GRID ---
-      const rotTiltX = 0.35 + smoothMouseY * 0.18;
-      const rotTiltY = smoothMouseX * 0.22;
+      // Deep Space Galactic Gradient (Matching Main Website Tone)
+      const bgGrad = ctx.createRadialGradient(
+        cx, cy, 30,
+        cx, cy, Math.max(width, height) * 0.85
+      );
+      bgGrad.addColorStop(0, '#070b1a');
+      bgGrad.addColorStop(0.35, '#040712');
+      bgGrad.addColorStop(0.75, '#020308');
+      bgGrad.addColorStop(1, '#010204');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, width, height);
+
+      // Atmospheric Fluid Silk Nebula Glow (Matching FluidAurora)
+      const nebulaGrad = ctx.createRadialGradient(
+        cx + smoothMouseX * 50, cy + smoothMouseY * 35, 10,
+        cx, cy, Math.min(width, height) * 0.65
+      );
+      nebulaGrad.addColorStop(0, 'rgba(56, 189, 248, 0.12)');
+      nebulaGrad.addColorStop(0.35, 'rgba(99, 102, 241, 0.08)');
+      nebulaGrad.addColorStop(0.7, 'rgba(168, 85, 247, 0.03)');
+      nebulaGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+      ctx.fillStyle = nebulaGrad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, Math.min(width, height) * 0.65, 0, Math.PI * 2);
+      ctx.fill();
+
+      // --- 1. ARCHITECTURAL CONSTELLATION LATTICE (MAIN WEBSITE UNIFIED DESIGN) ---
+      const rotTiltX = 0.22 + smoothMouseY * 0.15;
+      const rotTiltY = smoothMouseX * 0.20;
       const cosX = Math.cos(rotTiltX);
       const sinX = Math.sin(rotTiltX);
       const cosY = Math.cos(rotTiltY);
       const sinY = Math.sin(rotTiltY);
 
-      // Single-pass computation for both lines and dots (zero duplicate trigonometry)
+      // Project all constellation nodes
+      const projectedNodes = constellationNodes.map(node => {
+        const floatY = node.baseY + Math.sin(time * node.speed + node.phase) * 14;
+        const x1 = node.x * cosY - node.z * sinY;
+        const z1 = node.x * sinY + node.z * cosY;
+        const y2 = floatY * cosX - z1 * sinX;
+        const z2 = floatY * sinX + z1 * cosX;
+
+        const pz = isWarp ? z2 - warpStateRef.current.flare * 350 : z2;
+        const scale = fov / Math.max(40, fov + pz);
+        return {
+          ...node,
+          screenX: cx + x1 * scale,
+          screenY: cy + y2 * scale,
+          scale,
+          visible: scale > 0,
+        };
+      });
+
+      // A) Draw all Hairline Laser Filaments in a single batched stroke
       ctx.beginPath();
-      ctx.strokeStyle = 'rgba(56, 189, 248, 0.14)';
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.12)';
       ctx.lineWidth = 1;
-
-      // Temporary path for dots to draw in one flush
-      const dotPath = new Path2D();
-
-      for (let r = 0; r < gridRows; r++) {
-        let prevScreenX = null;
-        let prevScreenY = null;
-        const worldZ = (r + 1) * gridSpacingZ + 60;
-        const isLineRow = (r % 2 === 0);
-
-        for (let c = 0; c < gridCols; c++) {
-          const worldX = (c - gridCols / 2) * gridSpacingX;
-          const waveElev = Math.sin(worldX * 0.007 + time * 1.2) * 16 + 
-                           Math.cos(worldZ * 0.008 + time * 0.9) * 12;
-          const worldY = baseY + waveElev;
-
-          const x1 = worldX * cosY - worldZ * sinY;
-          const z1 = worldX * sinY + worldZ * cosY;
-          const y2 = worldY * cosX - z1 * sinX;
-          const z2 = worldY * sinX + z1 * cosX;
-
-          const scale = fov / (fov + z2);
-          if (scale > 0) {
-            const screenX = cx + x1 * scale;
-            const screenY = cy + y2 * scale;
-
-            if (isLineRow) {
-              if (prevScreenX !== null) {
-                ctx.moveTo(prevScreenX, prevScreenY);
-                ctx.lineTo(screenX, screenY);
-              }
-              prevScreenX = screenX;
-              prevScreenY = screenY;
-            }
-
-            const dotSize = Math.max(0.6, 1.4 * scale);
-            dotPath.moveTo(screenX + dotSize, screenY);
-            dotPath.arc(screenX, screenY, dotSize, 0, Math.PI * 2);
-          }
+      constellationConns.forEach(conn => {
+        const p1 = projectedNodes[conn.from];
+        const p2 = projectedNodes[conn.to];
+        if (p1.visible && p2.visible) {
+          ctx.moveTo(p1.screenX, p1.screenY);
+          ctx.lineTo(p2.screenX, p2.screenY);
         }
-      }
+      });
       ctx.stroke();
 
-      ctx.fillStyle = 'rgba(56, 189, 248, 0.45)';
-      ctx.fill(dotPath);
+      // B) Draw Travelling Data Pulses along filaments
+      ctx.beginPath();
+      ctx.fillStyle = '#ffffff';
+      constellationConns.forEach((conn, idx) => {
+        const p1 = projectedNodes[conn.from];
+        const p2 = projectedNodes[conn.to];
+        if (p1.visible && p2.visible) {
+          const progressT = (time * 0.55 + idx * 0.18) % 1.0;
+          const px = p1.screenX + (p2.screenX - p1.screenX) * progressT;
+          const py = p1.screenY + (p2.screenY - p1.screenY) * progressT;
+          const pulseSize = 1.4 * Math.min(p1.scale, p2.scale);
+          ctx.moveTo(px + pulseSize, py);
+          ctx.arc(px, py, pulseSize, 0, Math.PI * 2);
+        }
+      });
+      ctx.fill();
+
+      // C) Draw Node Beacons (Glow points & precision micro-rings matching main website)
+      projectedNodes.forEach(node => {
+        if (!node.visible) return;
+        const r = Math.max(1.3, 2.5 * node.scale);
+        if (node.isRing) {
+          ctx.beginPath();
+          ctx.strokeStyle = node.color;
+          ctx.lineWidth = 1.1;
+          ctx.arc(node.screenX, node.screenY, r * 1.7, 0, Math.PI * 2);
+          ctx.stroke();
+        } else {
+          ctx.beginPath();
+          ctx.fillStyle = node.color;
+          ctx.arc(node.screenX, node.screenY, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      });
 
       // --- 2. BATCHED AMBIENT STARDUST ---
       ctx.beginPath();
@@ -559,7 +628,7 @@ export function Preloader({ onComplete }) {
           >
             <span className="flex items-center gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-cyan-400 animate-pulse" />
-              <span>3D TRINITY DISCIPLINE ENGINE // TERRAIN MATRIX</span>
+              <span>3D TRINITY DISCIPLINE ENGINE // CONSTELLATION MATRIX</span>
             </span>
             <span className="hidden sm:inline">LAHORE, PK</span>
           </footer>

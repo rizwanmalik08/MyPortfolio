@@ -36,6 +36,7 @@ export function SocialMediaMarketing() {
 
   return (
     <section id="social-media" className="relative py-24 z-10 scroll-mt-20">
+      <div id="projects" className="absolute -top-24" />
       {/* Background Glow */}
       <div className="pointer-events-none absolute top-1/4 right-1/4 -z-10 h-96 w-96 rounded-full bg-cyan-600/10 blur-[130px]" />
       <div className="pointer-events-none absolute bottom-1/3 left-1/3 -z-10 h-80 w-80 rounded-full bg-emerald-600/10 blur-[110px]" />
@@ -108,6 +109,7 @@ export function SocialMediaMarketing() {
                             alt={project.clientName}
                             className="max-h-full max-w-full object-contain"
                             loading="lazy"
+                            decoding="async"
                           />
                         </div>
                       ) : (
@@ -118,6 +120,7 @@ export function SocialMediaMarketing() {
                             alt={project.clientName}
                             className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
                             loading="lazy"
+                            decoding="async"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-60 group-hover:opacity-30 transition-opacity" />
                         </div>

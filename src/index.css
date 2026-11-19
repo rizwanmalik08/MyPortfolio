@@ -85,3 +85,47 @@
   background-color: rgba(56, 189, 248, 0.15) !important;
   box-shadow: 0 0 15px rgba(56, 189, 248, 0.35);
 }
+
+/* Kinetic Orbital & Waveform Utilities */
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-reverse-slow {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 22s linear infinite;
+}
+
+.animate-spin-reverse-slow {
+  animation: spin-reverse-slow 16s linear infinite;
+}
+
+@keyframes eq-wave-1 {
+  0%, 100% { height: 20%; opacity: 0.5; }
+  50% { height: 95%; opacity: 1; }
+}
+
+@keyframes eq-wave-2 {
+  0%, 100% { height: 75%; opacity: 0.9; }
+  50% { height: 25%; opacity: 0.4; }
+}
+
+@keyframes eq-wave-3 {
+  0%, 100% { height: 40%; opacity: 0.6; }
+  50% { height: 100%; opacity: 1; }
+}
+
+@keyframes eq-wave-4 {
+  0%, 100% { height: 90%; opacity: 1; }
+  50% { height: 35%; opacity: 0.5; }
+}
+
+.animate-eq-1 { animation: eq-wave-1 1.2s ease-in-out infinite; }
+.animate-eq-2 { animation: eq-wave-2 1.4s ease-in-out infinite 0.15s; }
+.animate-eq-3 { animation: eq-wave-3 1.1s ease-in-out infinite 0.3s; }
+.animate-eq-4 { animation: eq-wave-4 1.5s ease-in-out infinite 0.45s; }

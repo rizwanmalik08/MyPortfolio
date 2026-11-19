@@ -91,9 +91,9 @@ export function FluidAurora({ scrollRef, scrollProgress = 0, isMobile = false })
       float g2 = snoise(p * 1.55 - vec2(t * 0.19, -t * 0.15) + g1 * 0.35);
       float flowG = (g1 * 0.6 + g2 * 0.4) * 0.5 + 0.5;
 
-      float b1 = snoise(p * 0.91 + vec2(t * 0.17 + 0.08, t * 0.14 + 0.06));
-      float b2 = snoise(p * 1.60 - vec2(t * 0.20, -t * 0.16) + b1 * 0.35);
-      float flowB = (b1 * 0.6 + b2 * 0.4) * 0.5 + 0.5;
+      float nb1 = snoise(p * 0.91 + vec2(t * 0.17 + 0.08, t * 0.14 + 0.06));
+      float nb2 = snoise(p * 1.60 - vec2(t * 0.20, -t * 0.16) + nb1 * 0.35);
+      float flowB = (nb1 * 0.6 + nb2 * 0.4) * 0.5 + 0.5;
 
       // Section-Adaptive Dynamic Cosine Palette
       // Smoothly transitions as the user journeys from Hero -> Services -> Contact

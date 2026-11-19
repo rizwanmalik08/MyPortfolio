@@ -140,6 +140,7 @@ export function About() {
                           width="240"
                           height="240"
                           loading="lazy"
+                          decoding="async"
                         />
                         <span className="absolute -bottom-1 -right-1 flex h-4 w-4">
                           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>

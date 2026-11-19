@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { certificates } from '../../data/portfolioData';
 import { CertificateModal } from '../ui/CertificateModal';
 import { soundManager } from '../../utils/audioFX';
@@ -48,6 +49,7 @@ export function Certificates() {
                       alt={cert.title}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"
+                      decoding="async"
                     />
                     
                     {/* Hover Glow & Zoom Cue */}
@@ -81,10 +83,14 @@ export function Certificates() {
         </div>
 
         {/* Modal Lightbox */}
-        <CertificateModal
-          certificate={selectedCert}
-          onClose={() => setSelectedCert(null)}
-        />
+        <AnimatePresence>
+          {selectedCert && (
+            <CertificateModal
+              certificate={selectedCert}
+              onClose={() => setSelectedCert(null)}
+            />
+          )}
+        </AnimatePresence>
 
       </div>
     </section>

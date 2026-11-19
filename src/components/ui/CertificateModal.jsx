@@ -20,8 +20,7 @@ export function CertificateModal({ certificate, onClose }) {
   if (!certificate) return null;
 
   return (
-    <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
         {/* Backdrop */}
         <motion.div
           className="fixed inset-0 bg-black/90 backdrop-blur-md"
@@ -85,6 +84,5 @@ export function CertificateModal({ certificate, onClose }) {
           </div>
         </motion.div>
       </div>
-    </AnimatePresence>
   );
 }
