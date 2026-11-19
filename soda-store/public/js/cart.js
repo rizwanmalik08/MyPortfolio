@@ -313,8 +313,13 @@ export class CartManager {
 
     summaryItems.innerHTML = this.items.map((it) => `
       <div class="checkout-summary-row">
-        <span>${it.flavorName} (${it.packType}) × ${it.quantity}</span>
-        <span>$${(it.price * it.quantity).toFixed(2)}</span>
+        <div class="summary-item-left">
+          <span class="summary-item-badge ${it.flavorName.includes('Lime') ? 'badge-lime' : 'badge-classic'}"></span>
+          <span class="summary-item-name">${it.flavorName}</span>
+          <span class="summary-item-pack">${it.packType}</span>
+          <span class="summary-item-qty">× ${it.quantity}</span>
+        </div>
+        <span class="summary-item-price">$${(it.price * it.quantity).toFixed(2)}</span>
       </div>
     `).join('');
 

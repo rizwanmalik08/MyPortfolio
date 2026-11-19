@@ -12,20 +12,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function setupTabs() {
   const tabs = document.querySelectorAll('.admin-tab-btn');
+  
+  function switchTab(targetTab) {
+    if (!targetTab) return;
+    tabs.forEach((t) => {
+      t.classList.toggle('active', t.dataset.tab === targetTab);
+    });
+
+    document.querySelectorAll('.admin-tab-content').forEach((c) => {
+      c.style.display = 'none';
+    });
+
+    const activeContent = document.getElementById(`tab-${targetTab}`);
+    if (activeContent) activeContent.style.display = 'block';
+  }
+
   tabs.forEach((tab) => {
     tab.addEventListener('click', () => {
-      tabs.forEach((t) => t.classList.remove('active'));
-      tab.classList.add('active');
-
       const targetTab = tab.dataset.tab;
-      document.querySelectorAll('.admin-tab-content').forEach((c) => {
-        c.style.display = 'none';
-      });
-
-      const activeContent = document.getElementById(`tab-${targetTab}`);
-      if (activeContent) activeContent.style.display = 'block';
+      switchTab(targetTab);
+      window.location.hash = targetTab;
     });
   });
+
+  function handleHash() {
+    const rawHash = (window.location.hash || '').replace('#', '').toLowerCase();
+    if (!rawHash) return;
+    if (rawHash === 'order' || rawHash === 'orders') switchTab('orders');
+    else if (rawHash === 'product' || rawHash === 'products' || rawHash === 'inventory') switchTab('products');
+    else if (rawHash === 'review' || rawHash === 'reviews') switchTab('reviews');
+    else if (rawHash === 'contact' || rawHash === 'contacts' || rawHash === 'inquiries') switchTab('contacts');
+  }
+
+  handleHash();
+  window.addEventListener('hashchange', handleHash);
 }
 
 async function loadTelemetry() {
@@ -58,27 +78,35 @@ async function loadOrders() {
     }
 
     tbody.innerHTML = data.orders.map((ord) => {
-      const itemsList = ord.items.map(it => `${it.flavor_name} (${it.pack_type}) × ${it.quantity}`).join('<br>');
+      const itemsList = ord.items.map(it => `
+        <div style="margin-bottom: 3px;">
+          <strong style="color: #fff;">${it.flavor_name}</strong>
+          <span style="color: #94a3b8; font-size: 0.8rem;">(${it.pack_type})</span>
+          <span style="color: #fbcfe8; font-weight: 700; font-size: 0.8rem;">× ${it.quantity}</span>
+        </div>
+      `).join('');
       return `
         <tr>
-          <td><strong class="font-mono text-cyan-400">${ord.order_number}</strong></td>
+          <td><span class="order-badge-tag">${ord.order_number}</span></td>
           <td>
-            <strong>${ord.customer_name}</strong><br>
-            <span class="text-xs text-slate-400">${ord.customer_email}</span><br>
-            <span class="text-xs text-slate-400">${ord.city}</span>
+            <div class="customer-cell">
+              <span class="customer-name">${ord.customer_name}</span>
+              <span class="customer-meta">${ord.customer_email}</span>
+              <span class="customer-meta">${ord.city}</span>
+            </div>
           </td>
-          <td class="text-xs">${itemsList}</td>
-          <td><strong class="font-mono text-white">$${ord.total.toFixed(2)}</strong></td>
-          <td><span class="text-xs capitalize font-mono">${ord.payment_method.replace(/_/g, ' ')}</span></td>
+          <td>${itemsList}</td>
+          <td><strong style="font-weight: 800; color: #fff; font-size: 1.05rem;">$${ord.total.toFixed(2)}</strong></td>
+          <td><span style="text-transform: capitalize; font-size: 0.82rem; color: #94a3b8; background: rgba(255,255,255,0.05); padding: 3px 8px; border-radius: 6px;">${ord.payment_method.replace(/_/g, ' ')}</span></td>
           <td>
             <select class="status-select" onchange="updateOrderStatus(${ord.id}, this.value)">
-              <option value="processing" ${ord.order_status === 'processing' ? 'selected' : ''}>Processing</option>
-              <option value="shipped" ${ord.order_status === 'shipped' ? 'selected' : ''}>Shipped</option>
-              <option value="delivered" ${ord.order_status === 'delivered' ? 'selected' : ''}>Delivered</option>
-              <option value="cancelled" ${ord.order_status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+              <option value="processing" ${ord.order_status === 'processing' ? 'selected' : ''}>⏳ Processing</option>
+              <option value="shipped" ${ord.order_status === 'shipped' ? 'selected' : ''}>🚚 Shipped</option>
+              <option value="delivered" ${ord.order_status === 'delivered' ? 'selected' : ''}>✅ Delivered</option>
+              <option value="cancelled" ${ord.order_status === 'cancelled' ? 'selected' : ''}>❌ Cancelled</option>
             </select>
           </td>
-          <td class="text-xs font-mono text-slate-400">${ord.created_at || 'Just now'}</td>
+          <td style="font-size: 0.8rem; color: #94a3b8;">${ord.created_at || 'Just now'}</td>
         </tr>
       `;
     }).join('');

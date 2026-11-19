@@ -428,6 +428,11 @@ app.get('/api/admin/contacts', (req, res) => {
   }
 });
 
+// Admin Panel Page
+app.get(['/admin', '/admin.html'], (req, res) => {
+  res.sendFile(path.join(publicDir, 'admin.html'));
+});
+
 // Fallback to index.html for SPA (Express 5 compatible)
 app.use((req, res) => {
   res.sendFile(path.join(publicDir, 'index.html'));

@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3. Initialize Cart Manager
   const cartManager = new CartManager();
+  window.sodaCart = cartManager;
 
   // 4. Initialize Effervescent Rising Bubbles
   initEffervescentBubbles();
