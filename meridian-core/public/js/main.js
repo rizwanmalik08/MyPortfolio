@@ -1,32 +1,567 @@
+/**
+ * MERIDIAN CORE — Master Cinematic Motion & Interaction Engine
+ * Exact Reference Motion Language, Timing, Sequencing & Three.js Atmosphere
+ */
+
 import { MarcusThreeBackground } from './three-hero.js';
 
-document.addEventListener('DOMContentLoaded', () => {
-  // 1. Initialize 3D Three.js WebGL Atmosphere
-  try {
-    new MarcusThreeBackground('three-canvas-container');
-  } catch (err) {
-    console.warn('Three.js initialization:', err);
-  }
+let lenisInstance = null;
 
-  // 2. Navigation Scroll State & Smooth Links
+document.addEventListener('DOMContentLoaded', () => {
+  // 1. Initialize Lenis Smooth Scroll (Paused initially for preloader)
+  lenisInstance = initializeSmoothScroll();
+
+  // 2. Initialize Three.js Architectural WebGL Atmosphere
+  initializeThreeScene();
+
+  // 3. Setup Navigation & Mobile Drawer
   setupNavigation();
 
-  // 3. Voices Quote Switcher
-  setupVoices();
+  // 4. Setup Liquid Displacement Filters
+  animateLiquidImage();
 
-  // 4. Ventures Modal Details
+  // 5. Setup Interactive Voices Testimonials
+  initializeTestimonials();
+
+  // 6. Setup Ventures Modal
   setupVentureModal();
 
-  // 5. Impact Counter Animations
+  // 7. Setup Numerical Impact Counters
   setupCounters();
 
-  // 6. Working Contact Inquiry Form (Connected to Express API & SQLite)
+  // 8. Setup Working Consultation Inquiry Form
   setupInquiryForm();
+
+  // 9. Setup Scroll-Triggered Section Reveals
+  animateSectionReveal();
+
+  // 10. Start Cinematic Preloader Sequence
+  runCinematicPreloader();
 });
 
+/* ==========================================================================
+   1. TEXT SPLITTING UTILITIES (Characters, Words, Lines)
+   ========================================================================== */
+
 /**
- * Navigation Scroll Observer & Mobile Drawer
+ * Splits an element's text into individual character wrappers for staggered upward reveals.
+ * @param {HTMLElement} element 
+ * @returns {HTMLElement[]} Array of .char-inner elements
  */
+export function splitTextIntoCharacters(element) {
+  if (!element) return [];
+  const text = element.textContent.trim();
+  element.innerHTML = '';
+  const inners = [];
+
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    const wrap = document.createElement('span');
+    wrap.className = 'char-wrap';
+
+    if (char === ' ') {
+      wrap.innerHTML = '&nbsp;';
+    } else {
+      const inner = document.createElement('span');
+      inner.className = 'char-inner';
+      inner.textContent = char;
+      wrap.appendChild(inner);
+      inners.push(inner);
+    }
+    element.appendChild(wrap);
+  }
+
+  return inners;
+}
+
+/**
+ * Splits an element's text into individual word wrappers for staggered reveals.
+ * @param {HTMLElement} element 
+ * @returns {HTMLElement[]} Array of .quote-word-inner elements
+ */
+export function splitTextIntoWords(element) {
+  if (!element) return [];
+  const text = element.textContent.trim();
+  element.innerHTML = '';
+  const inners = [];
+
+  const words = text.split(/\s+/);
+  words.forEach((word) => {
+    const wrap = document.createElement('span');
+    wrap.className = 'quote-word';
+
+    const inner = document.createElement('span');
+    inner.className = 'quote-word-inner';
+    inner.textContent = word;
+
+    wrap.appendChild(inner);
+    element.appendChild(wrap);
+    inners.push(inner);
+  });
+
+  return inners;
+}
+
+/**
+ * Splits heading text into lines for clipped vertical slide reveals.
+ * @param {HTMLElement} element 
+ * @returns {HTMLElement[]} Array of .split-line-inner elements
+ */
+export function splitTextIntoLines(element) {
+  if (!element) return [];
+  const text = element.innerHTML.trim();
+  element.innerHTML = '';
+
+  const wrap = document.createElement('span');
+  wrap.className = 'split-line';
+  const inner = document.createElement('span');
+  inner.className = 'split-line-inner';
+  inner.innerHTML = text;
+
+  wrap.appendChild(inner);
+  element.appendChild(wrap);
+
+  return [inner];
+}
+
+/* ==========================================================================
+   2. CINEMATIC PRELOADER SEQUENCE (EXACT TIMING SPEC)
+   ========================================================================== */
+function runCinematicPreloader() {
+  const preloader = document.getElementById('cinematic-preloader');
+  const numEl = document.getElementById('preloader-num');
+  const contentEl = document.querySelector('.preloader-content');
+
+  // Accessibility Check: Respect reduced motion
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion || !preloader) {
+    if (preloader) preloader.style.display = 'none';
+    if (lenisInstance) lenisInstance.start();
+    document.body.style.overflow = '';
+    animateHeroSequence(true);
+    return;
+  }
+
+  // 1. Initial State: Lock scrolling & stop Lenis
+  document.body.style.overflow = 'hidden';
+  if (lenisInstance) lenisInstance.stop();
+
+  // 2. Animate counter from 0% to 100% over exactly 2000ms
+  const duration = 2000;
+  const startTime = performance.now();
+
+  function updateCounter(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    // Smooth quadratic ease-out
+    const easedProgress = 1 - Math.pow(1 - progress, 2);
+    const currentVal = Math.round(easedProgress * 100);
+
+    if (numEl) numEl.textContent = currentVal;
+
+    if (progress < 1) {
+      requestAnimationFrame(updateCounter);
+    } else {
+      if (numEl) numEl.textContent = 100;
+      onCounterComplete();
+    }
+  }
+
+  requestAnimationFrame(updateCounter);
+
+  function onCounterComplete() {
+    // 5. Once counter reaches 100%, fade out labels over 300ms
+    if (contentEl) contentEl.classList.add('fade-out');
+
+    // 6. Wait 200ms
+    setTimeout(() => {
+      // 7. Animate preloader upward (650ms, cubic-bezier(0.22, 1, 0.36, 1))
+      preloader.classList.add('wipe-up');
+
+      // 9. When upward wipe finishes (~650ms)
+      setTimeout(() => {
+        preloader.classList.add('hidden');
+        preloader.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (lenisInstance) lenisInstance.start();
+
+        // 10. Start hero entrance sequence
+        animateHeroSequence(false);
+      }, 650);
+    }, 500); // 300ms fade + 200ms delay
+  }
+}
+
+/* ==========================================================================
+   3. HERO SIGNATURE MOTION (CHARACTER & LINE SEQUENCING)
+   ========================================================================== */
+export function animateHeroSequence(instant = false) {
+  const lineEls = document.querySelectorAll('.hero-name .hn-line');
+  const roleInners = document.querySelectorAll('.role-line .role-inner');
+  const heroDesc = document.getElementById('hero-desc');
+  const heroPortrait = document.getElementById('hero-portrait');
+  const portraitImg = document.getElementById('hero-portrait-img');
+  const scrollCue = document.getElementById('scroll-cue');
+
+  if (instant) {
+    lineEls.forEach(line => {
+      splitTextIntoCharacters(line).forEach(char => char.classList.add('revealed'));
+    });
+    roleInners.forEach(r => r.classList.add('revealed'));
+    if (heroDesc) heroDesc.classList.add('revealed');
+    if (heroPortrait) heroPortrait.classList.add('revealed');
+    if (scrollCue) scrollCue.classList.add('revealed');
+    return;
+  }
+
+  // Split lines into characters
+  const line1 = lineEls[0];
+  const line2 = lineEls[1];
+
+  const charsLine1 = line1 ? splitTextIntoCharacters(line1) : [];
+  const charsLine2 = line2 ? splitTextIntoCharacters(line2) : [];
+
+  // Line 1 characters: 52ms stagger, 900ms duration
+  charsLine1.forEach((char, idx) => {
+    setTimeout(() => {
+      char.classList.add('revealed');
+    }, idx * 52);
+  });
+
+  // Line 2 characters: starts 240ms after Line 1 starts, 52ms stagger
+  setTimeout(() => {
+    charsLine2.forEach((char, idx) => {
+      setTimeout(() => {
+        char.classList.add('revealed');
+      }, idx * 52);
+    });
+  }, 240);
+
+  // Role labels: 80ms stagger, 760ms duration
+  roleInners.forEach((role, idx) => {
+    setTimeout(() => {
+      role.classList.add('revealed');
+    }, 180 + (idx * 80));
+  });
+
+  // Hero description reveal: 520ms duration
+  setTimeout(() => {
+    if (heroDesc) heroDesc.classList.add('revealed');
+  }, 320);
+
+  // Founder cutout portrait reveal: scale 1.04 -> 1, opacity 0 -> 1 over 900ms
+  setTimeout(() => {
+    if (heroPortrait) heroPortrait.classList.add('revealed');
+  }, 200);
+
+  // Scroll cue appears after hero sequence settles
+  setTimeout(() => {
+    if (scrollCue) scrollCue.classList.add('revealed');
+  }, 1400);
+
+  // Mouse Parallax on Founder Cutout Portrait
+  if (heroPortrait && portraitImg) {
+    let mouseX = 0;
+    let mouseY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+    }, { passive: true });
+
+    function portraitParallaxLoop() {
+      currentX += (mouseX - currentX) * 0.05;
+      currentY += (mouseY - currentY) * 0.05;
+
+      portraitImg.style.transform = `translate3d(${currentX * -12}px, ${currentY * -8}px, 0)`;
+      requestAnimationFrame(portraitParallaxLoop);
+    }
+    requestAnimationFrame(portraitParallaxLoop);
+  }
+}
+
+/* ==========================================================================
+   4. LIQUID IMAGE DISPLACEMENT FILTERS (feTurbulence + feDisplacementMap)
+   ========================================================================== */
+export function animateLiquidImage() {
+  const isTouch = ('ontouchstart' in window) || navigator.maxTouchPoints > 0;
+  if (isTouch) return; // Skip heavy SVG filter loops on mobile devices
+
+  const filterConfigs = [
+    {
+      targetSelector: '#hero-portrait',
+      filterId: 'dispHero',
+      turbId: 'turbHero',
+      restingScale: 1,
+      hoverScale: 30,
+      restingFreq: 0.009,
+      hoverFreq: 0.022
+    },
+    {
+      targetSelector: '.venture',
+      filterId: 'dispVentures',
+      turbId: 'turbVentures',
+      restingScale: 1,
+      hoverScale: 28,
+      restingFreq: 0.009,
+      hoverFreq: 0.024
+    },
+    {
+      targetSelector: '.voice-panel',
+      filterId: 'dispVoices',
+      turbId: 'turbVoices',
+      restingScale: 1,
+      hoverScale: 22,
+      restingFreq: 0.009,
+      hoverFreq: 0.02
+    }
+  ];
+
+  filterConfigs.forEach(cfg => {
+    const dispEl = document.getElementById(cfg.filterId);
+    const turbEl = document.getElementById(cfg.turbId);
+    if (!dispEl || !turbEl) return;
+
+    let currentScale = cfg.restingScale;
+    let targetScale = cfg.restingScale;
+    let currentFreq = cfg.restingFreq;
+    let targetFreq = cfg.restingFreq;
+    let isHovering = false;
+    let animId = null;
+
+    function springLoop() {
+      currentScale += (targetScale - currentScale) * 0.085;
+      currentFreq += (targetFreq - currentFreq) * 0.085;
+
+      dispEl.setAttribute('scale', currentScale.toFixed(2));
+      turbEl.setAttribute('baseFrequency', currentFreq.toFixed(4));
+
+      // Continue animating until settled
+      if (Math.abs(targetScale - currentScale) > 0.05 || isHovering) {
+        animId = requestAnimationFrame(springLoop);
+      } else {
+        dispEl.setAttribute('scale', cfg.restingScale.toString());
+        turbEl.setAttribute('baseFrequency', cfg.restingFreq.toString());
+        animId = null;
+      }
+    }
+
+    const targets = document.querySelectorAll(cfg.targetSelector);
+    targets.forEach(target => {
+      target.addEventListener('mouseenter', () => {
+        isHovering = true;
+        targetScale = cfg.hoverScale;
+        targetFreq = cfg.hoverFreq;
+        if (!animId) animId = requestAnimationFrame(springLoop);
+      });
+
+      target.addEventListener('mouseleave', () => {
+        isHovering = false;
+        targetScale = cfg.restingScale;
+        targetFreq = cfg.restingFreq;
+        if (!animId) animId = requestAnimationFrame(springLoop);
+      });
+    });
+  });
+}
+
+/* ==========================================================================
+   5. LENIS SMOOTH SCROLLING INITIALIZATION
+   ========================================================================== */
+export function initializeSmoothScroll() {
+  if (typeof window.Lenis === 'undefined') {
+    console.warn('Lenis not found. Fallback to native scrolling.');
+    return null;
+  }
+
+  const lenis = new window.Lenis({
+    duration: 1.25,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    orientation: 'vertical',
+    gestureOrientation: 'vertical',
+    smoothWheel: true,
+    wheelMultiplier: 1.05,
+    touchMultiplier: 1.8
+  });
+
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  // Smooth Anchor Navigation
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', (e) => {
+      const href = anchor.getAttribute('href');
+      if (!href || href === '#') return;
+
+      const targetEl = document.querySelector(href);
+      if (targetEl) {
+        e.preventDefault();
+        lenis.scrollTo(targetEl, {
+          offset: 0,
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+        });
+      }
+    });
+  });
+
+  // Back to Top button
+  const btt = document.getElementById('back-to-top');
+  if (btt) {
+    btt.addEventListener('click', () => {
+      lenis.scrollTo(0, { duration: 1.4 });
+    });
+  }
+
+  return lenis;
+}
+
+/* ==========================================================================
+   6. THREE.JS 3D SCENE INITIALIZATION
+   ========================================================================== */
+export function initializeThreeScene() {
+  try {
+    new MarcusThreeBackground('three-sculpture-container');
+  } catch (err) {
+    console.warn('Three.js initialization notice:', err);
+  }
+}
+
+/* ==========================================================================
+   7. INTERACTIVE TESTIMONIALS (WORD-BY-WORD REVEAL ENGINE)
+   ========================================================================== */
+export function initializeTestimonials() {
+  const voicesData = [
+    {
+      name: 'Elena Cardoso',
+      role: 'Managing Partner, Meridian Ventures',
+      quote: '“Marcus and the Meridian team saw the market three years before the rest of us. Betting alongside them changed the trajectory of my entire career.”',
+      attribution: 'Elena Cardoso — Managing Partner, Meridian Ventures',
+      image: '/assets/images/mv-voice-01.webp'
+    },
+    {
+      name: 'David Okonkwo',
+      role: 'Founder & CEO, Cadence Health',
+      quote: '“When every institutional VC passed on our clinical telemetry hardware, Marcus wrote the first check and spent weekends with our firmware engineers solving thermal dissipation.”',
+      attribution: 'David Okonkwo — Founder & CEO, Cadence Health',
+      image: '/assets/images/team-marcus.jpg'
+    },
+    {
+      name: 'Priya Nandakumar',
+      role: 'CEO, Northwind Energy',
+      quote: '“He understands grid dispatch dynamics and global capital markets equally well. That rare conviction is why Northwind scaled from prototype to NYSE listing.”',
+      attribution: 'Priya Nandakumar — CEO, Northwind Energy',
+      image: '/assets/images/team-elena.jpg'
+    }
+  ];
+
+  const buttons = document.querySelectorAll('.voice-btn');
+  const quoteEl = document.getElementById('voice-quote');
+  const attrEl = document.getElementById('voice-attribution');
+  const imgEl = document.getElementById('voice-image');
+
+  function renderQuoteWithWordReveal(text) {
+    if (!quoteEl) return;
+    quoteEl.textContent = text;
+    const words = splitTextIntoWords(quoteEl);
+
+    // Stagger word reveal: 22ms stagger, 520ms duration (cubic-bezier(0.165, 0.84, 0.44, 1))
+    words.forEach((w, idx) => {
+      setTimeout(() => {
+        w.classList.add('revealed');
+      }, idx * 22);
+    });
+  }
+
+  // Initial render of first quote
+  if (quoteEl) {
+    renderQuoteWithWordReveal(voicesData[0].quote);
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const idx = parseInt(btn.getAttribute('data-index'), 10);
+      if (isNaN(idx) || !voicesData[idx]) return;
+
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const data = voicesData[idx];
+
+      // Smooth switch with image fade
+      if (imgEl) {
+        imgEl.style.opacity = '0';
+        setTimeout(() => {
+          imgEl.src = data.image;
+          imgEl.alt = data.name;
+          imgEl.style.opacity = '1';
+        }, 180);
+      }
+
+      if (attrEl) {
+        attrEl.textContent = data.attribution;
+      }
+
+      renderQuoteWithWordReveal(data.quote);
+    });
+  });
+}
+
+/* ==========================================================================
+   8. SCROLL-TRIGGERED SECTION REVEALS (IntersectionObserver)
+   ========================================================================== */
+export function animateSectionReveal() {
+  const sections = document.querySelectorAll('.reveal-section');
+
+  // Split headings into lines for clean slide up
+  document.querySelectorAll('.split-heading').forEach(heading => {
+    splitTextIntoLines(heading);
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const sec = entry.target;
+
+        // Reveal split headings
+        const headingInners = sec.querySelectorAll('.split-line-inner');
+        headingInners.forEach((hi, idx) => {
+          setTimeout(() => hi.classList.add('revealed'), idx * 100);
+        });
+
+        // Reveal body text
+        const bodyEls = sec.querySelectorAll('.reveal-body');
+        bodyEls.forEach((b, idx) => {
+          setTimeout(() => b.classList.add('revealed'), 120 + (idx * 60));
+        });
+
+        // Reveal cards with progressive stagger
+        const cards = sec.querySelectorAll('.reveal-card');
+        cards.forEach((card, idx) => {
+          setTimeout(() => {
+            card.classList.add('revealed');
+          }, 150 + (idx * 75));
+        });
+
+        observer.unobserve(sec);
+      }
+    });
+  }, {
+    threshold: 0.15,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  sections.forEach(s => observer.observe(s));
+}
+
+/* ==========================================================================
+   9. NAVIGATION SCROLL SPY & BURGER MENU
+   ========================================================================== */
 function setupNavigation() {
   const nav = document.querySelector('.site-nav');
   const burger = document.getElementById('mobile-menu-toggle');
@@ -35,7 +570,7 @@ function setupNavigation() {
   const navLinks = document.querySelectorAll('.nav-link');
 
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
+    if (window.scrollY > 40) {
       nav.classList.add('scrolled');
     } else {
       nav.classList.remove('scrolled');
@@ -45,18 +580,22 @@ function setupNavigation() {
   if (burger && drawer) {
     burger.addEventListener('click', () => {
       const isOpen = drawer.classList.toggle('open');
+      burger.classList.toggle('open', isOpen);
       burger.setAttribute('aria-expanded', isOpen);
+      document.body.style.overflow = isOpen ? 'hidden' : '';
     });
 
     mobileLinks.forEach(link => {
       link.addEventListener('click', () => {
         drawer.classList.remove('open');
+        burger.classList.remove('open');
         burger.setAttribute('aria-expanded', 'false');
+        document.body.style.overflow = '';
       });
     });
   }
 
-  // Active section spy
+  // Active Section Spy
   const sections = document.querySelectorAll('section[id], footer[id]');
   window.addEventListener('scroll', () => {
     const scrollPos = window.scrollY + 250;
@@ -77,70 +616,9 @@ function setupNavigation() {
   }, { passive: true });
 }
 
-/**
- * Voices Interactive Testimonials Switcher
- */
-function setupVoices() {
-  const voicesData = [
-    {
-      name: 'Elena Cardoso',
-      role: 'Managing Partner, Meridian Ventures',
-      quote: '“Marcus saw the market three years before the rest of us. Betting alongside him changed the trajectory of my entire career.”',
-      attribution: 'Elena Cardoso — Managing Partner, Meridian Ventures',
-      image: '/assets/images/mv-voice-01.webp'
-    },
-    {
-      name: 'David Okonkwo',
-      role: 'Founder & CEO, Cadence Health',
-      quote: '“When every institutional VC passed on our hardware prototype, Marcus wrote the first check and spent weekends with our firmware engineers solving heat dissipation.”',
-      attribution: 'David Okonkwo — Founder & CEO, Cadence Health',
-      image: '/assets/images/team-marcus.jpg'
-    },
-    {
-      name: 'Priya Nandakumar',
-      role: 'CEO, Northwind Energy',
-      quote: '“He understands grid mechanics and capital markets equally well. That rare combination is why Northwind scaled from pilot to NYSE listing.”',
-      attribution: 'Priya Nandakumar — CEO, Northwind Energy',
-      image: '/assets/images/team-elena.jpg'
-    }
-  ];
-
-  const buttons = document.querySelectorAll('.voice-btn');
-  const quoteEl = document.getElementById('voice-quote');
-  const attrEl = document.getElementById('voice-attribution');
-  const imgEl = document.getElementById('voice-image');
-
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const idx = parseInt(btn.getAttribute('data-index'), 10);
-      if (isNaN(idx) || !voicesData[idx]) return;
-
-      buttons.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const data = voicesData[idx];
-
-      if (quoteEl && attrEl && imgEl) {
-        quoteEl.style.opacity = '0';
-        imgEl.style.opacity = '0';
-
-        setTimeout(() => {
-          quoteEl.textContent = data.quote;
-          attrEl.textContent = data.attribution;
-          imgEl.src = data.image;
-          imgEl.alt = data.name;
-
-          quoteEl.style.opacity = '1';
-          imgEl.style.opacity = '1';
-        }, 200);
-      }
-    });
-  });
-}
-
-/**
- * Venture Details Modal
- */
+/* ==========================================================================
+   10. CASE STUDY VENTURE MODAL
+   ========================================================================== */
 function setupVentureModal() {
   const modal = document.getElementById('venture-modal');
   const modalBody = document.getElementById('modal-body');
@@ -252,13 +730,15 @@ function setupVentureModal() {
       modal.classList.add('open');
       modal.setAttribute('aria-hidden', 'false');
       document.body.style.overflow = 'hidden';
+      if (lenisInstance) lenisInstance.stop();
     });
   });
 
   const closeModal = () => {
     modal.classList.remove('open');
     modal.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = '';
+    if (lenisInstance) lenisInstance.start();
   };
 
   if (closeBtn) closeBtn.addEventListener('click', closeModal);
@@ -270,9 +750,9 @@ function setupVentureModal() {
   });
 }
 
-/**
- * Animated Numerical Counters for Impact Section
- */
+/* ==========================================================================
+   11. NUMERICAL IMPACT COUNTERS
+   ========================================================================== */
 function setupCounters() {
   const statElements = document.querySelectorAll('.stat-fig');
   let animated = false;
@@ -295,7 +775,6 @@ function setupCounters() {
           function update(currentTime) {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
-            // Ease out cubic
             const easeOut = 1 - Math.pow(1 - progress, 3);
             const current = target * easeOut;
 
@@ -327,9 +806,9 @@ function setupCounters() {
   if (impactSec) observer.observe(impactSec);
 }
 
-/**
- * Working Consultation Inquiry Form Connected to SQLite Express Backend
- */
+/* ==========================================================================
+   12. WORKING CONSULTATION INQUIRY FORM
+   ========================================================================== */
 function setupInquiryForm() {
   const form = document.getElementById('inquiry-form');
   const statusEl = document.getElementById('form-status');
@@ -367,7 +846,7 @@ function setupInquiryForm() {
 
       if (res.ok && data.success) {
         statusEl.className = 'form-status success';
-        statusEl.textContent = 'Inquiry logged directly to secure database. Marcus will review your message.';
+        statusEl.textContent = 'Inquiry logged directly to secure database. Our partners will review your message.';
         form.reset();
       } else {
         statusEl.className = 'form-status error';

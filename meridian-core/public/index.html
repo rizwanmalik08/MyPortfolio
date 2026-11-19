@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Marcus Vane — Founder, Investor, Operator &amp; Contrarian</title>
+  <title>Meridian Core — Business &amp; Innovation Group | Building Ideas. Creating Impact.</title>
   
-  <meta name="description" content="Personal portfolio and executive venture showcase of Marcus Vane: Founder, Investor, Operator, and Contrarian. Four exits, one playbook: conviction before consensus." />
+  <meta name="description" content="Meridian Core is an international business and innovation group engineering high-growth ventures, digital transformation, and sovereign technology solutions." />
   <meta name="theme-color" content="#08080a" />
 
   <!-- Google Fonts: Anton (Display Headlines & Hero) and Onest (Body & Editorial) -->
@@ -16,13 +16,55 @@
   <!-- Stylesheets -->
   <link rel="stylesheet" href="/css/style.css" />
 
-  <!-- Three.js (CDN for interactive 3D WebGL atmosphere & particles) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <!-- Three.js (Local production bundle) -->
+  <script src="/js/three.min.js"></script>
+  <!-- Lenis Smooth Scroll (Local production bundle) -->
+  <script src="/js/lenis.min.js"></script>
 </head>
 <body class="bg-main">
 
+  <!-- ============================================== -->
+  <!-- SVG LIQUID DISPLACEMENT FILTERS                -->
+  <!-- ============================================== -->
+  <svg width="0" height="0" style="position: absolute; pointer-events: none; opacity: 0;" aria-hidden="true">
+    <defs>
+      <!-- Hero Liquid Filter -->
+      <filter id="liqHero" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+        <feTurbulence id="turbHero" type="fractalNoise" baseFrequency="0.009" numOctaves="2" result="noise" />
+        <feDisplacementMap id="dispHero" in="SourceGraphic" in2="noise" scale="1" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+
+      <!-- Ventures Liquid Filter -->
+      <filter id="liqVentures" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+        <feTurbulence id="turbVentures" type="fractalNoise" baseFrequency="0.009" numOctaves="2" result="noise" />
+        <feDisplacementMap id="dispVentures" in="SourceGraphic" in2="noise" scale="1" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+
+      <!-- Testimonials / Voices Liquid Filter -->
+      <filter id="liqVoices" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+        <feTurbulence id="turbVoices" type="fractalNoise" baseFrequency="0.009" numOctaves="2" result="noise" />
+        <feDisplacementMap id="dispVoices" in="SourceGraphic" in2="noise" scale="1" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </defs>
+  </svg>
+
+  <!-- ============================================== -->
+  <!-- CINEMATIC PRELOADER (EXACT SEQUENCE)           -->
+  <!-- ============================================== -->
+  <div id="cinematic-preloader" class="cinematic-preloader" aria-hidden="false">
+    <div class="preloader-content">
+      <div class="preloader-brand">
+        <span class="pl-monogram">MC</span>
+        <span class="pl-brand-name">MERIDIAN CORE</span>
+      </div>
+      <div class="preloader-counter">
+        <span id="preloader-num" class="pl-num">0</span><span class="pl-percent">%</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Interactive Three.js 3D Background Canvas -->
-  <div id="three-canvas-container" class="three-canvas-container" aria-hidden="true"></div>
+  <div id="three-sculpture-container" class="three-sculpture-container" aria-hidden="true"></div>
 
   <!-- Ambient Dark Glow Layers -->
   <div class="ambient-glow" aria-hidden="true"></div>
@@ -32,12 +74,13 @@
   <!-- ============================================== -->
   <nav class="site-nav" aria-label="Primary">
     <a href="#top" class="logo">
-      <span class="monogram">MV</span>
-      <span class="logo-name">Marcus Vane</span>
+      <span class="monogram">MC</span>
+      <span class="logo-name">MERIDIAN CORE</span>
     </a>
 
     <ul class="nav-links">
       <li><a href="#story" class="nav-link">Story</a></li>
+      <li><a href="#expertise" class="nav-link">Expertise</a></li>
       <li><a href="#ventures" class="nav-link">Ventures</a></li>
       <li><a href="#impact" class="nav-link">Impact</a></li>
       <li><a href="#voices" class="nav-link">Voices</a></li>
@@ -49,49 +92,54 @@
     </button>
   </nav>
 
-  <!-- Mobile Drawer -->
+  <!-- Full-Screen Mobile Drawer -->
   <div id="mobile-drawer" class="mobile-menu" aria-hidden="true">
-    <a href="#story" class="mobile-nav-link">Story</a>
-    <a href="#ventures" class="mobile-nav-link">Ventures</a>
-    <a href="#impact" class="mobile-nav-link">Impact</a>
-    <a href="#voices" class="mobile-nav-link">Voices</a>
-    <a href="#contact" class="mobile-nav-link">Contact</a>
+    <div class="mobile-menu-inner">
+      <a href="#story" class="mobile-nav-link"><span class="m-idx">01</span>Story</a>
+      <a href="#expertise" class="mobile-nav-link"><span class="m-idx">02</span>Expertise</a>
+      <a href="#ventures" class="mobile-nav-link"><span class="m-idx">03</span>Ventures</a>
+      <a href="#impact" class="mobile-nav-link"><span class="m-idx">04</span>Impact</a>
+      <a href="#voices" class="mobile-nav-link"><span class="m-idx">05</span>Voices</a>
+      <a href="#contact" class="mobile-nav-link" style="color: var(--accent);"><span class="m-idx">06</span>Contact Advisory →</a>
+    </div>
   </div>
 
   <main class="main">
 
     <!-- ============================================== -->
-    <!-- HERO SECTION (MATCHING USER REFERENCE DESIGN)   -->
+    <!-- HERO SECTION (MATCHING SIGNATURE MOTION SPEC)   -->
     <!-- ============================================== -->
     <section id="top" class="hero">
       
       <!-- Top Content Row -->
       <div class="hero-top">
-        <h2 class="hero-roles" aria-label="Founder Investor Operator Contrarian">
-          <span class="w">Founder</span>
-          <span class="w">Investor</span>
-          <span class="w">Operator</span>
-          <span class="w">Contrarian</span>
+        <h2 id="hero-roles" class="hero-roles" aria-label="Venture Architecture Critical Technology Growth Capital Systemic Impact">
+          <span class="role-line"><span class="role-inner">VENTURE ARCHITECTURE</span></span>
+          <span class="role-line"><span class="role-inner">CRITICAL TECHNOLOGY</span></span>
+          <span class="role-line"><span class="role-inner">GROWTH CAPITAL</span></span>
+          <span class="role-line"><span class="role-inner">SYSTEMIC IMPACT</span></span>
         </h2>
-        <p class="hero-desc">
-          I start companies that shouldn't be possible — then make them inevitable. Four exits, one playbook: conviction before consensus.
+        <p id="hero-desc" class="hero-desc">
+          We build businesses that move the future. Partnering with visionary founders and institutional leaders to engineer breakthrough enterprises.
         </p>
       </div>
 
       <!-- Giant Bold Red Display Typography (Layered Behind Founder) -->
-      <h1 class="hero-name" aria-label="Marcus Vane">
-        <span class="hn-line">MARCUS</span>
-        <span class="hn-line">VANE</span>
+      <h1 id="hero-headline" class="hero-name" aria-label="Meridian Core">
+        <span class="hn-line" data-line="MERIDIAN">MERIDIAN</span>
+        <span class="hn-line" data-line="CORE">CORE</span>
       </h1>
 
       <!-- Full-Height Cutout Founder Visual (Layered in Front) -->
-      <div class="hero-portrait">
+      <div id="hero-portrait" class="hero-portrait">
         <figure class="liquid bare fill">
           <img 
+            id="hero-portrait-img"
             src="/assets/images/marcus-portrait.webp" 
-            alt="Marcus Vane portrait" 
+            alt="Julian Vance, Founder &amp; Managing Partner" 
             class="portrait-media" 
             loading="eager"
+            style="filter: url(#liqHero);"
           />
         </figure>
       </div>
@@ -100,7 +148,7 @@
       <div class="hero-fade" aria-hidden="true"></div>
 
       <!-- Scroll Indicator -->
-      <div class="scroll-cue">
+      <div id="scroll-cue" class="scroll-cue">
         <span class="rule"></span>
         <span>Scroll to enter</span>
       </div>
@@ -111,59 +159,59 @@
     <!-- ============================================== -->
     <section aria-label="Operating principles" class="marquee">
       <div class="marquee-track">
-        <span class="marquee-item"><span>Build Bold</span><i></i></span>
-        <span class="marquee-item"><span>Scale Relentlessly</span><i></i></span>
-        <span class="marquee-item"><span>Think In Decades</span><i></i></span>
-        <span class="marquee-item"><span>Bet On People</span><i></i></span>
-        <span class="marquee-item"><span>Ship The Future</span><i></i></span>
-        <span class="marquee-item"><span>Build Bold</span><i></i></span>
-        <span class="marquee-item"><span>Scale Relentlessly</span><i></i></span>
-        <span class="marquee-item"><span>Think In Decades</span><i></i></span>
-        <span class="marquee-item"><span>Bet On People</span><i></i></span>
-        <span class="marquee-item"><span>Ship The Future</span><i></i></span>
+        <span class="marquee-item"><span>BUILD WITH PURPOSE</span><i></i></span>
+        <span class="marquee-item"><span>THINK BEYOND LIMITS</span><i></i></span>
+        <span class="marquee-item"><span>CREATE LASTING IMPACT</span><i></i></span>
+        <span class="marquee-item"><span>INNOVATION THROUGH ACTION</span><i></i></span>
+        <span class="marquee-item"><span>BUILT FOR THE FUTURE</span><i></i></span>
+        <span class="marquee-item"><span>BUILD WITH PURPOSE</span><i></i></span>
+        <span class="marquee-item"><span>THINK BEYOND LIMITS</span><i></i></span>
+        <span class="marquee-item"><span>CREATE LASTING IMPACT</span><i></i></span>
+        <span class="marquee-item"><span>INNOVATION THROUGH ACTION</span><i></i></span>
+        <span class="marquee-item"><span>BUILT FOR THE FUTURE</span><i></i></span>
       </div>
     </section>
 
     <!-- ============================================== -->
     <!-- STORY SECTION                                  -->
     <!-- ============================================== -->
-    <section id="story" class="section">
+    <section id="story" class="section reveal-section">
       <div class="story-grid">
         <div class="story-left">
           <p class="eyebrow"><span class="dot"></span>The Story</p>
-          <h2 class="h-story">Conviction is a competitive advantage.</h2>
-          <p class="story-lead">
-            For twenty years I've backed the version of the future most people couldn't see yet. From a dorm-room prototype to companies serving a hundred million people, the through-line never changed: find the hard problem everyone avoids, assemble the team nobody else could, and out-stubborn the doubt.
+          <h2 class="h-story split-heading">Conviction is a competitive advantage.</h2>
+          <p class="story-lead reveal-body">
+            For twenty years we've backed the version of the future most people couldn't see yet. From pioneering prototypes to enterprises serving hundreds of millions, our thesis never wavers: find the hard problems everyone avoids, assemble the architects nobody else could, and out-compete consensus.
           </p>
         </div>
 
         <ul class="story-right">
-          <li class="principle">
+          <li class="principle reveal-card">
             <span class="p-num">01</span>
             <div>
               <h3>Move before it's obvious</h3>
-              <p>The best opportunities look like mistakes right up until they look inevitable. I commit while the room is still hesitating.</p>
+              <p>The highest-impact opportunities look like non-consensus bets right up until they become market infrastructure. We commit while others hesitate.</p>
             </div>
           </li>
-          <li class="principle">
+          <li class="principle reveal-card">
             <span class="p-num">02</span>
             <div>
               <h3>Hire founders, not employees</h3>
-              <p>I build teams of people who would start their own thing — then give them a reason not to. Ownership compounds faster than talent alone.</p>
+              <p>We build teams of operators who could build their own ventures — then give them sovereign autonomy. Ownership compounds faster than raw talent.</p>
             </div>
           </li>
-          <li class="principle">
+          <li class="principle reveal-card">
             <span class="p-num">03</span>
             <div>
               <h3>Distribution is the product</h3>
-              <p>Genius unshipped is a hobby. Every venture is engineered around how it reaches the people it was built for.</p>
+              <p>Breakthrough engineering unshipped creates zero systemic value. Every enterprise is architected around institutional scale and adoption.</p>
             </div>
           </li>
-          <li class="principle">
+          <li class="principle reveal-card">
             <span class="p-num">04</span>
             <div>
               <h3>Play the long game loudly</h3>
-              <p>Patience and ambition are not opposites. I think in decades and act with urgency every single day.</p>
+              <p>Patience and aggressive execution are complementary forces. We build for multi-decade horizons while executing with relentless daily urgency.</p>
             </div>
           </li>
         </ul>
@@ -171,23 +219,78 @@
     </section>
 
     <!-- ============================================== -->
+    <!-- EXPERTISE SECTION                              -->
+    <!-- ============================================== -->
+    <section id="expertise" class="section reveal-section">
+      <div class="head-row">
+        <div>
+          <p class="eyebrow"><span class="dot"></span>Core Disciplines</p>
+          <h2 class="h-ventures split-heading">Strategic Capabilities.</h2>
+        </div>
+        <p class="label count-label">06 / Competencies</p>
+      </div>
+
+      <div class="expertise-grid">
+        <div class="expertise-card reveal-card">
+          <span class="exp-num">01</span>
+          <h3>Venture Architecture</h3>
+          <p>Co-founding and incubating category-defining businesses with end-to-end operational, legal, and technological scaffolding.</p>
+        </div>
+        <div class="expertise-card reveal-card">
+          <span class="exp-num">02</span>
+          <h3>Digital Transformation</h3>
+          <p>Modernizing core industrial, financial, and governmental operational stacks with sovereign, resilient cloud architectures.</p>
+        </div>
+        <div class="expertise-card reveal-card">
+          <span class="exp-num">03</span>
+          <h3>Critical Technology</h3>
+          <p>Deploying advanced neural networks, autonomous robotic fleets, and quantum-resistant cryptographic systems at scale.</p>
+        </div>
+        <div class="expertise-card reveal-card">
+          <span class="exp-num">04</span>
+          <h3>Growth Syndication</h3>
+          <p>Structuring cross-border private equity, growth syndicates, and sovereign wealth allocations for high-velocity scaling.</p>
+        </div>
+        <div class="expertise-card reveal-card">
+          <span class="exp-num">05</span>
+          <h3>Grid &amp; Energy Systems</h3>
+          <p>Financing and engineering multi-gigawatt dispatchable clean power storage and algorithmic smart grid distribution.</p>
+        </div>
+        <div class="expertise-card reveal-card">
+          <span class="exp-num">06</span>
+          <h3>M&amp;A Advisory</h3>
+          <p>Guiding high-stakes institutional acquisitions, private market exits, and public market listings across global exchanges.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
     <!-- VENTURES SECTION                               -->
     <!-- ============================================== -->
-    <section id="ventures" class="section">
+    <section id="ventures" class="section reveal-section">
       <div class="head-row">
         <div>
           <p class="eyebrow"><span class="dot"></span>Selected Ventures</p>
-          <h2 class="h-ventures">The work that moved markets.</h2>
+          <h2 class="h-ventures split-heading">The work that moved markets.</h2>
         </div>
         <p class="label count-label">04 / Companies</p>
       </div>
 
       <ul class="venture-grid">
         <!-- Venture 1 -->
-        <li class="venture" data-slug="helix-robotics">
+        <li class="venture reveal-card" data-slug="helix-robotics">
           <article class="group">
             <figure class="venture-img-wrap">
-              <img src="/assets/images/mv-venture-01.webp" alt="Helix Robotics" class="venture-img" loading="lazy" />
+              <img 
+                src="/assets/images/mv-venture-01.webp" 
+                alt="Helix Robotics" 
+                class="venture-img" 
+                loading="lazy" 
+                style="filter: url(#liqVentures);"
+              />
+              <div class="liq-veil"></div>
+              <div class="liq-glow"></div>
+              <div class="liq-vig"></div>
               <div class="venture-hover-overlay">
                 <span>View Case Study ↗</span>
               </div>
@@ -207,10 +310,19 @@
         </li>
 
         <!-- Venture 2 -->
-        <li class="venture odd" data-slug="northwind-energy">
+        <li class="venture odd reveal-card" data-slug="northwind-energy">
           <article class="group">
             <figure class="venture-img-wrap">
-              <img src="/assets/images/mv-venture-02.webp" alt="Northwind Energy" class="venture-img" loading="lazy" />
+              <img 
+                src="/assets/images/mv-venture-02.webp" 
+                alt="Northwind Energy" 
+                class="venture-img" 
+                loading="lazy" 
+                style="filter: url(#liqVentures);"
+              />
+              <div class="liq-veil"></div>
+              <div class="liq-glow"></div>
+              <div class="liq-vig"></div>
               <div class="venture-hover-overlay">
                 <span>View Case Study ↗</span>
               </div>
@@ -230,10 +342,19 @@
         </li>
 
         <!-- Venture 3 -->
-        <li class="venture" data-slug="cadence-health">
+        <li class="venture reveal-card" data-slug="cadence-health">
           <article class="group">
             <figure class="venture-img-wrap">
-              <img src="/assets/images/mv-venture-03.webp" alt="Cadence Health" class="venture-img" loading="lazy" />
+              <img 
+                src="/assets/images/mv-venture-03.webp" 
+                alt="Cadence Health" 
+                class="venture-img" 
+                loading="lazy" 
+                style="filter: url(#liqVentures);"
+              />
+              <div class="liq-veil"></div>
+              <div class="liq-glow"></div>
+              <div class="liq-vig"></div>
               <div class="venture-hover-overlay">
                 <span>View Case Study ↗</span>
               </div>
@@ -253,10 +374,19 @@
         </li>
 
         <!-- Venture 4 -->
-        <li class="venture odd" data-slug="vane-capital">
+        <li class="venture odd reveal-card" data-slug="vane-capital">
           <article class="group">
             <figure class="venture-img-wrap">
-              <img src="/assets/images/mv-venture-04.webp" alt="Vane Capital" class="venture-img" loading="lazy" />
+              <img 
+                src="/assets/images/mv-venture-04.webp" 
+                alt="Vane Capital" 
+                class="venture-img" 
+                loading="lazy" 
+                style="filter: url(#liqVentures);"
+              />
+              <div class="liq-veil"></div>
+              <div class="liq-glow"></div>
+              <div class="liq-vig"></div>
               <div class="venture-hover-overlay">
                 <span>View Case Study ↗</span>
               </div>
@@ -280,29 +410,29 @@
     <!-- ============================================== -->
     <!-- IMPACT SECTION (BY THE NUMBERS)                -->
     <!-- ============================================== -->
-    <section id="impact" class="section">
+    <section id="impact" class="section reveal-section">
       <div class="head-row">
         <div>
           <p class="eyebrow"><span class="dot"></span>By The Numbers</p>
-          <h2 class="h-impact">Two decades, measured.</h2>
+          <h2 class="h-impact split-heading">Two decades, measured.</h2>
         </div>
       </div>
 
       <dl class="stats">
-        <div class="stat">
-          <dd class="stat-fig" data-target="4">4</dd>
+        <div class="stat reveal-card">
+          <dd class="stat-fig tabular" data-target="4">4</dd>
           <dt class="stat-label">Companies founded &amp; exited</dt>
         </div>
-        <div class="stat">
-          <dd class="stat-fig" data-prefix="$" data-target="3.2" data-suffix="B">$3.2B</dd>
+        <div class="stat reveal-card">
+          <dd class="stat-fig tabular" data-prefix="$" data-target="3.2" data-suffix="B">$3.2B</dd>
           <dt class="stat-label">Enterprise value created</dt>
         </div>
-        <div class="stat">
-          <dd class="stat-fig" data-target="120" data-suffix="M+">120M+</dd>
-          <dt class="stat-label">People served by his products</dt>
+        <div class="stat reveal-card">
+          <dd class="stat-fig tabular" data-target="120" data-suffix="M+">120M+</dd>
+          <dt class="stat-label">People served by our products</dt>
         </div>
-        <div class="stat">
-          <dd class="stat-fig" data-target="2400" data-format="comma">2,400</dd>
+        <div class="stat reveal-card">
+          <dd class="stat-fig tabular" data-target="2400" data-format="comma">2,400</dd>
           <dt class="stat-label">Jobs created across ventures</dt>
         </div>
       </dl>
@@ -311,17 +441,17 @@
     <!-- ============================================== -->
     <!-- VOICES SECTION (INTERACTIVE TESTIMONIALS)      -->
     <!-- ============================================== -->
-    <section id="voices" class="section">
+    <section id="voices" class="section reveal-section">
       <div class="head-row">
         <div>
           <p class="eyebrow"><span class="dot"></span>Voices</p>
-          <h2 class="h-voices">What they say.</h2>
+          <h2 class="h-voices split-heading">What they say.</h2>
         </div>
       </div>
 
       <div class="voices-grid">
         <ul class="voice-list">
-          <li>
+          <li class="reveal-card">
             <button class="voice-btn active" data-index="0">
               <span class="v-idx">01</span>
               <span class="v-who">
@@ -331,7 +461,7 @@
               <span class="v-rule"></span>
             </button>
           </li>
-          <li>
+          <li class="reveal-card">
             <button class="voice-btn" data-index="1">
               <span class="v-idx">02</span>
               <span class="v-who">
@@ -341,7 +471,7 @@
               <span class="v-rule"></span>
             </button>
           </li>
-          <li>
+          <li class="reveal-card">
             <button class="voice-btn" data-index="2">
               <span class="v-idx">03</span>
               <span class="v-who">
@@ -353,11 +483,11 @@
           </li>
         </ul>
 
-        <div class="voice-panel">
+        <div class="voice-panel reveal-card">
           <div class="voice-text">
             <blockquote>
               <p id="voice-quote" class="quote">
-                “Marcus saw the market three years before the rest of us. Betting alongside him changed the trajectory of my entire career.”
+                “Marcus and the Meridian team saw the market three years before the rest of us. Betting alongside them changed the trajectory of my entire career.”
               </p>
             </blockquote>
             <footer id="voice-attribution" class="voice-by">
@@ -367,7 +497,13 @@
 
           <div class="voice-portrait">
             <figure class="voice-img-wrap">
-              <img id="voice-image" src="/assets/images/mv-voice-01.webp" alt="Elena Cardoso" class="voice-img" />
+              <img 
+                id="voice-image" 
+                src="/assets/images/mv-voice-01.webp" 
+                alt="Elena Cardoso" 
+                class="voice-img" 
+                style="filter: url(#liqVoices);"
+              />
             </figure>
           </div>
         </div>
@@ -377,20 +513,22 @@
     <!-- ============================================== -->
     <!-- CONTACT SECTION & INQUIRY FORM                 -->
     <!-- ============================================== -->
-    <footer id="contact" class="contact">
+    <footer id="contact" class="contact reveal-section">
       <div class="contact-header-wrap">
         <p class="eyebrow"><span class="dot"></span>Let's Build</p>
-        <h2 class="h-contact">Have something the world says can't be done?</h2>
-        <p class="contact-lead">That's usually where I start. I read every message I'm sent.</p>
+        <h2 class="h-contact split-heading">Have something the world says can't be done?</h2>
+        <p class="contact-lead reveal-body">
+          That's usually where we start. Every strategic inquiry is reviewed personally by our senior partners.
+        </p>
         
-        <a href="mailto:hello@marcusvane.com" class="email">
-          <span>hello@marcusvane.com</span>
+        <a href="mailto:advisory@meridiancore.com" class="email">
+          <span>advisory@meridiancore.com</span>
           <span class="arrow">↗</span>
         </a>
       </div>
 
       <!-- Working Consultation Inquiry Form (Direct DB Submission) -->
-      <div class="inquiry-form-card">
+      <div class="inquiry-form-card reveal-card">
         <form id="inquiry-form" class="inquiry-form" novalidate>
           <div class="form-grid">
             <div class="form-group">
@@ -427,8 +565,8 @@
 
       <div class="footer-bar">
         <div class="fb-left">
-          <p class="signature">Marcus Vane</p>
-          <p class="label fb-tag">Designed &amp; built with conviction.</p>
+          <p class="signature">MERIDIAN CORE</p>
+          <p class="label fb-tag">Building Ideas. Creating Impact.</p>
         </div>
 
         <nav aria-label="Social" class="fb-mid">
@@ -439,7 +577,13 @@
           </ul>
         </nav>
 
-        <p class="label fb-right">© 2026 Marcus Vane. Portfolio integration for Rizwan Malik.</p>
+        <div class="fb-right-wrap">
+          <p class="label fb-right">© 2026 Meridian Core Group. Portfolio showcase for Rizwan Malik.</p>
+          <button type="button" id="back-to-top" class="back-to-top-btn" aria-label="Scroll back to top">
+            <span>Top</span>
+            <span>↑</span>
+          </button>
+        </div>
       </div>
     </footer>
 
@@ -455,8 +599,7 @@
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script type="module" src="/js/three-hero.js"></script>
+  <!-- Main JavaScript App -->
   <script type="module" src="/js/main.js"></script>
 </body>
 </html>

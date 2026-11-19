@@ -210,27 +210,29 @@ export const projects = [
   },
   {
     id: "marcus-vane-portfolio",
-    clientName: "Marcus Vane — Executive Portfolio",
-    company: "Vane Capital & Founder Advisory",
-    role: "Lead Architect & Full-Stack Creative Developer",
+    clientName: "Meridian Core — Business & Innovation Group",
+    company: "Meridian Core & Marcus Vane Advisory",
+    role: "Lead Architect & Creative Motion Developer",
     category: "agency",
     type: "website",
-    badge: "MV",
-    review: "I start companies that shouldn't be possible — then make them inevitable. Four exits, one playbook: conviction before consensus.",
+    badge: "MC",
+    review: "We build businesses that move the future. Partnering with visionary founders and institutional leaders to engineer breakthrough enterprises.",
     link: "http://localhost:5003/",
     image: "/projects/meridian-showcase.png",
     featured: true,
-    tags: ["HTML5", "CSS3", "JavaScript", "Three.js", "Node.js", "Express.js", "SQLite"],
-    description: "High-fashion editorial executive portfolio and venture platform showcasing Marcus Vane (Founder, Investor, Operator, Contrarian). Features an iconic full-bleed hero with oversized Anton typography layered behind an isolated transparent cutout portrait; Three.js WebGL ambient particle physics; operating principles marquee; curated venture case studies (Helix Robotics, Northwind Energy, Cadence Health, Vane Capital) with modal deep-dives; animated impact statistics ($3.2B value created, 120M+ people served); interactive partner voices; and a working enterprise inquiry pipeline powered by an Express.js backend with SQLite persistence.",
+    tags: ["HTML5", "CSS3", "JavaScript", "Three.js", "Lenis", "Node.js", "Express.js", "SQLite"],
+    description: "Cinematic executive portfolio and venture platform for Meridian Core / Marcus Vane. Engineered with an authentic creative developer motion system matching high-end editorial standards: 2000ms RAF counter preloader with upward wipe; character-by-character split typography ('MERIDIAN' / 'CORE') with 52ms stagger; line-by-line role reveals; interactive mouse parallax on a transparent cutout founder portrait; Three.js WebGL titanium & dark chrome geometric gimbal sculpture with ember particles; SVG liquid displacement hover distortion (feTurbulence + feDisplacementMap); word-by-word quote reveals (22ms stagger); Lenis smooth scrolling; and a live Express.js backend with SQLite persistence for strategic inquiries.",
     deliverables: [
-      "Iconic Editorial Hero Architecture with Layered Typography & Cutout Portrait",
-      "Three.js Interactive 3D WebGL Particle Dust & Mouse Parallax Physics",
-      "Curated Case Studies for 4 High-Growth Exits & Capital Vehicles with Modal Deep Dives",
-      "Live Express.js REST API with Server-Side Validation & SQLite Database Engine",
-      "Interactive Partner Endorsement Selector with Fluid Transitions",
-      "Production-Grade Responsive Design System in Anton & Onest"
+      "Cinematic 2000ms Preloader with Upward Wipe & Hero Sequence Trigger",
+      "Character-by-Character Split Display Typography with 52ms Stagger",
+      "Full-Bleed Layered Cutout Portrait with Interactive Mouse Parallax",
+      "Three.js 3D Architectural Geometric Gimbal Sculpture & Particle Dust",
+      "SVG Liquid Image Displacement Filters (feTurbulence + feDisplacementMap)",
+      "Testimonials Engine with Staggered Word-by-Word Reveal",
+      "Lenis Smooth Scrolling & IntersectionObserver Scroll Reveals",
+      "Live Express.js REST API with SQLite Database Persistence"
     ],
-    metrics: ["$3.2B Value Created", "4 Exits & Listings", "100% Pixel-Accurate Build"]
+    metrics: ["$3.2B Value Created", "4 Exits & Listings", "100% Motion & Visual Fidelity"]
   }
 ];
 
