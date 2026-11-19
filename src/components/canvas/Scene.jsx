@@ -3,6 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import { FluidAurora } from './FluidAurora';
 import { ParticleWave } from './ParticleWave';
+import { ArchitecturalConstellation } from './ArchitecturalConstellation';
 import { AmbientDust } from './AmbientDust';
 import { SkillsCloud } from './SkillsCloud';
 import { ProjectsBackground } from './ProjectsBackground';
@@ -11,45 +12,44 @@ import { CanvasErrorBoundary } from './CanvasErrorBoundary';
 import { useReducedMotion } from '../../hooks/useReducedMotion';
 
 /**
- * Click Shockwave Ripple Effect in 3D Space
+ * Dynamic Section Mood Lighting
+ * Shifts accent lighting smoothly between section themes on scroll
  */
-function ClickShockwave() {
-  const meshRef = useRef();
-  const [active, setActive] = useState(false);
-  const scaleRef = useRef(0.1);
+function DynamicSectionLighting({ scrollRef, scrollProgress = 0 }) {
+  const light1Ref = useRef();
+  const light2Ref = useRef();
 
-  useEffect(() => {
-    const handleClick = () => {
-      scaleRef.current = 0.1;
-      setActive(true);
-    };
-    window.addEventListener('click', handleClick);
-    return () => window.removeEventListener('click', handleClick);
-  }, []);
+  useFrame(() => {
+    if (!light1Ref.current || !light2Ref.current) return;
+    const p = scrollRef ? scrollRef.current : scrollProgress;
 
-  useFrame((state, delta) => {
-    if (!active || !meshRef.current) return;
-    scaleRef.current += delta * 6;
-    meshRef.current.scale.setScalar(scaleRef.current);
-    meshRef.current.material.opacity = Math.max(0, 0.8 - scaleRef.current / 4);
-
-    if (scaleRef.current > 3.5) {
-      setActive(false);
+    // Smooth section-aware chromatic mood transitions
+    if (p < 0.25) {
+      // Hero: Celestial Indigo & Cyan
+      light1Ref.current.color.lerp(new THREE.Color('#6366f1'), 0.05);
+      light2Ref.current.color.lerp(new THREE.Color('#06b6d4'), 0.05);
+    } else if (p < 0.5) {
+      // About & SMM: Tech Emerald & Cyan
+      light1Ref.current.color.lerp(new THREE.Color('#10b981'), 0.05);
+      light2Ref.current.color.lerp(new THREE.Color('#0ea5e9'), 0.05);
+    } else if (p < 0.75) {
+      // Services & Skills: Electric Violet & Sky Cyan
+      light1Ref.current.color.lerp(new THREE.Color('#8b5cf6'), 0.05);
+      light2Ref.current.color.lerp(new THREE.Color('#38bdf8'), 0.05);
+    } else {
+      // Contact: Celestial Rose & Royal Amethyst
+      light1Ref.current.color.lerp(new THREE.Color('#f43f5e'), 0.05);
+      light2Ref.current.color.lerp(new THREE.Color('#a855f7'), 0.05);
     }
   });
 
-  if (!active) return null;
-
   return (
-    <mesh ref={meshRef} position={[0, 0, 1.2]}>
-      <ringGeometry args={[0.92, 0.98, 48]} />
-      <meshBasicMaterial
-        color="#38bdf8"
-        transparent
-        opacity={0.6}
-        side={THREE.DoubleSide}
-      />
-    </mesh>
+    <>
+      <ambientLight intensity={0.88} />
+      <directionalLight position={[5, 8, 5]} intensity={1.1} color="#ffffff" />
+      <pointLight ref={light1Ref} position={[-4, 3, 3]} intensity={1.9} color="#6366f1" distance={14} />
+      <pointLight ref={light2Ref} position={[4, -2, 3]} intensity={1.7} color="#06b6d4" distance={14} />
+    </>
   );
 }
 
@@ -57,14 +57,15 @@ function ClickShockwave() {
  * Camera Controller
  * Smooth cinematic camera glide through 3D space linked to user scroll
  */
-function CameraController({ scrollProgress, prefersReducedMotion }) {
+function CameraController({ scrollRef, scrollProgress = 0, prefersReducedMotion }) {
   const currentLookAt = useRef(new THREE.Vector3(0, 0, 0));
 
   useFrame((state, delta) => {
     const clampedDelta = Math.min(delta, 0.05);
+    const p = scrollRef ? scrollRef.current : scrollProgress;
 
     if (prefersReducedMotion) {
-      const targetY = -scrollProgress * 2.2;
+      const targetY = -p * 2.2;
       state.camera.position.x = THREE.MathUtils.damp(state.camera.position.x, 0, 2, clampedDelta);
       state.camera.position.y = THREE.MathUtils.damp(state.camera.position.y, targetY, 2, clampedDelta);
       state.camera.position.z = THREE.MathUtils.damp(state.camera.position.z, 5.8, 2, clampedDelta);
@@ -77,8 +78,6 @@ function CameraController({ scrollProgress, prefersReducedMotion }) {
     let targetZ = 5.5;
     let lookX = 0;
     let lookY = 0;
-
-    const p = scrollProgress;
 
     if (p < 0.18) {
       // Hero: Head-on view
@@ -151,10 +150,13 @@ function CameraController({ scrollProgress, prefersReducedMotion }) {
  * Main 3D Canvas Scene
  * Ultra-modern, executive, high-end background inspired by Linear, Stripe & Apple Pro.
  * Zero wireframes, zero clutter — pure silky liquid aurora, ambient stardust, and depth.
+ * Frameloop paused when preloader is visible for instant 120 FPS load.
  */
-export function Scene({ scrollProgress = 0 }) {
+export function Scene({ loading = false, scrollRef: propScrollRef, scrollProgress = 0 }) {
   const prefersReducedMotion = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
+  const internalScrollRef = useRef(scrollProgress);
+  const scrollRef = propScrollRef || internalScrollRef;
 
   useEffect(() => {
     const checkMobile = () => {
@@ -165,6 +167,17 @@ export function Scene({ scrollProgress = 0 }) {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  useEffect(() => {
+    if (propScrollRef) return;
+    const handleScroll = () => {
+      const total = document.documentElement.scrollHeight - window.innerHeight;
+      scrollRef.current = total > 0 ? Math.min(Math.max(window.scrollY / total, 0), 1) : 0;
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [propScrollRef, scrollRef]);
+
   return (
     <div
       className="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#05060f]"
@@ -172,7 +185,8 @@ export function Scene({ scrollProgress = 0 }) {
     >
       <CanvasErrorBoundary>
         <Canvas
-          dpr={[1, 1.5]}
+          frameloop={loading ? 'never' : 'always'}
+          dpr={[1, 1.25]}
           camera={{ position: [0, 0, 5.5], fov: 45, near: 0.1, far: 50 }}
           gl={{
             antialias: true,
@@ -185,34 +199,32 @@ export function Scene({ scrollProgress = 0 }) {
             <div className="absolute inset-0 bg-gradient-to-b from-[#05060f] via-[#0b0d1e] to-[#05060f]" />
           }
         >
-          {/* Subtle Studio Lighting */}
-          <ambientLight intensity={0.9} />
-          <directionalLight position={[5, 8, 5]} intensity={1.2} color="#ffffff" />
-          <pointLight position={[-4, 3, 3]} intensity={2.0} color="#6366f1" distance={12} />
-          <pointLight position={[4, -2, 3]} intensity={1.8} color="#06b6d4" distance={12} />
+          {/* Dynamic Section Mood Lighting */}
+          <DynamicSectionLighting scrollRef={scrollRef} scrollProgress={scrollProgress} />
 
-          {/* Camera Motion */}
+          {/* Camera Motion Glide */}
           <CameraController
+            scrollRef={scrollRef}
             scrollProgress={scrollProgress}
             prefersReducedMotion={prefersReducedMotion}
           />
 
-          {/* 1. Silky GLSL Fluid Aurora (Linear / Stripe Executive Ambient Light) */}
-          <FluidAurora scrollProgress={scrollProgress} isMobile={isMobile} />
+          {/* 1. Silky GLSL Fluid Aurora (Liquid Obsidian Silk with Chromatic Refraction) */}
+          <FluidAurora scrollRef={scrollRef} scrollProgress={scrollProgress} isMobile={isMobile} />
 
-          {/* 2. Soft Luminous Horizon Wave (Gracefully sits at lower depth) */}
-          <ParticleWave scrollProgress={scrollProgress} isMobile={isMobile} />
+          {/* 2. Topographic Kinetic Horizon Grid (Undulating mathematical contour wave) */}
+          <ParticleWave scrollRef={scrollRef} scrollProgress={scrollProgress} isMobile={isMobile} />
 
-          {/* 3. Section Accent Lighting */}
-          <SkillsCloud scrollProgress={scrollProgress} />
-          <ProjectsBackground scrollProgress={scrollProgress} />
-          <ContactPortal scrollProgress={scrollProgress} isMobile={isMobile} />
+          {/* 3. Architectural Constellation Lattice (Deep space network of disciplines) */}
+          <ArchitecturalConstellation scrollRef={scrollRef} scrollProgress={scrollProgress} isMobile={isMobile} />
 
-          {/* 4. Ambient Luminous Space Dust */}
-          <AmbientDust count={isMobile ? 80 : 180} isMobile={isMobile} />
+          {/* 4. Section Accent Lighting */}
+          <SkillsCloud scrollRef={scrollRef} scrollProgress={scrollProgress} />
+          <ProjectsBackground scrollRef={scrollRef} scrollProgress={scrollProgress} />
+          <ContactPortal scrollRef={scrollRef} scrollProgress={scrollProgress} isMobile={isMobile} />
 
-          {/* 5. Interactive Click Shockwave */}
-          <ClickShockwave />
+          {/* 5. Ambient Luminous Cosmic Stardust */}
+          <AmbientDust scrollRef={scrollRef} scrollProgress={scrollProgress} count={isMobile ? 70 : 150} isMobile={isMobile} />
         </Canvas>
       </CanvasErrorBoundary>
     </div>

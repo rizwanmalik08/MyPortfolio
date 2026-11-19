@@ -13,7 +13,7 @@ import { Experience } from './components/sections/Experience';
 import { Testimonials } from './components/sections/Testimonials';
 import { Contact } from './components/sections/Contact';
 import { Footer } from './components/sections/Footer';
-import { useScrollProgress } from './hooks/useScrollProgress';
+import { useActiveSection } from './hooks/useScrollProgress';
 import { soundManager } from './utils/audioFX';
 import { ArrowUp } from 'lucide-react';
 
@@ -25,7 +25,7 @@ const Scene = lazy(() =>
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const { progress, activeSection } = useScrollProgress();
+  const activeSection = useActiveSection();
 
   // High-performance Lenis Smooth Scroll
   useEffect(() => {
@@ -74,13 +74,13 @@ export default function App() {
       {/* Architectural Dot Grid Overlay */}
       <div className="fixed inset-0 pointer-events-none z-0 bg-dot-grid opacity-60" aria-hidden="true" />
 
-      {/* Fixed Persistent 3D Canvas */}
+      {/* Fixed Persistent 3D Canvas - Pauses while preloader is visible */}
       <Suspense
         fallback={
           <div className="fixed inset-0 pointer-events-none z-0 bg-gradient-to-b from-[#05060f] via-[#0b0d1e] to-[#05060f]" />
         }
       >
-        <Scene scrollProgress={progress} />
+        <Scene loading={loading} />
       </Suspense>
 
       {/* Navigation Header with Sound FX toggle */}

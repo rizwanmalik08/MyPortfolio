@@ -3,11 +3,15 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 /**
- * World-Class Fluid Aurora & Chromatic Liquid Light Canvas
- * Inspired by Linear, Stripe, Apple Pro & OpenAI.
- * Zero wireframes, zero clutter — pure silky, organic, luminous luxury.
+ * Creative Technologist Fluid Aurora Shader
+ * 
+ * Aesthetic:
+ * - Liquid Obsidian Silk with Chromatic Dispersion (RGB phase splitting)
+ * - Cosine-palette harmonic color grading tailored across scroll sections
+ * - Interactive cursor fluid gravity drift
+ * - 100% GPU procedural fragment shader with zero texture dependencies
  */
-export function FluidAurora({ scrollProgress = 0, isMobile = false }) {
+export function FluidAurora({ scrollRef, scrollProgress = 0, isMobile = false }) {
   const meshRef = useRef();
   const materialRef = useRef();
 
@@ -16,18 +20,15 @@ export function FluidAurora({ scrollProgress = 0, isMobile = false }) {
       uTime: { value: 0 },
       uMouse: { value: new THREE.Vector2(0, 0) },
       uScroll: { value: 0 },
-      uIntensity: { value: isMobile ? 0.75 : 1.0 },
+      uIntensity: { value: isMobile ? 0.7 : 0.95 },
     }),
     [isMobile]
   );
 
   const vertexShader = `
     varying vec2 vUv;
-    varying vec3 vPosition;
-
     void main() {
       vUv = uv;
-      vPosition = position;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `;
@@ -38,9 +39,8 @@ export function FluidAurora({ scrollProgress = 0, isMobile = false }) {
     uniform float uScroll;
     uniform float uIntensity;
     varying vec2 vUv;
-    varying vec3 vPosition;
 
-    // Fast Simplex Noise for silky organic flow
+    // High-speed 2D Simplex Noise
     vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
     vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
     vec3 permute(vec3 x) { return mod289(((x * 34.0) + 1.0) * x); }
@@ -49,7 +49,7 @@ export function FluidAurora({ scrollProgress = 0, isMobile = false }) {
       const vec4 C = vec4(0.211324865405187, 0.366025403784439,
                          -0.577350269189626, 0.024390243902439);
       vec2 i  = floor(v + dot(v, C.yy));
-      vec2 x0 = v -   i + dot(i, C.xx);
+      vec2 x0 = v - i + dot(i, C.xx);
       vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
       vec4 x12 = x0.xyxy + C.xxzz;
       x12.xy -= i1;
@@ -69,73 +69,77 @@ export function FluidAurora({ scrollProgress = 0, isMobile = false }) {
       return 130.0 * dot(m, g);
     }
 
-    // Pseudo-random dither to prevent 8-bit banding
-    float randomDither(vec2 coord) {
-      return fract(sin(dot(coord, vec2(12.9898, 78.233))) * 43758.5453);
+    // Cosine Harmonic Palette Generator (Inigo Quilez standard)
+    vec3 palette(float t, vec3 a, vec3 b, vec3 c, vec3 d) {
+      return a + b * cos(6.283185 * (c * t + d));
     }
 
     void main() {
       vec2 uv = vUv;
-
-      // Soft interactive fluid offset from cursor
       vec2 mouseOffset = uMouse * 0.12;
       vec2 p = (uv - 0.5) * 2.2 + mouseOffset;
 
-      float t = uTime * 0.22;
+      float t = uTime * 0.16;
 
-      // Harmonic multi-octave liquid turbulence
-      float q1 = snoise(p * 0.85 + vec2(t * 0.2, t * 0.15));
-      float q2 = snoise(p * 1.5 - vec2(t * 0.25, -t * 0.18) + q1 * 0.45);
-      float q3 = snoise(p * 2.8 + vec2(-t * 0.12, t * 0.3) + q2 * 0.35);
+      // Optical Chromatic Dispersion: slightly displaced noise evaluations per RGB channel
+      // Creates organic silk refraction that feels physical and handcrafted
+      float r1 = snoise(p * 0.85 + vec2(t * 0.15, t * 0.12));
+      float r2 = snoise(p * 1.50 - vec2(t * 0.18, -t * 0.14) + r1 * 0.35);
+      float flowR = (r1 * 0.6 + r2 * 0.4) * 0.5 + 0.5;
 
-      float organicFlow = (q1 * 0.5 + q2 * 0.35 + q3 * 0.15) * 0.5 + 0.5;
+      float g1 = snoise(p * 0.88 + vec2(t * 0.16 + 0.04, t * 0.13 + 0.03));
+      float g2 = snoise(p * 1.55 - vec2(t * 0.19, -t * 0.15) + g1 * 0.35);
+      float flowG = (g1 * 0.6 + g2 * 0.4) * 0.5 + 0.5;
 
-      // Executive Color Palette:
-      // Obsidian Void: #05060f
-      // Royal Cosmic Indigo: #2e1065 / #312e81
-      // Electric Violet: #7c3aed
-      // Cyan Luminescence: #06b6d4 / #38bdf8
-      // Subtle Rose Glow: #db2777
-      vec3 cVoid   = vec3(0.02, 0.024, 0.059);  // #05060f
-      vec3 cIndigo = vec3(0.18, 0.12, 0.45);   // deep radiant indigo
-      vec3 cViolet = vec3(0.48, 0.23, 0.93);   // #7c3aed
-      vec3 cCyan   = vec3(0.05, 0.72, 0.85);   // #06b6d4
-      vec3 cRose   = vec3(0.85, 0.15, 0.45);   // #db2777
+      float b1 = snoise(p * 0.91 + vec2(t * 0.17 + 0.08, t * 0.14 + 0.06));
+      float b2 = snoise(p * 1.60 - vec2(t * 0.20, -t * 0.16) + b1 * 0.35);
+      float flowB = (b1 * 0.6 + b2 * 0.4) * 0.5 + 0.5;
 
-      // Section-driven chromatic evolution
+      // Section-Adaptive Dynamic Cosine Palette
+      // Smoothly transitions as the user journeys from Hero -> Services -> Contact
       float s = clamp(uScroll, 0.0, 1.0);
-      vec3 dynamicAccent = cViolet;
-      if (s < 0.25) {
-        // Hero: Harmonious Violet + Cyan
-        dynamicAccent = mix(cViolet, cCyan, 0.35);
-      } else if (s < 0.55) {
-        // About / Skills: Deep Royal Indigo + Violet
-        dynamicAccent = mix(cIndigo, cViolet, (s - 0.25) / 0.3);
-      } else if (s < 0.8) {
-        // Projects: Vibrant Cyan + Teal
-        dynamicAccent = mix(cCyan, cViolet, (s - 0.55) / 0.25);
-      } else {
-        // Contact: Cosmic Magenta / Violet Aura
-        dynamicAccent = mix(cViolet, cRose, (s - 0.8) / 0.2);
-      }
 
-      // Atmospheric radial falloff centered around right-top (framing hero & content)
-      vec2 auraCenter = vec2(0.62, 0.58) + mouseOffset * 0.4;
-      float distToCenter = length(uv - auraCenter);
-      float vignette = smoothstep(1.35, 0.15, distToCenter);
+      // Section 1: Hero (Sapphire Obsidian & Midnight Indigo)
+      vec3 a1 = vec3(0.04, 0.05, 0.12);
+      vec3 b1 = vec3(0.28, 0.22, 0.55);
+      vec3 c1 = vec3(1.0, 1.0, 1.0);
+      vec3 d1 = vec3(0.00, 0.33, 0.67);
 
-      // Layered liquid light blending
-      vec3 color = mix(cVoid, cIndigo, smoothstep(0.15, 0.65, organicFlow));
-      color = mix(color, dynamicAccent, smoothstep(0.38, 0.85, organicFlow * vignette));
-      color = mix(color, cCyan, smoothstep(0.68, 0.98, organicFlow * vignette * 0.9) * 0.7);
+      // Section 2: Services / SMM (Cyber Emerald & Tech Cyan)
+      vec3 a2 = vec3(0.02, 0.08, 0.10);
+      vec3 b2 = vec3(0.12, 0.45, 0.48);
+      vec3 c2 = vec3(1.0, 1.0, 1.0);
+      vec3 d2 = vec3(0.15, 0.45, 0.55);
 
-      // Anti-banding dither
-      color += (randomDither(gl_FragCoord.xy) - 0.5) * 0.015;
+      // Section 3: Contact / Experience (Royal Amethyst & Celestial Rose)
+      vec3 a3 = vec3(0.08, 0.04, 0.14);
+      vec3 b3 = vec3(0.48, 0.18, 0.52);
+      vec3 c3 = vec3(1.0, 1.0, 1.0);
+      vec3 d3 = vec3(0.35, 0.15, 0.85);
 
-      // Soft ambient opacity (never overpowers text readability)
-      float alpha = smoothstep(0.12, 0.8, organicFlow) * vignette * 0.58 * uIntensity;
+      // Interpolate palette parameters based on scroll depth
+      vec3 palA = s < 0.5 ? mix(a1, a2, s * 2.0) : mix(a2, a3, (s - 0.5) * 2.0);
+      vec3 palB = s < 0.5 ? mix(b1, b2, s * 2.0) : mix(b2, b3, (s - 0.5) * 2.0);
+      vec3 palC = s < 0.5 ? mix(c1, c2, s * 2.0) : mix(c2, c3, (s - 0.5) * 2.0);
+      vec3 palD = s < 0.5 ? mix(d1, d2, s * 2.0) : mix(d2, d3, (s - 0.5) * 2.0);
 
-      gl_FragColor = vec4(color, alpha);
+      vec3 colR = palette(flowR, palA, palB, palC, palD);
+      vec3 colG = palette(flowG, palA, palB, palC, palD);
+      vec3 colB = palette(flowB, palA, palB, palC, palD);
+
+      // Reconstructed chromatic silk vector
+      vec3 finalColor = vec3(colR.r, colG.g, colB.b);
+
+      // Deep void black base with luminous harmonic crests
+      vec3 voidBlack = vec3(0.020, 0.024, 0.055);
+      float intensity = smoothstep(0.18, 0.78, (flowR + flowG + flowB) * 0.333);
+      finalColor = mix(voidBlack, finalColor, intensity);
+
+      // Vignette falloff to keep viewport edges clean and frame content
+      float dist = length(uv - 0.5);
+      float vignette = smoothstep(0.95, 0.25, dist);
+
+      gl_FragColor = vec4(finalColor * uIntensity, vignette * 0.72);
     }
   `;
 
@@ -143,37 +147,25 @@ export function FluidAurora({ scrollProgress = 0, isMobile = false }) {
     if (!materialRef.current || !meshRef.current) return;
     const clampedDelta = Math.min(delta, 0.05);
 
-    // Follow camera smoothly in XY space to always frame the viewport perfectly
+    materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
+    const p = scrollRef ? scrollRef.current : scrollProgress;
+    materialRef.current.uniforms.uScroll.value = p;
+
+    // Follow camera viewport
     meshRef.current.position.x = state.camera.position.x;
     meshRef.current.position.y = state.camera.position.y;
 
-    // Time uniform
-    materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
-
-    // Smooth mouse lerp
-    const targetX = state.pointer.x;
-    const targetY = state.pointer.y;
-    materialRef.current.uniforms.uMouse.value.x = THREE.MathUtils.damp(
-      materialRef.current.uniforms.uMouse.value.x,
-      targetX,
-      2.5,
-      clampedDelta
-    );
-    materialRef.current.uniforms.uMouse.value.y = THREE.MathUtils.damp(
-      materialRef.current.uniforms.uMouse.value.y,
-      targetY,
-      2.5,
-      clampedDelta
-    );
-
-    // Scroll progress uniform
-    materialRef.current.uniforms.uScroll.value = scrollProgress;
+    // Smooth cursor inertia
+    const targetMouseX = state.pointer.x * 0.45;
+    const targetMouseY = state.pointer.y * 0.45;
+    const currentMouse = materialRef.current.uniforms.uMouse.value;
+    currentMouse.x = THREE.MathUtils.damp(currentMouse.x, targetMouseX, 2, clampedDelta);
+    currentMouse.y = THREE.MathUtils.damp(currentMouse.y, targetMouseY, 2, clampedDelta);
   });
 
   return (
     <mesh ref={meshRef} position={[0, 0, -2.8]}>
-      {/* Generous plane size to cover widescreen, ultrawide, and portrait mobile */}
-      <planeGeometry args={[28, 20]} />
+      <planeGeometry args={[20, 16, 1, 1]} />
       <shaderMaterial
         ref={materialRef}
         vertexShader={vertexShader}
@@ -181,7 +173,6 @@ export function FluidAurora({ scrollProgress = 0, isMobile = false }) {
         uniforms={uniforms}
         transparent
         depthWrite={false}
-        blending={THREE.AdditiveBlending}
       />
     </mesh>
   );
