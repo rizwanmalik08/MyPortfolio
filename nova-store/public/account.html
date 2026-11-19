@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Account — NOVA STORE | Luxury E-Commerce</title>
+  <title>User Account — Kanso Collective | Luxury E-Commerce</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -137,27 +137,29 @@
   </div>
 
   <!-- Global Header -->
-  <header class="header">
-    <div class="container header-container">
-      <a href="/" class="logo">
-        <div class="logo-mark">N</div>
-        <span>NOVA<span style="color: var(--accent-cyan); font-weight: 300;">STORE</span></span>
+  <header class="navbar">
+    <div class="container nav-container">
+      <a href="/" class="brand-logo">
+        <div class="brand-symbol">K</div>
+        <span>KANSO <span style="color: var(--accent-cyan); font-weight: 300;">COLLECTIVE</span></span>
       </a>
 
-      <nav class="nav-links">
-        <a href="/" class="nav-link">Home</a>
-        <a href="/shop" class="nav-link">Catalog</a>
-        <a href="/cart" class="nav-link">Cart</a>
-        <a href="/admin" class="nav-link" id="nav-admin-link" style="color: var(--accent-violet); display: none;">Admin</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="/" class="nav-link">Home</a></li>
+          <li><a href="/shop" class="nav-link">Catalog</a></li>
+          <li><a href="/cart" class="nav-link">Cart</a></li>
+          <li><a href="/admin" class="nav-link" id="nav-admin-link" style="color: var(--accent-violet); display: none;">Admin</a></li>
+        </ul>
       </nav>
 
-      <div class="header-actions">
-        <a href="/shop" class="action-btn" title="Browse Products">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+      <div class="nav-actions">
+        <a href="/shop" class="nav-btn" title="Browse Products">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
         </a>
-        <a href="/cart" class="action-btn" title="View Cart">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-          <span class="cart-count-badge" style="display: none;">0</span>
+        <a href="/cart" class="nav-btn" title="View Cart">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span class="nav-badge cart-count-badge" style="display: none;">0</span>
         </a>
       </div>
     </div>
@@ -165,7 +167,7 @@
 
   <main class="container">
     <!-- STATE 1: GUEST / AUTH PORTAL -->
-    <div id="auth-portal" style="display: none;">
+    <div id="auth-portal" style="display: block;">
       <div class="auth-card">
         <div class="auth-tabs">
           <button class="auth-tab-btn active" id="tab-login-btn">Sign In</button>
@@ -319,7 +321,7 @@
   <!-- Global Footer -->
   <footer class="footer">
     <div class="container footer-bottom" style="border-top: none; padding-top: 20px;">
-      <p>© 2026 NOVA STORE. Luxury Engineering & 3D Interactive Showcase.</p>
+      <p>© 2026 Kanso Collective. Luxury Engineering & 3D Interactive Showcase.</p>
     </div>
   </footer>
 

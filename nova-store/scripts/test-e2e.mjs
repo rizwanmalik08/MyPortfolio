@@ -31,7 +31,7 @@ async function runTests() {
     const data = await res.json();
     assert.strictEqual(res.status, 200);
     assert.strictEqual(data.success, true);
-    assert.strictEqual(data.settings.store_name, 'NOVA STORE');
+    assert.strictEqual(data.settings.store_name, 'Kanso Collective');
   });
 
   // Test 2: Categories
@@ -93,20 +93,20 @@ async function runTests() {
     assert.strictEqual(res.status, 200);
     assert.strictEqual(data.success, true);
     assert.ok(data.summary.subtotal > 0);
-    assert.strictEqual(data.items[0].name, 'Nova Apex Wireless ANC Headphones');
+    assert.strictEqual(data.items[0].name, 'Kanso Apex Wireless ANC Headphones');
   });
 
-  // Test 6: Coupon Validation (NOVA20)
-  await test('Coupon Code Validation (NOVA20 = 20% off)', async () => {
+  // Test 6: Coupon Validation (KANSO20 & NOVA20)
+  await test('Coupon Code Validation (KANSO20 = 20% off)', async () => {
     const res = await fetch(`${BASE}/api/coupons/validate`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ code: 'NOVA20', subtotal: 500 })
+      body: JSON.stringify({ code: 'KANSO20', subtotal: 500 })
     });
     const data = await res.json();
     assert.strictEqual(res.status, 200);
     assert.strictEqual(data.success, true);
-    assert.strictEqual(data.coupon.code, 'NOVA20');
+    assert.strictEqual(data.coupon.code, 'KANSO20');
     assert.strictEqual(data.coupon.discount_value, 20);
     assert.strictEqual(data.coupon.discountAmount, 100);
   });

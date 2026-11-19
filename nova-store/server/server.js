@@ -24,7 +24,7 @@ app.use((req, res, next) => {
   const start = Date.now();
   res.on('finish', () => {
     if (req.path.startsWith('/api')) {
-      console.log(`[NOVA API] ${req.method} ${req.originalUrl} -> ${res.statusCode} (${Date.now() - start}ms)`);
+      console.log(`[KANSO API] ${req.method} ${req.originalUrl} -> ${res.statusCode} (${Date.now() - start}ms)`);
     }
   });
   next();
@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'operational',
-    service: 'NOVA STORE Luxury E-Commerce Engine',
+    service: 'Kanso Collective Luxury 3D E-Commerce Engine',
     version: '1.0.0',
     timestamp: new Date().toISOString()
   });
@@ -45,6 +45,9 @@ app.use('/api', apiRouter);
 // 4. Serve Storefront Static Frontend
 const publicDir = path.resolve('nova-store/public');
 app.use(express.static(publicDir, { maxAge: '1h' }));
+
+// Serve local Three.js modules for 100% offline reliability
+app.use('/vendor/three', express.static(path.resolve('node_modules/three')));
 
 // Friendly Page Route Aliases
 app.get('/shop', (req, res) => res.sendFile(path.join(publicDir, 'shop.html')));
@@ -65,7 +68,7 @@ app.use((req, res) => {
 
 // 5. Global Error Handler
 app.use((err, req, res, next) => {
-  console.error('[NOVA SERVER ERROR]:', err);
+  console.error('[KANSO SERVER ERROR]:', err);
   res.status(500).json({
     success: false,
     message: 'An unexpected internal error occurred.',
@@ -76,7 +79,7 @@ app.use((err, req, res, next) => {
 // 6. Start Server
 const server = app.listen(PORT, () => {
   console.log(`=======================================================`);
-  console.log(`  NOVA STORE 3D E-COMMERCE SERVER RUNNING`);
+  console.log(`  KANSO COLLECTIVE 3D E-COMMERCE SERVER RUNNING`);
   console.log(`  Storefront URL: http://localhost:${PORT}/`);
   console.log(`  Catalog:        http://localhost:${PORT}/shop`);
   console.log(`  Admin Panel:    http://localhost:${PORT}/admin`);

@@ -186,8 +186,8 @@ export function initializeDatabase() {
   const countRow = db.prepare('SELECT COUNT(*) as count FROM store_settings').get();
   if (!countRow || countRow.count === 0) {
     const defaultSettings = [
-      ['store_name', 'NOVA STORE'],
-      ['announcement_text', 'COMPLIMENTARY WORLDWIDE COURIER SHIPPING ON ORDERS OVER $150 • USE CODE NOVA20 FOR 20% OFF'],
+      ['store_name', 'Kanso Collective'],
+      ['announcement_text', 'COMPLIMENTARY WORLDWIDE COURIER SHIPPING ON ORDERS OVER $150 • USE CODE KANSO20 FOR 20% OFF'],
       ['currency_symbol', '$'],
       ['free_shipping_threshold', '150'],
       ['flat_shipping_rate', '15'],
@@ -213,7 +213,7 @@ function seedDatabaseIfNeeded() {
     return;
   }
 
-  console.log('Seeding NOVA STORE database with rich category, product, and admin records...');
+  console.log('Seeding Kanso Collective database with rich category, product, and admin records...');
 
   // 1. Admin & Test User
   const adminPasswordHash = bcrypt.hashSync('admin123', 10);
@@ -296,7 +296,7 @@ function seedDatabaseIfNeeded() {
   const products = [
     // Electronics
     {
-      name: 'Nova Apex Wireless ANC Headphones',
+      name: 'Kanso Apex Wireless ANC Headphones',
       slug: 'nova-apex-wireless-headphones',
       category_slug: 'electronics',
       price: 389.00,
@@ -334,7 +334,7 @@ function seedDatabaseIfNeeded() {
       ]
     },
     {
-      name: 'Nova Chrono Horizon Smartwatch',
+      name: 'Kanso Chrono Horizon Smartwatch',
       slug: 'nova-chrono-horizon-smartwatch',
       category_slug: 'electronics',
       price: 449.00,
@@ -368,7 +368,7 @@ function seedDatabaseIfNeeded() {
       ]
     },
     {
-      name: 'Nova Spatial Soundbar Pro',
+      name: 'Kanso Spatial Soundbar Pro',
       slug: 'nova-spatial-soundbar-pro',
       category_slug: 'electronics',
       price: 699.00,
@@ -399,7 +399,7 @@ function seedDatabaseIfNeeded() {
       ]
     },
     {
-      name: 'Nova Minimalist Mechanical Keyboard',
+      name: 'Kanso Minimalist Mechanical Keyboard',
       slug: 'nova-minimalist-mechanical-keyboard',
       category_slug: 'electronics',
       price: 229.00,
@@ -432,7 +432,7 @@ function seedDatabaseIfNeeded() {
 
     // Fashion
     {
-      name: 'Nova Obsidian Tailored Trench Coat',
+      name: 'Kanso Obsidian Tailored Trench Coat',
       slug: 'nova-obsidian-tailored-trench-coat',
       category_slug: 'fashion',
       price: 495.00,
@@ -464,7 +464,7 @@ function seedDatabaseIfNeeded() {
       ]
     },
     {
-      name: 'Nova Cashmere Oversized Knitwear',
+      name: 'Kanso Cashmere Oversized Knitwear',
       slug: 'nova-cashmere-oversized-knitwear',
       category_slug: 'fashion',
       price: 320.00,
@@ -495,7 +495,7 @@ function seedDatabaseIfNeeded() {
       ]
     },
     {
-      name: 'Nova Structured Technical Bomber',
+      name: 'Kanso Structured Technical Bomber',
       slug: 'nova-structured-technical-bomber',
       category_slug: 'fashion',
       price: 360.00,
@@ -527,7 +527,7 @@ function seedDatabaseIfNeeded() {
 
     // Watches
     {
-      name: 'Nova Celestial Tourbillon Chronograph',
+      name: 'Kanso Celestial Tourbillon Chronograph',
       slug: 'nova-celestial-tourbillon-chronograph',
       category_slug: 'watches',
       price: 1850.00,
@@ -559,7 +559,7 @@ function seedDatabaseIfNeeded() {
       ]
     },
     {
-      name: 'Nova Minimalist Titanium Automatique',
+      name: 'Kanso Minimalist Titanium Automatique',
       slug: 'nova-minimalist-titanium-automatique',
       category_slug: 'watches',
       price: 680.00,
@@ -592,7 +592,7 @@ function seedDatabaseIfNeeded() {
 
     // Accessories
     {
-      name: 'Nova Full-Grain Leather Weekender',
+      name: 'Kanso Full-Grain Leather Weekender',
       slug: 'nova-full-grain-leather-weekender',
       category_slug: 'accessories',
       price: 460.00,
@@ -623,7 +623,7 @@ function seedDatabaseIfNeeded() {
       ]
     },
     {
-      name: 'Nova Aerospace Carbon Fiber Cardholder',
+      name: 'Kanso Aerospace Carbon Fiber Cardholder',
       slug: 'nova-aerospace-carbon-fiber-cardholder',
       category_slug: 'accessories',
       price: 110.00,
@@ -655,7 +655,7 @@ function seedDatabaseIfNeeded() {
 
     // Home & Living
     {
-      name: 'Nova Cast Concrete Ambient Lamp',
+      name: 'Kanso Cast Concrete Ambient Lamp',
       slug: 'nova-cast-concrete-ambient-lamp',
       category_slug: 'home-living',
       price: 240.00,
@@ -687,7 +687,7 @@ function seedDatabaseIfNeeded() {
 
     // Lifestyle
     {
-      name: 'Nova Matte Black Insulated Thermal Flask',
+      name: 'Kanso Matte Black Insulated Thermal Flask',
       slug: 'nova-matte-black-thermal-flask',
       category_slug: 'lifestyle',
       price: 65.00,
@@ -762,6 +762,7 @@ function seedDatabaseIfNeeded() {
 
   // 4. Coupons
   const coupons = [
+    { code: 'KANSO20', type: 'percent', val: 20, min: 50, max: 5000 },
     { code: 'NOVA20', type: 'percent', val: 20, min: 50, max: 5000 },
     { code: 'WELCOME10', type: 'fixed', val: 10, min: 40, max: 1000 },
     { code: 'VIP15', type: 'percent', val: 15, min: 100, max: 2000 }
@@ -793,7 +794,7 @@ function seedDatabaseIfNeeded() {
   if (orderId) {
     db.prepare(`
       INSERT INTO order_items (order_id, product_id, product_name, product_image, price, quantity, color, size, total)
-      VALUES (?, 1, 'Nova Apex Wireless ANC Headphones', 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1000&q=85', 389.00, 1, 'Obsidian Black', 'Universal Fit', 389.00)
+      VALUES (?, 1, 'Kanso Apex Wireless ANC Headphones', 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1000&q=85', 389.00, 1, 'Obsidian Black', 'Universal Fit', 389.00)
     `).run(orderId);
   }
 

@@ -12,27 +12,27 @@
   --border-subtle: rgba(255, 255, 255, 0.08);
   --border-accent: rgba(56, 189, 248, 0.35);
   --border-focus: #38bdf8;
-  
+
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --text-subtle: #64748b;
-  
+
   --accent-cyan: #38bdf8;
   --accent-gold: #d4af37;
   --accent-violet: #818cf8;
   --accent-emerald: #10b981;
   --accent-rose: #f43f5e;
-  
+
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
   --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.8);
   --shadow-glow: 0 0 30px rgba(56, 189, 248, 0.25);
-  
+
   --radius-sm: 8px;
   --radius-md: 14px;
   --radius-lg: 22px;
   --radius-full: 9999px;
-  
+
   --font-sans: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'JetBrains Mono', monospace, ui-monospace;
   --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
@@ -58,13 +58,16 @@ body {
   width: 6px;
   height: 6px;
 }
+
 ::-webkit-scrollbar-track {
   background: var(--bg-primary);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--bg-tertiary);
   border-radius: var(--radius-full);
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--accent-cyan);
 }
@@ -83,7 +86,9 @@ button {
   transition: var(--transition);
 }
 
-input, select, textarea {
+input,
+select,
+textarea {
   font-family: inherit;
   color: var(--text-main);
   background: var(--bg-secondary);
@@ -94,7 +99,9 @@ input, select, textarea {
   transition: var(--transition);
 }
 
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   outline: none;
   border-color: var(--border-focus);
   box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
@@ -125,53 +132,65 @@ input:focus, select:focus, textarea:focus {
   gap: 8px;
 }
 
-.navbar {
+.navbar,
+.header {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(6, 7, 12, 0.85);
+  background: rgba(6, 7, 12, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-subtle);
   transition: var(--transition);
+  width: 100%;
 }
 
-.nav-container {
+.nav-container,
+.header-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 72px;
+  width: 100%;
 }
 
-.brand-logo {
-  display: flex;
+.brand-logo,
+.logo {
+  display: inline-flex;
   align-items: center;
   gap: 10px;
   font-size: 20px;
   font-weight: 800;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+  color: var(--text-main);
+  text-decoration: none;
+  flex-shrink: 0;
 }
 
-.brand-symbol {
+.brand-symbol,
+.logo-mark {
   width: 32px;
   height: 32px;
   border-radius: 8px;
   background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-violet) 100%);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   color: #000;
   font-weight: 900;
   font-size: 16px;
   box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+  flex-shrink: 0;
 }
 
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 24px;
   list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .nav-link {
@@ -180,39 +199,49 @@ input:focus, select:focus, textarea:focus {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
+  white-space: nowrap;
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link:hover,
+.nav-link.active {
   color: var(--text-main);
   text-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
 }
 
-.nav-actions {
+.nav-actions,
+.header-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
-.nav-btn {
+.nav-btn,
+.action-btn {
   position: relative;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 40px;
   height: 40px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border-subtle);
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(255, 255, 255, 0.04);
   color: var(--text-muted);
+  transition: var(--transition);
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
-.nav-btn:hover {
+.nav-btn:hover,
+.action-btn:hover {
   color: var(--text-main);
   border-color: var(--accent-cyan);
   background: rgba(56, 189, 248, 0.08);
 }
 
-.nav-badge {
+.nav-badge,
+.cart-count-badge {
   position: absolute;
   top: -4px;
   right: -4px;
@@ -375,7 +404,8 @@ input:focus, select:focus, textarea:focus {
   z-index: 2;
 }
 
-.product-wish-btn:hover, .product-wish-btn.active {
+.product-wish-btn:hover,
+.product-wish-btn.active {
   color: var(--accent-rose);
   border-color: var(--accent-rose);
   background: rgba(244, 63, 94, 0.15);
@@ -480,7 +510,8 @@ input:focus, select:focus, textarea:focus {
   transition: var(--transition);
 }
 
-.color-swatch-btn.active, .color-swatch-btn:hover {
+.color-swatch-btn.active,
+.color-swatch-btn:hover {
   transform: scale(1.2);
   border-color: #fff;
   box-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
@@ -497,6 +528,39 @@ input:focus, select:focus, textarea:focus {
   padding: 6px 12px;
   border-radius: var(--radius-full);
   border: 1px solid var(--border-subtle);
+  z-index: 10;
+}
+
+.three-loader-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 8, 16, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 20;
+  transition: opacity 0.35s ease, visibility 0.35s;
+}
+
+.three-spinner {
+  width: 44px;
+  height: 44px;
+  border: 3px solid rgba(56, 189, 248, 0.15);
+  border-top-color: var(--accent-cyan);
+  border-radius: 50%;
+  animation: threeSpin 0.9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes threeSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* ==========================================================================
@@ -530,8 +594,15 @@ input:focus, select:focus, textarea:focus {
 }
 
 @keyframes toastSlideIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ==========================================================================
@@ -541,6 +612,7 @@ input:focus, select:focus, textarea:focus {
   .nav-links {
     display: none;
   }
+
   .three-viewer-container {
     height: 400px;
   }
@@ -550,10 +622,12 @@ input:focus, select:focus, textarea:focus {
   .container {
     padding: 0 16px;
   }
+
   .product-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
+
   .three-viewer-container {
     height: 340px;
   }

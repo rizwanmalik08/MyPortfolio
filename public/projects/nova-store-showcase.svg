@@ -61,7 +61,7 @@
   <circle cx="64" cy="23" r="5.5" fill="#10b981"/>
   
   <rect x="120" y="10" width="620" height="26" rx="6" fill="#121626" stroke="#252c48" stroke-width="1"/>
-  <text x="140" y="27" fill="#64748b" font-family="'JetBrains Mono', monospace" font-size="11">🔒 https://localhost:5001/ — NOVA STORE | Interactive 3D Luxury Storefront</text>
+  <text x="140" y="27" fill="#64748b" font-family="'JetBrains Mono', monospace" font-size="11">🔒 https://localhost:5001/ — Kanso Collective | Interactive 3D Luxury Storefront</text>
 
   <rect x="1030" y="11" width="135" height="24" rx="12" fill="#10b981" opacity="0.2" stroke="#10b981" stroke-width="1"/>
   <circle cx="1046" cy="23" r="3.5" fill="#10b981"/>
@@ -70,8 +70,8 @@
   <!-- Store Header Navigation -->
   <rect x="50" y="70" width="1100" height="64" rx="14" fill="#0c0e17" stroke="#1e2438" stroke-width="1"/>
   <rect x="70" y="86" width="32" height="32" rx="8" fill="url(#neonCyan)"/>
-  <text x="80" y="108" fill="#000000" font-family="'Space Grotesk', sans-serif" font-weight="900" font-size="18">N</text>
-  <text x="114" y="109" fill="#ffffff" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="18" letter-spacing="2">NOVA<tspan fill="#38bdf8" font-weight="300">STORE</tspan></text>
+  <text x="80" y="108" fill="#000000" font-family="'Space Grotesk', sans-serif" font-weight="900" font-size="18">K</text>
+  <text x="114" y="109" fill="#ffffff" font-family="'Space Grotesk', sans-serif" font-weight="800" font-size="18" letter-spacing="2">KANSO<tspan fill="#38bdf8" font-weight="300">COLLECTIVE</tspan></text>
 
   <text x="320" y="107" fill="#94a3b8" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="500">Home</text>
   <text x="390" y="107" fill="#38bdf8" font-family="'Space Grotesk', sans-serif" font-size="13" font-weight="600">Catalog</text>

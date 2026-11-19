@@ -1,5 +1,5 @@
 /**
- * NOVA STORE — Client API Service
+ * Kanso Collective — Client API Service
  * Centralized async data access layer connecting with Express REST backend.
  */
 

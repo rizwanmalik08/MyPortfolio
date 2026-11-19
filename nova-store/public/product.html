@@ -1,30 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Details — NOVA STORE</title>
+  <title>Product Details — Kanso Collective</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "/vendor/three/build/three.module.js",
+      "three/addons/": "/vendor/three/examples/jsm/"
+    }
+  }
+  </script>
 </head>
+
 <body>
 
   <!-- Top Announcement Bar -->
   <div class="announcement-bar">
     <span class="badge badge-cyan">✦ COMPLIMENTARY WORLDWIDE COURIER SHIPPING OVER $150</span>
     <span>•</span>
-    <span>USE CODE <strong style="color: #fff;">NOVA20</strong> FOR 20% OFF</span>
+    <span>USE CODE <strong style="color: #fff;">KANSO20</strong> FOR 20% OFF</span>
   </div>
 
   <!-- Header / Navbar -->
   <header class="navbar">
     <div class="container nav-container">
       <a href="/" class="brand-logo">
-        <div class="brand-symbol">N</div>
-        <span>NOVA<span style="color: var(--accent-cyan); font-weight: 400;">STORE</span></span>
+        <div class="brand-symbol">K</div>
+        <span>KANSO <span style="color: var(--accent-cyan); font-weight: 300;">COLLECTIVE</span></span>
       </a>
 
       <nav>
@@ -60,15 +72,16 @@
   <!-- Product Detail Section -->
   <main style="padding: 40px 0 80px;">
     <div class="container">
-      
+
       <!-- Breadcrumbs -->
       <div style="font-size: 12px; font-family: var(--font-mono); color: var(--text-muted); margin-bottom: 24px;">
-        <a href="/">Home</a> / <a href="/shop" id="bread-cat">Shop</a> / <span id="bread-title" style="color: var(--accent-cyan);">Product</span>
+        <a href="/">Home</a> / <a href="/shop" id="bread-cat">Shop</a> / <span id="bread-title"
+          style="color: var(--accent-cyan);">Product</span>
       </div>
 
       <!-- Main Product Row -->
       <div style="display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; margin-bottom: 70px;">
-        
+
         <!-- Left Column: 3D Experience or Image Gallery -->
         <div>
           <!-- Mode Toggle Tabs (if product supports 3D) -->
@@ -88,16 +101,20 @@
                 <span>ORBIT TO ROTATE • SCROLL TO ZOOM</span>
               </div>
             </div>
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">
+            <div
+              style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 11px; font-family: var(--font-mono); color: var(--text-muted);">
               <span>REAL-TIME PBR SHADERS</span>
-              <button id="product-reset-cam-btn" style="color: var(--accent-cyan); text-transform: uppercase;">Reset Perspective</button>
+              <button id="product-reset-cam-btn" style="color: var(--accent-cyan); text-transform: uppercase;">Reset
+                Perspective</button>
             </div>
           </div>
 
           <!-- Photographic Gallery View -->
           <div id="product-gallery-wrap">
-            <div style="width: 100%; aspect-ratio: 1/1; background: #090b14; border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); overflow: hidden; margin-bottom: 14px;">
-              <img id="main-product-img" src="" alt="Product Hero" style="width: 100%; height: 100%; object-fit: cover;">
+            <div
+              style="width: 100%; aspect-ratio: 1/1; background: #090b14; border-radius: var(--radius-lg); border: 1px solid var(--border-subtle); overflow: hidden; margin-bottom: 14px;">
+              <img id="main-product-img" src="" alt="Product Hero"
+                style="width: 100%; height: 100%; object-fit: cover;">
             </div>
             <div id="gallery-thumbs" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 8px;">
               <!-- Thumbnails populated via JS -->
@@ -108,13 +125,15 @@
         <!-- Right Column: Product Meta, Variants & Purchase Actions -->
         <div>
           <span id="product-category-badge" class="product-cat">CATEGORY</span>
-          <h1 id="product-name" style="font-size: 32px; font-weight: 800; margin: 8px 0 12px; line-height: 1.2;">Loading Product...</h1>
-          
+          <h1 id="product-name" style="font-size: 32px; font-weight: 800; margin: 8px 0 12px; line-height: 1.2;">Loading
+            Product...</h1>
+
           <!-- Rating & Stock Row -->
           <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
             <div style="display: flex; align-items: center; gap: 4px; color: var(--accent-gold); font-size: 14px;">
               <span id="star-icons">★★★★★</span>
-              <span id="rating-val" style="font-family: var(--font-mono); color: #fff; font-weight: 700; margin-left: 4px;">4.9</span>
+              <span id="rating-val"
+                style="font-family: var(--font-mono); color: #fff; font-weight: 700; margin-left: 4px;">4.9</span>
               <span id="review-count" style="color: var(--text-muted); font-size: 12px;">(0 reviews)</span>
             </div>
             <span style="color: var(--border-subtle);">|</span>
@@ -122,19 +141,24 @@
           </div>
 
           <!-- Price Row -->
-          <div style="display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border-subtle);">
-            <span id="product-current-price" style="font-size: 32px; font-weight: 800; font-family: var(--font-mono); color: var(--text-main);">$0.00</span>
-            <span id="product-original-price" style="font-size: 18px; color: var(--text-subtle); text-decoration: line-through; font-family: var(--font-mono); display: none;"></span>
+          <div
+            style="display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--border-subtle);">
+            <span id="product-current-price"
+              style="font-size: 32px; font-weight: 800; font-family: var(--font-mono); color: var(--text-main);">$0.00</span>
+            <span id="product-original-price"
+              style="font-size: 18px; color: var(--text-subtle); text-decoration: line-through; font-family: var(--font-mono); display: none;"></span>
           </div>
 
           <!-- Description -->
-          <p id="product-description" style="color: var(--text-muted); font-size: 14px; line-height: 1.7; margin-bottom: 28px;">
+          <p id="product-description"
+            style="color: var(--text-muted); font-size: 14px; line-height: 1.7; margin-bottom: 28px;">
             Loading description...
           </p>
 
           <!-- Color Variations -->
           <div id="colors-selector-wrap" style="margin-bottom: 24px; display: none;">
-            <label style="display: block; font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;">
+            <label
+              style="display: block; font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;">
               Select Finish: <strong id="selected-color-label" style="color: #fff;"></strong>
             </label>
             <div id="color-swatches-row" style="display: flex; gap: 10px;">
@@ -144,7 +168,8 @@
 
           <!-- Size Variations -->
           <div id="sizes-selector-wrap" style="margin-bottom: 28px; display: none;">
-            <label style="display: block; font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;">
+            <label
+              style="display: block; font-size: 11px; font-family: var(--font-mono); text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px;">
               Select Size: <strong id="selected-size-label" style="color: #fff;"></strong>
             </label>
             <div id="size-options-row" style="display: flex; flex-wrap: wrap; gap: 8px;">
@@ -155,9 +180,11 @@
           <!-- Quantity & Purchase Row -->
           <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 30px;">
             <!-- Quantity Counter -->
-            <div style="display: flex; align-items: center; border: 1px solid var(--border-subtle); border-radius: var(--radius-full); background: var(--bg-secondary);">
+            <div
+              style="display: flex; align-items: center; border: 1px solid var(--border-subtle); border-radius: var(--radius-full); background: var(--bg-secondary);">
               <button id="qty-dec" style="padding: 12px 16px; color: var(--text-muted); font-size: 16px;">-</button>
-              <span id="qty-val" style="padding: 0 8px; font-family: var(--font-mono); font-weight: 700; width: 32px; text-align: center;">1</span>
+              <span id="qty-val"
+                style="padding: 0 8px; font-family: var(--font-mono); font-weight: 700; width: 32px; text-align: center;">1</span>
               <button id="qty-inc" style="padding: 12px 16px; color: var(--text-muted); font-size: 16px;">+</button>
             </div>
 
@@ -167,13 +194,16 @@
             </button>
 
             <!-- Wishlist Heart -->
-            <button id="wishlist-btn" class="btn btn-secondary" style="width: 50px; height: 50px; padding: 0; border-radius: var(--radius-full);" title="Save to Wishlist">
+            <button id="wishlist-btn" class="btn btn-secondary"
+              style="width: 50px; height: 50px; padding: 0; border-radius: var(--radius-full);"
+              title="Save to Wishlist">
               ♥
             </button>
           </div>
 
           <!-- Value Guarantees -->
-          <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; text-align: center; font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">
+          <div
+            style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 16px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; text-align: center; font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">
             <div>✈ WORLDWIDE COURIER</div>
             <div>🛡 2-YEAR WARRANTY</div>
             <div>↺ 30-DAY RETURNS</div>
@@ -184,15 +214,22 @@
 
       <!-- Tabs: Specifications, Shipping, Reviews -->
       <section style="margin-top: 40px; border-top: 1px solid var(--border-subtle); padding-top: 40px;">
-        <div style="display: flex; gap: 24px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px; margin-bottom: 28px;">
-          <button class="spec-tab-btn active" data-tab="specs" style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--accent-cyan);">Specifications</button>
-          <button class="spec-tab-btn" data-tab="reviews" style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Verified Reviews</button>
-          <button class="spec-tab-btn" data-tab="shipping" style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Delivery &amp; Care</button>
+        <div
+          style="display: flex; gap: 24px; border-bottom: 1px solid var(--border-subtle); padding-bottom: 16px; margin-bottom: 28px;">
+          <button class="spec-tab-btn active" data-tab="specs"
+            style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--accent-cyan);">Specifications</button>
+          <button class="spec-tab-btn" data-tab="reviews"
+            style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Verified
+            Reviews</button>
+          <button class="spec-tab-btn" data-tab="shipping"
+            style="font-size: 14px; font-weight: 700; text-transform: uppercase; color: var(--text-muted);">Delivery
+            &amp; Care</button>
         </div>
 
         <!-- Specifications Tab Pane -->
         <div id="tab-pane-specs">
-          <div id="specs-table" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
+          <div id="specs-table"
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;">
             <!-- Populated via JS -->
           </div>
         </div>
@@ -203,17 +240,21 @@
             <div id="reviews-list" style="display: flex; flex-direction: column; gap: 16px;">
               <!-- Populated via JS -->
             </div>
-            
+
             <!-- Submit Review Form -->
-            <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px;">
+            <div
+              style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 24px;">
               <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 16px;">Write a Review</h3>
               <form id="add-review-form" style="display: flex; flex-direction: column; gap: 14px;">
                 <div>
-                  <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 6px;">Your Name</label>
+                  <label
+                    style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 6px;">Your
+                    Name</label>
                   <input type="text" id="review-name" required placeholder="Alexander Vance" style="width: 100%;">
                 </div>
                 <div>
-                  <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 6px;">Rating</label>
+                  <label
+                    style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 6px;">Rating</label>
                   <select id="review-rating" style="width: 100%;">
                     <option value="5">★★★★★ — Exceptional</option>
                     <option value="4">★★★★☆ — Very Good</option>
@@ -221,19 +262,26 @@
                   </select>
                 </div>
                 <div>
-                  <label style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 6px;">Review Feedback</label>
-                  <textarea id="review-comment" required rows="3" placeholder="Share your experience..." style="width: 100%;"></textarea>
+                  <label
+                    style="display: block; font-size: 11px; font-family: var(--font-mono); margin-bottom: 6px;">Review
+                    Feedback</label>
+                  <textarea id="review-comment" required rows="3" placeholder="Share your experience..."
+                    style="width: 100%;"></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary" style="padding: 10px; font-size: 12px;">Submit Review</button>
+                <button type="submit" class="btn btn-primary" style="padding: 10px; font-size: 12px;">Submit
+                  Review</button>
               </form>
             </div>
           </div>
         </div>
 
         <!-- Shipping Tab Pane -->
-        <div id="tab-pane-shipping" style="display: none; font-size: 14px; color: var(--text-muted); line-height: 1.8; max-width: 700px;">
-          <p style="margin-bottom: 12px;">All orders are dispatched from our central architectural logistics hub in custom shockproof packaging. Orders placed before 2:00 PM EST ship the same business day.</p>
-          <p>Complimentary insured express shipping is applied automatically to all orders exceeding $150. A flat $15 rate applies to smaller parcels.</p>
+        <div id="tab-pane-shipping"
+          style="display: none; font-size: 14px; color: var(--text-muted); line-height: 1.8; max-width: 700px;">
+          <p style="margin-bottom: 12px;">All orders are dispatched from our central architectural logistics hub in
+            custom shockproof packaging. Orders placed before 2:00 PM EST ship the same business day.</p>
+          <p>Complimentary insured express shipping is applied automatically to all orders exceeding $150. A flat $15
+            rate applies to smaller parcels.</p>
         </div>
       </section>
 
@@ -249,9 +297,10 @@
   </main>
 
   <!-- Footer -->
-  <footer style="background: #030408; border-top: 1px solid var(--border-subtle); padding: 40px 0; text-align: center; font-size: 12px; color: var(--text-subtle);">
+  <footer
+    style="background: #030408; border-top: 1px solid var(--border-subtle); padding: 40px 0; text-align: center; font-size: 12px; color: var(--text-subtle);">
     <div class="container">
-      <p>© 2026 NOVA STORE. All rights reserved. Precision Luxury Demonstration.</p>
+      <p>© 2026 Kanso Collective. All rights reserved. Precision Luxury Demonstration.</p>
     </div>
   </footer>
 
@@ -345,6 +394,10 @@
           document.getElementById('product-gallery-wrap').style.display = 'none';
           document.getElementById('tab-3d').className = 'btn btn-primary';
           document.getElementById('tab-gallery').className = 'btn btn-secondary';
+          if (viewer3D) {
+            viewer3D.onResize();
+            viewer3D.resetCamera();
+          }
         });
 
         document.getElementById('tab-gallery').addEventListener('click', (e) => {
@@ -520,4 +573,5 @@
     loadProductDetail();
   </script>
 </body>
+
 </html>

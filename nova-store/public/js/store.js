@@ -1,13 +1,13 @@
 /**
- * NOVA STORE — Global Client State & UI Manager
+ * Kanso Collective — Global Client State & UI Manager
  * Handles local cart persistence, auth tokens, wishlist, and toast feedback.
  */
 
-const CART_KEY = 'nova_store_cart';
-const TOKEN_KEY = 'nova_store_token';
-const USER_KEY = 'nova_store_user';
-const WISHLIST_KEY = 'nova_store_wishlist';
-const COUPON_KEY = 'nova_store_coupon';
+const CART_KEY = 'kanso_store_cart';
+const TOKEN_KEY = 'kanso_store_token';
+const USER_KEY = 'kanso_store_user';
+const WISHLIST_KEY = 'kanso_store_wishlist';
+const COUPON_KEY = 'kanso_store_coupon';
 
 export const store = {
   // 1. Toast Notifications

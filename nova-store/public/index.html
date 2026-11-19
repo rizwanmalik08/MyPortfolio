@@ -1,23 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NOVA STORE — Premium 3D E-Commerce Platform</title>
-  <meta name="description" content="Luxury retail storefront with real-time Three.js 3D product customization, REST API backend, and architectural minimalism.">
+  <title>Kanso Collective — Premium 3D E-Commerce Platform</title>
+  <meta name="description"
+    content="Luxury retail storefront with real-time Three.js 3D product customization, REST API backend, and architectural minimalism.">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="/css/style.css">
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "/vendor/three/build/three.module.js",
+      "three/addons/": "/vendor/three/examples/jsm/"
+    }
+  }
+  </script>
 </head>
+
 <body>
 
   <!-- Top Announcement Bar -->
   <div id="announcement-bar" class="announcement-bar">
     <span class="badge badge-cyan">✦ COMPLIMENTARY WORLDWIDE COURIER SHIPPING OVER $150</span>
     <span>•</span>
-    <span>USE CODE <strong style="color: #fff;">NOVA20</strong> FOR 20% OFF AT CHECKOUT</span>
+    <span>USE CODE <strong style="color: #fff;">KANSO20</strong> FOR 20% OFF AT CHECKOUT</span>
   </div>
 
   <!-- Header / Navbar -->
@@ -25,8 +38,8 @@
     <div class="container nav-container">
       <!-- Brand Logo -->
       <a href="/" class="brand-logo">
-        <div class="brand-symbol">N</div>
-        <span>NOVA<span style="color: var(--accent-cyan); font-weight: 400;">STORE</span></span>
+        <div class="brand-symbol">K</div>
+        <span>KANSO <span style="color: var(--accent-cyan); font-weight: 300;">COLLECTIVE</span></span>
       </a>
 
       <!-- Desktop Nav Links -->
@@ -59,7 +72,8 @@
         </a>
 
         <!-- Admin Shortcut -->
-        <a href="/admin" class="nav-btn" title="Admin Terminal" aria-label="Admin" style="border-color: rgba(129, 140, 248, 0.4); color: var(--accent-violet);">
+        <a href="/admin" class="nav-btn" title="Admin Terminal" aria-label="Admin"
+          style="border-color: rgba(129, 140, 248, 0.4); color: var(--accent-violet);">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
             <line x1="8" y1="21" x2="16" y2="21"></line>
@@ -85,18 +99,25 @@
        ====================================================================== -->
   <section class="hero-section" style="position: relative; padding: 100px 0 80px; overflow: hidden;">
     <!-- Ambient Radial Glows -->
-    <div style="position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 700px; height: 500px; background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 70%); pointer-events: none; z-index: 0;"></div>
+    <div
+      style="position: absolute; top: -100px; left: 50%; transform: translateX(-50%); width: 700px; height: 500px; background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, transparent 70%); pointer-events: none; z-index: 0;">
+    </div>
 
     <div class="container" style="position: relative; z-index: 1;">
       <div style="max-width: 840px; margin: 0 auto; text-align: center;">
         <span class="badge badge-cyan" style="margin-bottom: 20px;">
           ✦ SS/26 LUXURY ARCHITECTURAL COLLECTION
         </span>
-        <h1 style="font-size: clamp(34px, 6vw, 68px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 22px;">
-          ENGINEERED LUXURY FOR THE <span style="background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-violet) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">MODERN FRONTIER</span>.
+        <h1
+          style="font-size: clamp(34px, 6vw, 68px); font-weight: 800; line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 22px;">
+          ENGINEERED LUXURY FOR THE <span
+            style="background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-violet) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">MODERN
+            FRONTIER</span>.
         </h1>
-        <p style="font-size: clamp(15px, 2vw, 18px); color: var(--text-muted); max-width: 680px; margin: 0 auto 36px; line-height: 1.65;">
-          Bespoke acoustic hardware, horological masterpieces, and technical apparel. Explore our live interactive 3D studio with real-time PBR material customization.
+        <p
+          style="font-size: clamp(15px, 2vw, 18px); color: var(--text-muted); max-width: 680px; margin: 0 auto 36px; line-height: 1.65;">
+          Bespoke acoustic hardware, horological masterpieces, and technical apparel. Explore our live interactive 3D
+          studio with real-time PBR material customization.
         </p>
 
         <div style="display: flex; flex-wrap: wrap; items-center; justify-content: center; gap: 16px;">
@@ -125,7 +146,8 @@
           Interactive 3D Studio Customizer
         </h2>
         <p style="color: var(--text-muted); max-width: 580px; margin-top: 10px;">
-          Rotate, zoom, and inspect genuine 3D models with studio PBR lighting. Click material swatches below to customize colors in real time.
+          Rotate, zoom, and inspect genuine 3D models with studio PBR lighting. Click material swatches below to
+          customize colors in real time.
         </p>
       </div>
 
@@ -138,30 +160,37 @@
 
           <!-- Color Swatch Overlay -->
           <div class="three-controls-overlay">
-            <span style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">Finish:</span>
-            <button class="color-swatch-btn active" data-color="obsidian" style="background: #111319;" title="Obsidian Black"></button>
-            <button class="color-swatch-btn" data-color="silver" style="background: #d1d5db;" title="Celestial Silver"></button>
+            <span
+              style="font-size: 11px; font-family: var(--font-mono); color: var(--text-muted); text-transform: uppercase;">Finish:</span>
+            <button class="color-swatch-btn active" data-color="obsidian" style="background: #111319;"
+              title="Obsidian Black"></button>
+            <button class="color-swatch-btn" data-color="silver" style="background: #d1d5db;"
+              title="Celestial Silver"></button>
             <button class="color-swatch-btn" data-color="gold" style="background: #d4af37;" title="Royal Gold"></button>
             <button class="color-swatch-btn" data-color="cyan" style="background: #06b6d4;" title="Cyber Cyan"></button>
-            <button class="color-swatch-btn" data-color="emerald" style="background: #10b981;" title="Emerald Green"></button>
+            <button class="color-swatch-btn" data-color="emerald" style="background: #10b981;"
+              title="Emerald Green"></button>
 
             <span style="width: 1px; height: 16px; background: var(--border-subtle); margin: 0 4px;"></span>
 
             <!-- Auto-Rotate Toggle -->
-            <button id="toggle-rotate-btn" style="color: var(--text-muted); font-size: 11px; font-family: var(--font-mono); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-subtle);">
+            <button id="toggle-rotate-btn"
+              style="color: var(--text-muted); font-size: 11px; font-family: var(--font-mono); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-subtle);">
               PAUSE ROTATION
             </button>
-            <button id="reset-cam-btn" style="color: var(--text-muted); font-size: 11px; font-family: var(--font-mono); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-subtle);">
+            <button id="reset-cam-btn"
+              style="color: var(--text-muted); font-size: 11px; font-family: var(--font-mono); padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-subtle);">
               RESET
             </button>
           </div>
         </div>
 
         <!-- 3D Featured Product Actions Card -->
-        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px; backdrop-filter: blur(15px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;">
+        <div
+          style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px; backdrop-filter: blur(15px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;">
           <div>
             <span class="product-cat">ACOUSTIC ENGINEERING // FLAGSHIP</span>
-            <h3 style="font-size: 22px; font-weight: 800; margin: 4px 0 8px;">Nova Apex Wireless ANC Headphones</h3>
+            <h3 style="font-size: 22px; font-weight: 800; margin: 4px 0 8px;">Kanso Apex Wireless ANC Headphones</h3>
             <p style="color: var(--text-muted); font-size: 14px; max-width: 540px;">
               40mm Beryllium acoustic drivers with dual-chamber hybrid noise cancellation and 42-hour battery life.
             </p>
@@ -169,7 +198,8 @@
 
           <div style="display: flex; align-items: center; gap: 16px;">
             <div style="text-align: right;">
-              <div style="font-size: 24px; font-weight: 800; font-family: var(--font-mono); color: var(--text-main);">$349.00</div>
+              <div style="font-size: 24px; font-weight: 800; font-family: var(--font-mono); color: var(--text-main);">
+                $349.00</div>
               <div style="font-size: 13px; color: var(--text-subtle); text-decoration: line-through;">$389.00</div>
             </div>
 
@@ -195,12 +225,14 @@
           <span class="badge badge-cyan" style="margin-bottom: 10px;">✦ CURATED DEPARTMENTS</span>
           <h2 style="font-size: 32px; font-weight: 800;">Featured Collections</h2>
         </div>
-        <a href="/shop" style="color: var(--accent-cyan); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">
+        <a href="/shop"
+          style="color: var(--accent-cyan); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">
           Explore All Categories →
         </a>
       </div>
 
-      <div id="categories-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px;">
+      <div id="categories-grid"
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px;">
         <!-- Populated dynamically via JS -->
       </div>
     </div>
@@ -216,7 +248,8 @@
           <span class="badge badge-emerald" style="margin-bottom: 10px;">✦ HIGH VELOCITY DEMAND</span>
           <h2 style="font-size: 32px; font-weight: 800;">Trending Products</h2>
         </div>
-        <a href="/shop" style="color: var(--accent-cyan); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">
+        <a href="/shop"
+          style="color: var(--accent-cyan); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">
           View Catalog →
         </a>
       </div>
@@ -237,7 +270,8 @@
           <span class="badge badge-gold" style="margin-bottom: 10px;">✦ VERIFIED FAVORITES</span>
           <h2 style="font-size: 32px; font-weight: 800;">Best Sellers</h2>
         </div>
-        <a href="/shop" style="color: var(--accent-cyan); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">
+        <a href="/shop"
+          style="color: var(--accent-cyan); font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;">
           Shop Collection →
         </a>
       </div>
@@ -251,7 +285,8 @@
   <!-- ======================================================================
        CUSTOMER REVIEWS & SOCIAL PROOF
        ====================================================================== -->
-  <section style="padding: 80px 0; background: var(--bg-secondary); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+  <section
+    style="padding: 80px 0; background: var(--bg-secondary); border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
     <div class="container">
       <div style="text-align: center; max-width: 600px; margin: 0 auto 48px;">
         <span class="badge badge-cyan" style="margin-bottom: 10px;">✦ CLIENT TESTIMONIALS</span>
@@ -259,31 +294,40 @@
       </div>
 
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
-        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px;">
+        <div
+          style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px;">
           <div style="color: var(--accent-gold); margin-bottom: 12px;">★★★★★</div>
           <p style="font-size: 14px; color: var(--text-main); font-style: italic; margin-bottom: 16px;">
-            "The 3D customizer allowed me to inspect the Nova Apex headphones from every angle before purchasing. The real physical unit arrived in 2 days and the acoustic performance is unmatched."
+            "The 3D customizer allowed me to inspect the Kanso Apex headphones from every angle before purchasing. The
+            real physical unit arrived in 2 days and the acoustic performance is unmatched."
           </p>
           <div style="font-size: 13px; font-weight: 700; color: #fff;">Marcus Thorne</div>
-          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-cyan);">Verified Buyer • New York</div>
+          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-cyan);">Verified Buyer • New
+            York</div>
         </div>
 
-        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px;">
+        <div
+          style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px;">
           <div style="color: var(--accent-gold); margin-bottom: 12px;">★★★★★</div>
           <p style="font-size: 14px; color: var(--text-main); font-style: italic; margin-bottom: 16px;">
-            "Fast checkout, seamless order tracking, and museum-grade product packaging. The Chrono Horizon titanium smartwatch is my daily driver."
+            "Fast checkout, seamless order tracking, and museum-grade product packaging. The Chrono Horizon titanium
+            smartwatch is my daily driver."
           </p>
           <div style="font-size: 13px; font-weight: 700; color: #fff;">Elena Rostova</div>
-          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-cyan);">Verified Buyer • London</div>
+          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-cyan);">Verified Buyer •
+            London</div>
         </div>
 
-        <div style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px;">
+        <div
+          style="background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px;">
           <div style="color: var(--accent-gold); margin-bottom: 12px;">★★★★★</div>
           <p style="font-size: 14px; color: var(--text-main); font-style: italic; margin-bottom: 16px;">
-            "From the live coupon validation to the real-time stock indicators, Nova Store feels like shopping at a premier flagship boutique in Tokyo."
+            "From the live coupon validation to the real-time stock indicators, Kanso Collective feels like shopping at
+            a premier flagship boutique in Tokyo."
           </p>
           <div style="font-size: 13px; font-weight: 700; color: #fff;">Kenji Takahashi</div>
-          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-cyan);">Verified Buyer • Tokyo</div>
+          <div style="font-size: 11px; font-family: var(--font-mono); color: var(--accent-cyan);">Verified Buyer • Tokyo
+          </div>
         </div>
       </div>
     </div>
@@ -312,24 +356,29 @@
        ====================================================================== -->
   <footer style="background: #030408; border-top: 1px solid var(--border-subtle); padding: 60px 0 30px;">
     <div class="container">
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; margin-bottom: 50px;">
+      <div
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; margin-bottom: 50px;">
         <!-- Col 1 -->
         <div>
           <a href="/" class="brand-logo" style="margin-bottom: 14px;">
-            <div class="brand-symbol">N</div>
-            <span>NOVA<span style="color: var(--accent-cyan); font-weight: 400;">STORE</span></span>
+            <div class="brand-symbol">K</div>
+            <span>KANSO <span style="color: var(--accent-cyan); font-weight: 300;">COLLECTIVE</span></span>
           </a>
           <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
-            Precision engineered luxury goods with real-time 3D interactive WebGL visualization and REST backend architecture.
+            Precision engineered luxury goods with real-time 3D interactive WebGL visualization and REST backend
+            architecture.
           </p>
         </div>
 
         <!-- Col 2 -->
         <div>
-          <h4 style="font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.15em; color: #fff; margin-bottom: 16px;">Navigation</h4>
+          <h4
+            style="font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.15em; color: #fff; margin-bottom: 16px;">
+            Navigation</h4>
           <ul style="list-style: none; font-size: 13px; space-y: 8px; color: var(--text-muted);">
             <li style="margin-bottom: 8px;"><a href="/shop" style="color: inherit;">All Products</a></li>
-            <li style="margin-bottom: 8px;"><a href="/shop?category=electronics" style="color: inherit;">Electronics</a></li>
+            <li style="margin-bottom: 8px;"><a href="/shop?category=electronics" style="color: inherit;">Electronics</a>
+            </li>
             <li style="margin-bottom: 8px;"><a href="/shop?category=watches" style="color: inherit;">Watches</a></li>
             <li style="margin-bottom: 8px;"><a href="/cart" style="color: inherit;">Shopping Cart</a></li>
           </ul>
@@ -337,7 +386,9 @@
 
         <!-- Col 3 -->
         <div>
-          <h4 style="font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.15em; color: #fff; margin-bottom: 16px;">Client Portal</h4>
+          <h4
+            style="font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.15em; color: #fff; margin-bottom: 16px;">
+            Client Portal</h4>
           <ul style="list-style: none; font-size: 13px; color: var(--text-muted);">
             <li style="margin-bottom: 8px;"><a href="/account" style="color: inherit;">Customer Account</a></li>
             <li style="margin-bottom: 8px;"><a href="/admin" style="color: var(--accent-violet);">Admin Panel</a></li>
@@ -347,7 +398,9 @@
 
         <!-- Col 4 -->
         <div>
-          <h4 style="font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.15em; color: #fff; margin-bottom: 16px;">System Telemetry</h4>
+          <h4
+            style="font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.15em; color: #fff; margin-bottom: 16px;">
+            System Telemetry</h4>
           <p style="font-size: 12px; font-family: var(--font-mono); color: var(--accent-emerald); margin-bottom: 8px;">
             ● REST API: ONLINE
           </p>
@@ -359,8 +412,9 @@
         </div>
       </div>
 
-      <div style="border-top: 1px solid var(--border-subtle); padding-top: 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-subtle);">
-        <p>© 2026 NOVA STORE. All rights reserved. Portfolio Showcase Demonstration.</p>
+      <div
+        style="border-top: 1px solid var(--border-subtle); padding-top: 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; font-size: 12px; color: var(--text-subtle);">
+        <p>© 2026 Kanso Collective. All rights reserved. Portfolio Showcase Demonstration.</p>
         <p>Built with Three.js, Express.js, and SQLite.</p>
       </div>
     </div>
@@ -404,7 +458,7 @@
     document.getElementById('add-3d-to-cart-btn')?.addEventListener('click', () => {
       store.addToCart({
         id: 1,
-        name: 'Nova Apex Wireless ANC Headphones',
+        name: 'Kanso Apex Wireless ANC Headphones',
         slug: 'nova-apex-wireless-headphones',
         price: 349.00,
         primary_image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1000&q=85'
@@ -489,7 +543,7 @@
     // Newsletter form
     document.getElementById('newsletter-form')?.addEventListener('submit', (e) => {
       e.preventDefault();
-      store.showToast('Welcome to the NOVA inner circle. Check your inbox.', 'success');
+      store.showToast('Welcome to the Kanso Collective inner circle. Check your inbox.', 'success');
       e.target.reset();
     });
 
@@ -506,4 +560,5 @@
     loadProducts();
   </script>
 </body>
+
 </html>

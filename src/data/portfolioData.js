@@ -146,12 +146,12 @@ export const projectCategories = [
 export const projects = [
   {
     id: "nova-store-3d",
-    clientName: "NOVA STORE",
+    clientName: "Kanso Collective",
     company: "Luxury 3D E-Commerce Platform",
     role: "Full-Stack & 3D WebGL Architect",
     category: "ecommerce",
     type: "website",
-    badge: "3D",
+    badge: "KC",
     review: "An extraordinary 3D shopping showcase with real-time Three.js model customization, tamper-proof Express API pricing, and complete executive administration.",
     link: "http://localhost:5001/",
     image: "/projects/nova-store-showcase.svg",
