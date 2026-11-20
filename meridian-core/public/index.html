@@ -27,6 +27,9 @@
 
 <body class="bg-main">
 
+  <!-- Top Reading Progress Bar -->
+  <div id="scroll-progress-bar" class="scroll-progress-bar" aria-hidden="true"></div>
+
   <!-- ============================================== -->
   <!-- SVG LIQUID DISPLACEMENT FILTERS                -->
   <!-- ============================================== -->
@@ -79,9 +82,8 @@
   <!-- NAVIGATION                                     -->
   <!-- ============================================== -->
   <nav class="site-nav" aria-label="Primary">
-    <a href="#top" class="logo">
+    <a href="#top" class="logo" aria-label="Meridian Core">
       <span class="monogram">MC</span>
-      <span class="logo-name">MERIDIAN CORE</span>
     </a>
 
     <ul class="nav-links">
@@ -596,6 +598,14 @@
       <div id="modal-body" class="modal-body"></div>
     </div>
   </div>
+
+  <!-- Floating Back to Top Button -->
+  <button type="button" id="float-back-to-top" class="float-btt" aria-label="Scroll to top" title="Scroll to top">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="19" x2="12" y2="5"></line>
+      <polyline points="5 12 12 5 19 12"></polyline>
+    </svg>
+  </button>
 
   <!-- Main JavaScript App -->
   <script type="module" src="/js/main.js"></script>

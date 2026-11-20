@@ -77,6 +77,21 @@ body.bg-main {
   background: var(--accent);
 }
 
+/* Reading Progress Bar */
+.scroll-progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #ff3b1d, #ff6a3d);
+  z-index: 10000;
+  pointer-events: none;
+  box-shadow: 0 0 12px rgba(255, 59, 29, 0.85);
+  will-change: width;
+  transition: width 0.06s ease-out;
+}
+
 /* 3D WebGL Background Container */
 .three-canvas-container,
 .three-sculpture-container {
@@ -224,10 +239,7 @@ body.bg-main {
 }
 
 .logo-name {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  letter-spacing: -0.01em;
-  text-transform: uppercase;
+  display: none;
 }
 
 .nav-links {
@@ -789,6 +801,83 @@ body.bg-main {
 }
 
 /* ==========================================================================
+   EXPERTISE SECTION (STRATEGIC CAPABILITIES)
+   ========================================================================== */
+.expertise-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+@media (min-width: 640px) {
+  .expertise-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .expertise-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.expertise-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: clamp(1.75rem, 3vw, 2.5rem);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.expertise-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.expertise-card:hover {
+  border-color: var(--line-strong);
+  transform: translateY(-4px);
+  background: #141418;
+}
+
+.expertise-card:hover::before {
+  transform: scaleX(1);
+}
+
+.exp-num {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--accent);
+}
+
+.expertise-card h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--foreground);
+  letter-spacing: -0.01em;
+}
+
+.expertise-card p {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
    VENTURES GRID
    ========================================================================== */
 .h-ventures {
@@ -835,12 +924,14 @@ body.bg-main {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(1.12) translateY(var(--parallax-y, 0px));
+  will-change: transform;
   transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
   filter: grayscale(80%) contrast(105%);
 }
 
 .venture:hover .venture-img {
-  transform: scale(1.05);
+  transform: scale(1.16) translateY(var(--parallax-y, 0px));
   filter: grayscale(0%) contrast(100%);
 }
 
@@ -1208,12 +1299,14 @@ body.bg-main {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scale(1.1) translateY(var(--parallax-y, 0px));
+  will-change: transform;
   transition: opacity 0.35s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
   filter: grayscale(70%) contrast(105%);
 }
 
 .voice-panel:hover .voice-img {
-  transform: scale(1.04);
+  transform: scale(1.14) translateY(var(--parallax-y, 0px));
   filter: grayscale(0%) contrast(100%);
 }
 
@@ -1488,20 +1581,21 @@ body.bg-main {
    ========================================================================== */
 .reveal-card {
   opacity: 0;
-  transform: translateY(32px);
-  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform: translateY(36px) scale(0.98);
+  transition: opacity 720ms cubic-bezier(0.16, 1, 0.3, 1), transform 720ms cubic-bezier(0.16, 1, 0.3, 1);
   will-change: opacity, transform;
 }
 
 .reveal-card.revealed {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .reveal-body {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(22px);
   transition: opacity 650ms cubic-bezier(0.16, 1, 0.3, 1), transform 650ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
 }
 
 .reveal-body.revealed {
@@ -1520,13 +1614,76 @@ body.bg-main {
 
 .split-line-inner {
   display: block;
-  transform: translateY(105%);
-  transition: transform 750ms cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform;
+  transform: translateY(115%);
+  opacity: 0;
+  transition: transform 800ms cubic-bezier(0.16, 1, 0.3, 1), opacity 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
 }
 
 .split-line-inner.revealed {
   transform: translateY(0%);
+  opacity: 1;
+}
+
+/* Back to Top Buttons */
+.back-to-top-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.back-to-top-btn:hover {
+  color: var(--foreground);
+  border-color: var(--accent);
+  background: rgba(255, 59, 29, 0.1);
+  transform: translateY(-2px);
+}
+
+.float-btt {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 80;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(17, 17, 20, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--line-strong);
+  color: var(--foreground);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.float-btt.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.float-btt:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(255, 59, 29, 0.25);
 }
 
 /* ==========================================================================

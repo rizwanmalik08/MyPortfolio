@@ -368,7 +368,7 @@ export function animateLiquidImage() {
 }
 
 /* ==========================================================================
-   5. LENIS SMOOTH SCROLLING INITIALIZATION
+   5. LENIS SMOOTH SCROLLING INITIALIZATION & SCROLL-DRIVEN PARALLAX
    ========================================================================== */
 export function initializeSmoothScroll() {
   if (typeof window.Lenis === 'undefined') {
@@ -392,6 +392,122 @@ export function initializeSmoothScroll() {
   }
   requestAnimationFrame(raf);
 
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function updateScrollAnimations(scrollY, maxScroll, velocity = 0) {
+    // 1. Reading Progress Bar
+    const progressBar = document.getElementById('scroll-progress-bar');
+    if (progressBar && maxScroll > 0) {
+      const pct = Math.min(Math.max((scrollY / maxScroll) * 100, 0), 100);
+      progressBar.style.width = `${pct.toFixed(2)}%`;
+    }
+
+    // 2. Floating Back to Top Button
+    const floatBtt = document.getElementById('float-back-to-top');
+    if (floatBtt) {
+      if (scrollY > 600) {
+        floatBtt.classList.add('visible');
+      } else {
+        floatBtt.classList.remove('visible');
+      }
+    }
+
+    if (prefersReducedMotion) return;
+
+    // 3. Hero Layered Depth Parallax & Dissolve
+    if (scrollY < window.innerHeight * 1.3) {
+      const heroPortrait = document.getElementById('hero-portrait');
+      const heroHeadline = document.getElementById('hero-headline');
+      const heroTop = document.querySelector('.hero-top');
+      const scrollCue = document.getElementById('scroll-cue');
+
+      if (scrollY > 1) {
+        if (heroPortrait) {
+          const portraitY = scrollY * 0.2;
+          const portraitOpacity = Math.max(0, 1 - scrollY / (window.innerHeight * 0.9));
+          heroPortrait.style.transform = `translate3d(-50%, ${portraitY.toFixed(1)}px, 0)`;
+          heroPortrait.style.opacity = portraitOpacity.toFixed(2);
+        }
+
+        if (heroHeadline) {
+          const nameY = scrollY * 0.38;
+          const nameOpacity = Math.max(0, 1 - scrollY / (window.innerHeight * 0.6));
+          heroHeadline.style.transform = `translate3d(0, calc(10% + ${nameY.toFixed(1)}px), 0)`;
+          heroHeadline.style.opacity = nameOpacity.toFixed(2);
+        }
+
+        if (heroTop) {
+          const topY = -scrollY * 0.22;
+          const topOpacity = Math.max(0, 1 - scrollY / 320);
+          heroTop.style.transform = `translate3d(0, ${topY.toFixed(1)}px, 0)`;
+          heroTop.style.opacity = topOpacity.toFixed(2);
+        }
+
+        if (scrollCue) {
+          const cueOpacity = Math.max(0, 1 - scrollY / 50);
+          scrollCue.style.opacity = cueOpacity.toFixed(2);
+          scrollCue.style.pointerEvents = cueOpacity <= 0.05 ? 'none' : 'auto';
+        }
+      } else {
+        if (heroPortrait && heroPortrait.classList.contains('revealed')) {
+          heroPortrait.style.transform = 'translateX(-50%) scale(1)';
+          heroPortrait.style.opacity = '1';
+        }
+        if (heroHeadline) {
+          heroHeadline.style.transform = '';
+          heroHeadline.style.opacity = '1';
+        }
+        if (heroTop) {
+          heroTop.style.transform = '';
+          heroTop.style.opacity = '1';
+        }
+        if (scrollCue && scrollCue.classList.contains('revealed')) {
+          scrollCue.style.opacity = '1';
+          scrollCue.style.pointerEvents = 'auto';
+        }
+      }
+    }
+
+    // 4. Card In-Frame Media Parallax (Ventures & Voices)
+    const windowHeight = window.innerHeight;
+    const parallaxWraps = document.querySelectorAll('.venture-img-wrap, .voice-img-wrap');
+    parallaxWraps.forEach(wrap => {
+      const rect = wrap.getBoundingClientRect();
+      if (rect.bottom > -50 && rect.top < windowHeight + 50) {
+        const centerDiff = (rect.top + rect.height / 2) - (windowHeight / 2);
+        const ratio = centerDiff / (windowHeight / 2);
+        const offset = (ratio * 26).toFixed(1);
+        const img = wrap.querySelector('img');
+        if (img) {
+          img.style.setProperty('--parallax-y', `${offset}px`);
+        }
+      }
+    });
+
+    // 5. Marquee Scroll Velocity Reactivity
+    const marqueeTrack = document.querySelector('.marquee-track');
+    if (marqueeTrack && velocity) {
+      const absVelocity = Math.abs(velocity);
+      const dynamicDuration = Math.max(9, 25 - (absVelocity * 1.8));
+      marqueeTrack.style.animationDuration = `${dynamicDuration}s`;
+    }
+  }
+
+  // Lenis Scroll Event
+  lenis.on('scroll', (e) => {
+    const maxScroll = e.limit || (document.documentElement.scrollHeight - window.innerHeight);
+    updateScrollAnimations(e.scroll, maxScroll, e.velocity || 0);
+  });
+
+  // Native Scroll Fallback Event
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    updateScrollAnimations(scrollY, maxScroll, 0);
+  }, { passive: true });
+
+  window.lenis = lenis;
+
   // Smooth Anchor Navigation
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', (e) => {
@@ -410,10 +526,17 @@ export function initializeSmoothScroll() {
     });
   });
 
-  // Back to Top button
+  // Back to Top buttons (footer and floating)
   const btt = document.getElementById('back-to-top');
   if (btt) {
     btt.addEventListener('click', () => {
+      lenis.scrollTo(0, { duration: 1.4 });
+    });
+  }
+
+  const floatBtt = document.getElementById('float-back-to-top');
+  if (floatBtt) {
+    floatBtt.addEventListener('click', () => {
       lenis.scrollTo(0, { duration: 1.4 });
     });
   }
@@ -516,14 +639,22 @@ export function initializeTestimonials() {
    8. SCROLL-TRIGGERED SECTION REVEALS (IntersectionObserver)
    ========================================================================== */
 export function animateSectionReveal() {
-  const sections = document.querySelectorAll('.reveal-section');
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Split headings into lines for clean slide up
   document.querySelectorAll('.split-heading').forEach(heading => {
     splitTextIntoLines(heading);
   });
 
-  const observer = new IntersectionObserver((entries) => {
+  if (prefersReducedMotion) {
+    document.querySelectorAll('.split-line-inner, .reveal-body, .reveal-card').forEach(el => {
+      el.classList.add('revealed');
+    });
+    return;
+  }
+
+  // 1. Observer for section headers & narrative leads
+  const sectionObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const sec = entry.target;
@@ -531,32 +662,48 @@ export function animateSectionReveal() {
         // Reveal split headings
         const headingInners = sec.querySelectorAll('.split-line-inner');
         headingInners.forEach((hi, idx) => {
-          setTimeout(() => hi.classList.add('revealed'), idx * 100);
+          setTimeout(() => hi.classList.add('revealed'), idx * 90);
         });
 
-        // Reveal body text
+        // Reveal body lead text
         const bodyEls = sec.querySelectorAll('.reveal-body');
         bodyEls.forEach((b, idx) => {
-          setTimeout(() => b.classList.add('revealed'), 120 + (idx * 60));
+          setTimeout(() => b.classList.add('revealed'), 140 + (idx * 60));
         });
 
-        // Reveal cards with progressive stagger
-        const cards = sec.querySelectorAll('.reveal-card');
-        cards.forEach((card, idx) => {
-          setTimeout(() => {
-            card.classList.add('revealed');
-          }, 150 + (idx * 75));
-        });
-
-        observer.unobserve(sec);
+        sectionObserver.unobserve(sec);
       }
     });
   }, {
-    threshold: 0.15,
-    rootMargin: '0px 0px -50px 0px'
+    threshold: 0.05,
+    rootMargin: '0px 0px -40px 0px'
   });
 
-  sections.forEach(s => observer.observe(s));
+  document.querySelectorAll('.reveal-section').forEach(s => sectionObserver.observe(s));
+
+  // 2. Observer for individual reveal cards with progressive stagger
+  const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const card = entry.target;
+        const parent = card.parentElement;
+        const siblings = parent ? Array.from(parent.querySelectorAll('.reveal-card')) : [];
+        const idx = siblings.indexOf(card);
+        const delay = idx >= 0 ? Math.min(idx * 75, 450) : 0;
+
+        setTimeout(() => {
+          card.classList.add('revealed');
+        }, delay);
+
+        cardObserver.unobserve(card);
+      }
+    });
+  }, {
+    threshold: 0.08,
+    rootMargin: '0px 0px -30px 0px'
+  });
+
+  document.querySelectorAll('.reveal-card').forEach(c => cardObserver.observe(c));
 }
 
 /* ==========================================================================
