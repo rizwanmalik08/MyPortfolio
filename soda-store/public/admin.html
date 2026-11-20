@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SODA — Administration Dashboard</title>
-  
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
 
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="/css/responsive.css" />
@@ -18,29 +21,36 @@
       --accent-cyan: #22d3ee;
       --accent-teal: #14b8a6;
     }
+
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
       scrollbar-width: thin;
       scrollbar-color: rgba(255, 255, 255, 0.18) transparent;
     }
+
     ::-webkit-scrollbar {
       width: 6px;
       height: 6px;
     }
+
     ::-webkit-scrollbar-track {
       background: transparent;
     }
+
     ::-webkit-scrollbar-thumb {
       background: rgba(255, 255, 255, 0.2);
       border-radius: 9999px;
     }
+
     ::-webkit-scrollbar-button {
       display: none !important;
     }
+
     .admin-body {
       background: radial-gradient(circle at 50% 0%, #062b24 0%, #02120f 50%, #010807 100%);
       min-height: 100vh;
@@ -48,10 +58,12 @@
       color: #f8fafc;
       font-family: 'Outfit', -apple-system, sans-serif;
     }
+
     .admin-container {
       max-width: 1280px;
       margin: 0 auto;
     }
+
     .admin-header {
       display: flex;
       justify-content: space-between;
@@ -60,6 +72,7 @@
       padding-bottom: 24px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     }
+
     .admin-title-box h1 {
       font-size: 2.2rem;
       font-weight: 800;
@@ -67,16 +80,19 @@
       letter-spacing: -0.02em;
       margin-bottom: 4px;
     }
+
     .admin-title-box p {
       color: #94a3b8;
       font-size: 0.92rem;
     }
+
     .telemetry-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
       gap: 18px;
       margin-bottom: 36px;
     }
+
     .telemetry-card {
       padding: 22px 24px;
       background: rgba(255, 255, 255, 0.035);
@@ -86,10 +102,12 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
       transition: transform 0.2s ease, border-color 0.2s ease;
     }
+
     .telemetry-card:hover {
       transform: translateY(-2px);
       border-color: rgba(255, 255, 255, 0.18);
     }
+
     .telemetry-card .t-label {
       font-size: 0.74rem;
       font-weight: 700;
@@ -98,15 +116,18 @@
       color: #94a3b8;
       margin-bottom: 8px;
     }
+
     .telemetry-card .t-val {
       font-size: 2rem;
       font-weight: 900;
       color: #fff;
       letter-spacing: -0.02em;
     }
+
     .text-pink-highlight {
       color: #fbcfe8 !important;
     }
+
     .admin-tabs {
       display: flex;
       gap: 12px;
@@ -115,6 +136,7 @@
       padding-bottom: 14px;
       flex-wrap: wrap;
     }
+
     .admin-tab-btn {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid rgba(255, 255, 255, 0.08);
@@ -127,16 +149,19 @@
       cursor: pointer;
       transition: all 0.25s ease;
     }
+
     .admin-tab-btn:hover {
       background: rgba(255, 255, 255, 0.1);
       color: #fff;
     }
+
     .admin-tab-btn.active {
       background: #fbcfe8;
       border-color: #fbcfe8;
       color: #031513;
       box-shadow: 0 4px 16px rgba(251, 207, 232, 0.35);
     }
+
     .admin-table-wrap {
       overflow-x: auto;
       background: rgba(255, 255, 255, 0.03);
@@ -146,12 +171,14 @@
       backdrop-filter: blur(14px);
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
     }
+
     table.admin-table {
       width: 100%;
       border-collapse: collapse;
       text-align: left;
       font-size: 0.9rem;
     }
+
     table.admin-table th {
       padding: 14px 16px;
       font-size: 0.74rem;
@@ -161,15 +188,18 @@
       color: #94a3b8;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
+
     table.admin-table td {
       padding: 16px 16px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
       color: #cbd5e1;
       vertical-align: middle;
     }
+
     table.admin-table tr:hover td {
       background: rgba(255, 255, 255, 0.02);
     }
+
     .status-select {
       background: #041916;
       border: 1px solid rgba(255, 255, 255, 0.16);
@@ -183,9 +213,11 @@
       outline: none;
       transition: border-color 0.2s ease;
     }
+
     .status-select:focus {
       border-color: #fbcfe8;
     }
+
     .edit-input {
       background: #041916;
       border: 1px solid rgba(255, 255, 255, 0.16);
@@ -198,29 +230,35 @@
       font-weight: 700;
       outline: none;
     }
+
     .edit-input:focus {
       border-color: #fbcfe8;
     }
+
     .btn-table-action {
       padding: 6px 14px;
       font-size: 0.8rem;
       border-radius: 8px;
       font-weight: 700;
     }
+
     .customer-cell {
       display: flex;
       flex-direction: column;
       gap: 2px;
     }
+
     .customer-name {
       font-weight: 700;
       color: #fff;
       font-size: 0.92rem;
     }
+
     .customer-meta {
       font-size: 0.78rem;
       color: #94a3b8;
     }
+
     .order-badge-tag {
       font-weight: 800;
       color: #fbcfe8;
@@ -229,10 +267,11 @@
     }
   </style>
 </head>
+
 <body class="admin-body">
 
   <div class="admin-container">
-    
+
     <!-- Admin Top Header -->
     <header class="admin-header">
       <div class="admin-title-box">
@@ -292,7 +331,9 @@
             </tr>
           </thead>
           <tbody id="orders-tbody">
-            <tr><td colspan="7">Loading live orders...</td></tr>
+            <tr>
+              <td colspan="7">Loading live orders...</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -314,7 +355,9 @@
             </tr>
           </thead>
           <tbody id="products-tbody">
-            <tr><td colspan="7">Loading live inventory...</td></tr>
+            <tr>
+              <td colspan="7">Loading live inventory...</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -335,7 +378,9 @@
             </tr>
           </thead>
           <tbody id="reviews-tbody">
-            <tr><td colspan="6">Loading customer reviews...</td></tr>
+            <tr>
+              <td colspan="6">Loading customer reviews...</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -355,7 +400,9 @@
             </tr>
           </thead>
           <tbody id="contacts-tbody">
-            <tr><td colspan="5">Loading contact messages...</td></tr>
+            <tr>
+              <td colspan="5">Loading contact messages...</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -365,4 +412,5 @@
 
   <script src="/js/admin.js"></script>
 </body>
+
 </html>

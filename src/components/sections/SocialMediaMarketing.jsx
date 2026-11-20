@@ -3,17 +3,18 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { socialMediaProjects, socialMediaCategories } from '../../data/portfolioData';
 import { ProjectModal } from '../ui/ProjectModal';
 import { TiltCard } from '../ui/TiltCard';
+import { StatCounter } from '../ui/StatCounter';
 import { soundManager } from '../../utils/audioFX';
-import { 
-  Share2, 
-  TrendingUp, 
-  Sparkles, 
-  Eye, 
-  ArrowUpRight, 
-  Target, 
-  BarChart3, 
-  Flame, 
-  Layers, 
+import {
+  Share2,
+  TrendingUp,
+  Sparkles,
+  Eye,
+  ArrowUpRight,
+  Target,
+  BarChart3,
+  Flame,
+  Layers,
   Zap,
   Users,
   Maximize2
@@ -23,10 +24,36 @@ export function SocialMediaMarketing() {
   const [selectedProject, setSelectedProject] = useState(null);
 
   const marketingStats = [
-    { label: 'Total Reach Generated', value: '500K+', icon: TrendingUp, accent: 'text-cyan-400' },
-    { label: 'Average Campaign ROAS', value: '3.8x', icon: Target, accent: 'text-emerald-400' },
-    { label: 'Avg Engagement Lift', value: '+240%', icon: Zap, accent: 'text-pink-400' },
-    { label: 'Ad Creatives Deployed', value: '120+', icon: BarChart3, accent: 'text-violet-400' },
+    {
+      label: 'Total Reach Generated',
+      num: 500,
+      suffix: 'K+',
+      icon: TrendingUp,
+      sub: 'Audience across Meta & Instagram campaigns'
+    },
+    {
+      label: 'Average Campaign ROAS',
+      num: 3.8,
+      decimals: 1,
+      suffix: 'x',
+      icon: Target,
+      sub: 'Blended return on advertising spend'
+    },
+    {
+      label: 'Avg Engagement Lift',
+      num: 240,
+      prefix: '+',
+      suffix: '%',
+      icon: Zap,
+      sub: 'Organic & community interaction rate'
+    },
+    {
+      label: 'Ad Creatives Deployed',
+      num: 120,
+      suffix: '+',
+      icon: BarChart3,
+      sub: 'High-converting A/B tested creative assets'
+    },
   ];
 
   const handleOpenProject = (project) => {
@@ -42,9 +69,9 @@ export function SocialMediaMarketing() {
       <div className="pointer-events-none absolute bottom-1/3 left-1/3 -z-10 h-80 w-80 rounded-full bg-emerald-600/10 blur-[110px]" />
 
       <div className="container mx-auto max-w-7xl px-6">
-        
+
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-10">
+        <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-12">
           <span className="text-xs font-mono uppercase tracking-[0.3em] text-emerald-400 flex items-center gap-2">
             <Share2 className="h-3.5 w-3.5" />
             Social Media Marketing &amp; Client Results
@@ -57,29 +84,59 @@ export function SocialMediaMarketing() {
           </p>
         </div>
 
-        {/* Marketing KPI Metrics Strip */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12">
-          {marketingStats.map((stat, i) => {
-            const Icon = stat.icon;
-            return (
-              <div
-                key={i}
-                className="relative rounded-2xl border border-white/10 bg-slate-950/60 p-4 sm:p-5 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,0,0,0.4)]"
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium text-slate-400">{stat.label}</span>
-                  <Icon className={`h-4 w-4 ${stat.accent}`} />
+        {/* Clean Editorial KPI Metrics Strip */}
+        <motion.div
+          className="mb-16 overflow-hidden rounded-2xl border border-white/[0.08] bg-slate-950/40 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.36)]"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.07]">
+            {marketingStats.map((stat, i) => {
+              const Icon = stat.icon;
+              return (
+                <div
+                  key={i}
+                  onMouseEnter={() => soundManager.playHover()}
+                  className="group relative p-6 sm:p-7 transition-colors duration-300 hover:bg-white/[0.02] flex flex-col justify-between"
+                >
+                  <div>
+                    {/* Top row: Label & Clean Icon */}
+                    <div className="flex items-center justify-between mb-3 text-slate-400">
+                      <span className="text-[11px] font-mono uppercase tracking-[0.18em] font-medium group-hover:text-slate-300 transition-colors">
+                        {stat.label}
+                      </span>
+                      <Icon className="h-4 w-4 text-slate-400 group-hover:text-emerald-400 transition-colors duration-300" />
+                    </div>
+
+                    {/* High-Contrast Bold Number */}
+                    <div className="text-3xl sm:text-4xl font-bold tracking-tight text-white group-hover:text-emerald-300 transition-colors duration-300">
+                      <StatCounter
+                        value={stat.num}
+                        prefix={stat.prefix}
+                        suffix={stat.suffix}
+                        decimals={stat.decimals}
+                        duration={1.8}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Clean Human Contextual Note */}
+                  <p className="mt-3 text-xs text-slate-400 font-normal leading-relaxed">
+                    {stat.sub}
+                  </p>
+
+                  {/* Hairline subtle accent underline on hover */}
+                  <div className="absolute bottom-0 left-6 right-6 h-[1.5px] bg-emerald-400/0 group-hover:bg-emerald-400/50 transition-all duration-300" />
                 </div>
-                <div className={`text-2xl sm:text-3xl font-extrabold tracking-tight ${stat.accent}`}>
-                  {stat.value}
-                </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        </motion.div>
 
         {/* Campaigns Grid (3 Authentic Clients) */}
-        <motion.div 
+        <motion.div
           layout
           className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8"
         >
@@ -95,9 +152,9 @@ export function SocialMediaMarketing() {
               >
                 <TiltCard className="h-full">
                   <div className="relative flex flex-col h-full rounded-3xl border border-white/10 bg-slate-950/70 p-5 sm:p-6 backdrop-blur-xl transition-all duration-300 hover:border-emerald-500/40 hover:shadow-[0_15px_40px_rgba(16,185,129,0.15)] group">
-                    
+
                     {/* Visual Showcase (Client Brand or Campaign Creative) */}
-                    <div 
+                    <div
                       onClick={() => handleOpenProject(project)}
                       className="relative w-full aspect-square overflow-hidden rounded-2xl border border-white/10 bg-slate-900/80 cursor-pointer flex items-center justify-center p-3"
                     >

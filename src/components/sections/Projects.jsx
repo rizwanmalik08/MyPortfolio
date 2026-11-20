@@ -5,16 +5,16 @@ import { ProjectModal } from '../ui/ProjectModal';
 import { StatCounter } from '../ui/StatCounter';
 import { TiltCard } from '../ui/TiltCard';
 import { soundManager } from '../../utils/audioFX';
-import { 
-  Star, 
-  Eye, 
-  Users, 
-  FolderCheck, 
-  Award, 
-  Clock, 
-  ArrowUpRight, 
-  Sparkles, 
-  Globe, 
+import {
+  Star,
+  Eye,
+  Users,
+  FolderCheck,
+  Award,
+  Clock,
+  ArrowUpRight,
+  Sparkles,
+  Globe,
   LayoutGrid,
   Shirt,
   ShoppingBag,
@@ -51,7 +51,7 @@ export function Projects() {
     <section id="websites" className="relative py-24 z-10 scroll-mt-20">
       <div id="projects" className="absolute -top-24" />
       <div className="container mx-auto max-w-7xl px-6">
-        
+
         {/* Section Header */}
         <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-12">
           <span className="text-xs font-mono uppercase tracking-[0.3em] text-cyan-400 flex items-center gap-2">
@@ -71,8 +71,8 @@ export function Projects() {
           {projectCategories.map((cat) => {
             const Icon = categoryIcons[cat.id] || LayoutGrid;
             const isActive = activeCategory === cat.id;
-            const count = cat.id === 'all' 
-              ? projects.length 
+            const count = cat.id === 'all'
+              ? projects.length
               : projects.filter((p) => p.category === cat.id).length;
 
             return (
@@ -82,11 +82,10 @@ export function Projects() {
                   soundManager.playClick();
                   setActiveCategory(cat.id);
                 }}
-                className={`relative flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-semibold tracking-wide transition-all ${
-                  isActive
+                className={`relative flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-semibold tracking-wide transition-all ${isActive
                     ? 'text-white shadow-[0_0_20px_rgba(34,211,238,0.3)]'
                     : 'text-slate-400 hover:text-white bg-slate-900/60 border border-white/10 hover:border-white/20'
-                }`}
+                  }`}
               >
                 {isActive && (
                   <motion.div
@@ -98,11 +97,10 @@ export function Projects() {
                 <Icon className={`h-3.5 w-3.5 ${isActive ? 'text-white' : 'text-slate-400'}`} />
                 <span>{cat.label}</span>
                 <span
-                  className={`ml-1 rounded-full px-2 py-0.5 text-[10px] font-mono ${
-                    isActive
+                  className={`ml-1 rounded-full px-2 py-0.5 text-[10px] font-mono ${isActive
                       ? 'bg-black/30 text-white'
                       : 'bg-white/10 text-slate-400'
-                  }`}
+                    }`}
                 >
                   {count}
                 </span>
@@ -112,7 +110,7 @@ export function Projects() {
         </div>
 
         {/* 3D Tilt Project Cards Grid */}
-        <motion.div 
+        <motion.div
           layout
           className="grid gap-8 md:grid-cols-2 lg:grid-cols-3"
         >
@@ -131,11 +129,10 @@ export function Projects() {
                   className="h-full"
                 >
                   <TiltCard
-                    className={`h-full flex flex-col p-6 sm:p-7 ${
-                      isFeatured
+                    className={`h-full flex flex-col p-6 sm:p-7 ${isFeatured
                         ? 'border-cyan-500/40 shadow-[0_0_35px_rgba(34,211,238,0.15)]'
                         : 'border-white/10'
-                    }`}
+                      }`}
                     glowColor={
                       isFeatured
                         ? 'rgba(34, 211, 238, 0.2)'
@@ -168,7 +165,7 @@ export function Projects() {
                         loading="lazy"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a14] via-transparent to-transparent opacity-60" />
-                      
+
                       {/* Hover Inspect Pill */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-black/40 backdrop-blur-xs">
                         <span className="flex items-center gap-1.5 rounded-full bg-white/20 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white backdrop-blur-md">
@@ -179,9 +176,8 @@ export function Projects() {
 
                       {/* Monogram Badge */}
                       <div
-                        className={`absolute bottom-3 left-3 flex h-8 w-8 items-center justify-center rounded-xl font-bold text-xs text-white border border-white/20 shadow-lg ${
-                          isFeatured ? 'bg-cyan-600' : 'bg-violet-600'
-                        }`}
+                        className={`absolute bottom-3 left-3 flex h-8 w-8 items-center justify-center rounded-xl font-bold text-xs text-white border border-white/20 shadow-lg ${isFeatured ? 'bg-cyan-600' : 'bg-violet-600'
+                          }`}
                       >
                         {project.badge}
                       </div>
@@ -252,35 +248,54 @@ export function Projects() {
           </AnimatePresence>
         </motion.div>
 
-        {/* Animated Statistics Banner */}
+        {/* Clean Editorial Statistics Banner */}
         <motion.div
-          className="mt-20 overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-r from-[#101124] via-[#0d0e1e] to-[#101124] p-8 sm:p-10 backdrop-blur-2xl shadow-2xl"
+          id="career-stats"
+          className="mt-20 overflow-hidden rounded-2xl border border-white/[0.08] bg-slate-950/40 backdrop-blur-xl shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 divide-y lg:divide-y-0 lg:divide-x divide-white/10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.07]">
             {stats.map((s, index) => {
               const IconComponent = statIcons[s.icon] || Star;
+              const subDescriptions = [
+                'International partners & brands',
+                'Web & production applications',
+                'Verified client feedback score',
+                'Continuous full-stack craft'
+              ];
               return (
                 <div
                   key={s.label}
-                  className={`flex items-center gap-4 ${
-                    index > 0 ? 'pt-6 lg:pt-0 lg:pl-8' : ''
-                  }`}
+                  onMouseEnter={() => soundManager.playHover()}
+                  className="group relative p-6 sm:p-8 transition-colors duration-300 hover:bg-white/[0.02] flex flex-col justify-between"
                 >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-cyan-500/30 bg-cyan-500/10 text-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.2)]">
-                    <IconComponent className="h-6 w-6" />
-                  </div>
                   <div>
-                    <p className="text-3xl sm:text-4xl font-extrabold text-white">
-                      <StatCounter value={s.value} suffix={s.suffix} />
-                    </p>
-                    <p className="text-xs uppercase tracking-wider text-slate-400 font-mono mt-0.5">
-                      {s.label}
-                    </p>
+                    {/* Minimalist Icon & Category Label */}
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="text-[11px] font-mono uppercase tracking-[0.18em] text-slate-400 group-hover:text-slate-200 transition-colors">
+                        {s.label}
+                      </span>
+                      <div className="h-8 w-8 rounded-lg bg-white/[0.03] border border-white/[0.08] flex items-center justify-center text-slate-400 group-hover:text-cyan-400 group-hover:border-cyan-500/30 transition-colors">
+                        <IconComponent className="h-4 w-4" />
+                      </div>
+                    </div>
+
+                    {/* Stat Number with Roll-Up Counter */}
+                    <div className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white group-hover:text-cyan-300 transition-colors duration-300">
+                      <StatCounter value={s.value} suffix={s.suffix} duration={1.8} />
+                    </div>
                   </div>
+
+                  {/* Descriptive Subtitle */}
+                  <p className="mt-3 text-xs text-slate-400 font-normal leading-relaxed">
+                    {subDescriptions[index] || 'Verified track record'}
+                  </p>
+
+                  {/* Hairline subtle cyan accent on hover */}
+                  <div className="absolute bottom-0 left-6 right-6 h-[1.5px] bg-cyan-400/0 group-hover:bg-cyan-400/50 transition-all duration-300" />
                 </div>
               );
             })}

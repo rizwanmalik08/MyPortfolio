@@ -15,7 +15,7 @@ if (!fs.existsSync(dbDir)) {
 export const db = new DatabaseSync(dbPath);
 
 export function initializeDatabase() {
-  try { db.exec('PRAGMA foreign_keys = ON;'); } catch (_) {}
+  try { db.exec('PRAGMA foreign_keys = ON;'); } catch (_) { }
 
   // 1. Projects / Ventures Table
   db.exec(`

@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function setupTabs() {
   const tabs = document.querySelectorAll('.admin-tab-btn');
-  
+
   function switchTab(targetTab) {
     if (!targetTab) return;
     tabs.forEach((t) => {

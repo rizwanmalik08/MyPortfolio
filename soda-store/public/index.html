@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SODA — 3D Product Experience | Pure Zero Sparkling Beverage</title>
-  <meta name="description" content="Immersive 3D product website for SODA, featuring real-time Three.js 720° flavor switching, metallic can physics, interactive floating fruit, and zero-sugar sparkling refreshments." />
-  
+  <meta name="description"
+    content="Immersive 3D product website for SODA, featuring real-time Three.js 720° flavor switching, metallic can physics, interactive floating fruit, and zero-sugar sparkling refreshments." />
+
   <!-- Google Fonts: Space Grotesk, Outfit & Satisfy / Caveat -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Satisfy&family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Satisfy&family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
 
   <!-- CSS Styles -->
   <link rel="stylesheet" href="/css/style.css" />
@@ -28,6 +32,7 @@
   <!-- GSAP Animation Library -->
   <script src="/vendor/gsap.min.js"></script>
 </head>
+
 <body data-active-flavor="diet-classic">
 
   <!-- Ambient Dynamic Gradient Canvas Background -->
@@ -41,9 +46,9 @@
     <div class="loader-content">
       <div class="loader-can-icon">
         <svg viewBox="0 0 48 48" fill="none" class="spin-icon">
-          <rect x="12" y="8" width="24" height="32" rx="6" stroke="#22d3ee" stroke-width="2.5"/>
-          <path d="M18 4H30" stroke="#fbcfe8" stroke-width="2.5" stroke-linecap="round"/>
-          <circle cx="24" cy="24" r="5" stroke="#22d3ee" stroke-width="2"/>
+          <rect x="12" y="8" width="24" height="32" rx="6" stroke="#22d3ee" stroke-width="2.5" />
+          <path d="M18 4H30" stroke="#fbcfe8" stroke-width="2.5" stroke-linecap="round" />
+          <circle cx="24" cy="24" r="5" stroke="#22d3ee" stroke-width="2" />
         </svg>
       </div>
       <div class="loader-brand font-outfit">SODA</div>
@@ -57,14 +62,14 @@
   <!-- Header / Navigation Bar -->
   <header class="soda-header">
     <div class="header-container">
-      
+
       <!-- Brand Logo -->
       <a href="#home" class="soda-logo-wrap">
         <div class="logo-icon-box">
           <svg viewBox="0 0 28 28" fill="none" class="logo-svg">
-            <rect x="7" y="4" width="14" height="20" rx="4" stroke="currentColor" stroke-width="2"/>
-            <path d="M10 2H18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <circle cx="14" cy="14" r="3" fill="currentColor"/>
+            <rect x="7" y="4" width="14" height="20" rx="4" stroke="currentColor" stroke-width="2" />
+            <path d="M10 2H18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            <circle cx="14" cy="14" r="3" fill="currentColor" />
           </svg>
         </div>
         <span class="logo-text">SODA</span>
@@ -88,9 +93,9 @@
 
         <button type="button" class="cart-toggle-btn glass-pill-btn" aria-label="Open Shopping Bag">
           <svg class="cart-svg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
-            <line x1="3" y1="6" x2="21" y2="6"/>
-            <path d="M16 10a4 4 0 0 1-8 0"/>
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 0 1-8 0" />
           </svg>
           <span class="cart-count-badge" style="display: none;">0</span>
         </button>
@@ -121,17 +126,17 @@
   <!-- MAIN FULL-SCREEN HERO SECTION                  -->
   <!-- ============================================== -->
   <section id="home" class="soda-hero-section">
-    
+
     <!-- Three.js 3D Viewport Container -->
     <div id="soda-canvas-wrap" class="soda-three-canvas-wrap"></div>
 
     <!-- Hero Interactive Overlay Layer (matches reference layout) -->
     <div class="hero-stage-overlay">
-      
+
       <!-- HERO LEFT: Pure Zero, Body Text, Pink Plus Button, Awards Footer -->
       <div class="hero-left-stage">
         <h1 class="hero-script-brand">Pure<br>Zero</h1>
-        
+
         <p class="hero-script-desc">
           Experience the crisp taste of zero sugar.<br>
           Refreshment redefined in every bubble —<br>
@@ -153,11 +158,11 @@
 
       <!-- HERO RIGHT: Flavor Cards Carousel (Top) & Massive Script Headline (Bottom) -->
       <div class="hero-right-stage">
-        
+
         <!-- Flavor Cards (Top Right) -->
         <div class="hero-flavor-deck-wrap">
           <div class="flavor-cards-row">
-            
+
             <!-- Diet Classic Card -->
             <article class="flavor-card-pill" data-flavor="diet-classic" role="button" tabindex="0">
               <div class="card-pill-image">
@@ -185,10 +190,14 @@
           <!-- Carousel Arrow Controls -->
           <div class="flavor-carousel-arrows">
             <button id="flavor-prev" class="carousel-arrow-circle" aria-label="Previous Flavor">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
             </button>
             <button id="flavor-next" class="carousel-arrow-circle" aria-label="Next Flavor">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
             </button>
           </div>
         </div>
@@ -211,22 +220,24 @@
   <!-- ============================================== -->
   <section id="ingredients" class="soda-section ingredients-section">
     <div class="section-container">
-      
+
       <div class="section-header text-center">
         <span class="section-kicker">Refined Botanical Formula</span>
         <h2 class="section-title">Pure Nature. Zero Compromise.</h2>
         <p class="section-desc">
-          Every can of SODA is created using only real ingredients sourced from high-elevation bio-reserves. No artificial sweeteners, no artificial dyes, and zero synthetic preservatives.
+          Every can of SODA is created using only real ingredients sourced from high-elevation bio-reserves. No
+          artificial sweeteners, no artificial dyes, and zero synthetic preservatives.
         </p>
       </div>
 
       <div class="ingredients-grid">
-        
+
         <div class="ingredient-card glass-panel">
           <div class="ingredient-icon-box">🏔️</div>
           <h3 class="ingredient-name">Glacial Spring Water</h3>
           <p class="ingredient-detail">
-            Naturally filtered through alpine mineral rock for superior purity, high alkalinity, and ultra-crisp effervescence.
+            Naturally filtered through alpine mineral rock for superior purity, high alkalinity, and ultra-crisp
+            effervescence.
           </p>
           <span class="ingredient-tag">High Altitude Source</span>
         </div>
@@ -235,7 +246,8 @@
           <div class="ingredient-icon-box">🌿</div>
           <h3 class="ingredient-name">Stevia Leaf Extract</h3>
           <p class="ingredient-detail">
-            Pure organic stevia leaf extract that delivers crisp sweetness without caloric spike or artificial aftertaste.
+            Pure organic stevia leaf extract that delivers crisp sweetness without caloric spike or artificial
+            aftertaste.
           </p>
           <span class="ingredient-tag">0 Glycemic Index</span>
         </div>
@@ -244,7 +256,8 @@
           <div class="ingredient-icon-box">🍒</div>
           <h3 class="ingredient-name">Cold-Pressed Essence</h3>
           <p class="ingredient-detail">
-            Cold-extracted wild cherries, Persian limes, and kola nuts delivering authentic aromatic fragrance and deep flavor depth.
+            Cold-extracted wild cherries, Persian limes, and kola nuts delivering authentic aromatic fragrance and deep
+            flavor depth.
           </p>
           <span class="ingredient-tag">100% Real Botanicals</span>
         </div>
@@ -253,7 +266,8 @@
           <div class="ingredient-icon-box">⚡</div>
           <h3 class="ingredient-name">Electrolyte Balance</h3>
           <p class="ingredient-detail">
-            Infused with natural magnesium, potassium, and Himalayan pink salt to maintain active hydration and clean energy.
+            Infused with natural magnesium, potassium, and Himalayan pink salt to maintain active hydration and clean
+            energy.
           </p>
           <span class="ingredient-tag">Cellular Hydration</span>
         </div>
@@ -268,7 +282,7 @@
   <!-- ============================================== -->
   <section id="taste" class="soda-section taste-section">
     <div class="section-container">
-      
+
       <div class="section-header text-center">
         <span class="section-kicker">Sensory Taste Profile</span>
         <h2 class="section-title">Two Profiles. One High Standard.</h2>
@@ -278,34 +292,43 @@
       </div>
 
       <div class="taste-comparison-grid">
-        
+
         <!-- Classic Profile -->
         <div class="taste-card glass-panel classic-side">
           <div class="taste-badge">Diet Classic Profile</div>
           <h3 class="taste-title">Botanical Kola Essence</h3>
           <p class="taste-desc">
-            A rich, complex, layered profile inspired by original 19th-century apothecary recipes. Notes of toasted spices, Madagascar vanilla, and organic kola.
+            A rich, complex, layered profile inspired by original 19th-century apothecary recipes. Notes of toasted
+            spices, Madagascar vanilla, and organic kola.
           </p>
-          
+
           <div class="radar-bars-wrap">
             <div class="metric-row">
               <span class="metric-label">Fizz / Effervescence</span>
-              <div class="metric-track"><div class="metric-fill" style="width: 88%;"></div></div>
+              <div class="metric-track">
+                <div class="metric-fill" style="width: 88%;"></div>
+              </div>
               <span class="metric-score">8.8</span>
             </div>
             <div class="metric-row">
               <span class="metric-label">Botanical Sweetness</span>
-              <div class="metric-track"><div class="metric-fill" style="width: 65%;"></div></div>
+              <div class="metric-track">
+                <div class="metric-fill" style="width: 65%;"></div>
+              </div>
               <span class="metric-score">6.5</span>
             </div>
             <div class="metric-row">
               <span class="metric-label">Spiced Warmth</span>
-              <div class="metric-track"><div class="metric-fill" style="width: 92%;"></div></div>
+              <div class="metric-track">
+                <div class="metric-fill" style="width: 92%;"></div>
+              </div>
               <span class="metric-score">9.2</span>
             </div>
             <div class="metric-row">
               <span class="metric-label">Smooth Finish</span>
-              <div class="metric-track"><div class="metric-fill" style="width: 95%;"></div></div>
+              <div class="metric-track">
+                <div class="metric-fill" style="width: 95%;"></div>
+              </div>
               <span class="metric-score">9.5</span>
             </div>
           </div>
@@ -316,28 +339,37 @@
           <div class="taste-badge lime">Zero Lime Profile</div>
           <h3 class="taste-title">Zesty Persian Citrus</h3>
           <p class="taste-desc">
-            An exhilarating surge of fresh citrus zest. High tartness, electric carbonation, and an icy finish that resets the palate instantaneously.
+            An exhilarating surge of fresh citrus zest. High tartness, electric carbonation, and an icy finish that
+            resets the palate instantaneously.
           </p>
-          
+
           <div class="radar-bars-wrap">
             <div class="metric-row">
               <span class="metric-label">Fizz / Effervescence</span>
-              <div class="metric-track"><div class="metric-fill lime-fill" style="width: 96%;"></div></div>
+              <div class="metric-track">
+                <div class="metric-fill lime-fill" style="width: 96%;"></div>
+              </div>
               <span class="metric-score">9.6</span>
             </div>
             <div class="metric-row">
               <span class="metric-label">Zesty Tartness</span>
-              <div class="metric-track"><div class="metric-fill lime-fill" style="width: 94%;"></div></div>
+              <div class="metric-track">
+                <div class="metric-fill lime-fill" style="width: 94%;"></div>
+              </div>
               <span class="metric-score">9.4</span>
             </div>
             <div class="metric-row">
               <span class="metric-label">Citrus Aroma</span>
-              <div class="metric-track"><div class="metric-fill lime-fill" style="width: 90%;"></div></div>
+              <div class="metric-track">
+                <div class="metric-fill lime-fill" style="width: 90%;"></div>
+              </div>
               <span class="metric-score">9.0</span>
             </div>
             <div class="metric-row">
               <span class="metric-label">Crisp Chill Finish</span>
-              <div class="metric-track"><div class="metric-fill lime-fill" style="width: 98%;"></div></div>
+              <div class="metric-track">
+                <div class="metric-fill lime-fill" style="width: 98%;"></div>
+              </div>
               <span class="metric-score">9.8</span>
             </div>
           </div>
@@ -353,13 +385,14 @@
   <!-- ============================================== -->
   <section id="eco" class="soda-section eco-section">
     <div class="section-container">
-      
+
       <div class="eco-showcase-panel glass-panel">
         <div class="eco-content">
           <span class="section-kicker text-emerald-400">Infinite Recyclability</span>
           <h2 class="eco-title">Infinitely Recyclable Aluminum</h2>
           <p class="eco-desc">
-            75% of all aluminum ever produced is still in active circulation today. Every SODA can is 100% plastic-free, infinitely recyclable, and can be recycled and back on grocery shelves within 60 days.
+            75% of all aluminum ever produced is still in active circulation today. Every SODA can is 100% plastic-free,
+            infinitely recyclable, and can be recycled and back on grocery shelves within 60 days.
           </p>
 
           <div class="eco-stats-row">
@@ -393,7 +426,7 @@
   <!-- ============================================== -->
   <section id="reviews" class="soda-section reviews-section">
     <div class="section-container">
-      
+
       <div class="section-header-flex">
         <div>
           <span class="section-kicker">Customer Reviews &amp; Tasting Notes</span>
@@ -423,9 +456,9 @@
   <!-- ============================================== -->
   <section id="order" class="soda-section order-section">
     <div class="section-container">
-      
+
       <div class="order-box-grid glass-panel">
-        
+
         <!-- Product Visual Preview -->
         <div class="order-visual-wrap">
           <div class="visual-badge">HAND-PACKED &amp; SEALED</div>
@@ -504,7 +537,8 @@
             <button type="button" id="add-to-bag-btn" class="btn btn-primary add-to-bag-btn">
               <span>Add to Bag</span>
               <svg viewBox="0 0 20 20" fill="currentColor" class="bag-icon">
-                <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z"/>
+                <path
+                  d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
               </svg>
             </button>
           </div>
@@ -540,7 +574,8 @@
       <div class="empty-icon">🥤</div>
       <h4>Your Bag is Empty</h4>
       <p>Discover our refreshing flavors and add cans to your cellar bag.</p>
-      <button class="btn btn-primary" onclick="document.getElementById('close-cart-btn').click(); document.getElementById('home').scrollIntoView({behavior:'smooth'});">
+      <button class="btn btn-primary"
+        onclick="document.getElementById('close-cart-btn').click(); document.getElementById('home').scrollIntoView({behavior:'smooth'});">
         Explore Flavors
       </button>
     </div>
@@ -550,7 +585,7 @@
 
     <!-- Cart Footer & Totals -->
     <div id="cart-drawer-footer" class="cart-drawer-footer" style="display: none;">
-      
+
       <!-- Coupon Field -->
       <div class="coupon-box">
         <input type="text" id="cart-coupon-input" placeholder="Coupon Code (e.g. REFRESH15)" />
@@ -600,12 +635,16 @@
           <p class="checkout-subhead">Small batch cold-chain fulfillment • Guaranteed authentic</p>
         </div>
         <button id="close-checkout-btn" class="modal-close-btn" aria-label="Close checkout">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
         </button>
       </div>
 
       <div id="checkout-modal-body" class="modal-body checkout-modal-body">
-        
+
         <!-- Order Summary Preview as a Luxury Ticket -->
         <div class="checkout-summary-box luxury-ticket">
           <div class="summary-top-bar">
@@ -615,9 +654,12 @@
           <div id="checkout-items-list" class="checkout-items-compact"></div>
           <div class="checkout-totals-compact">
             <div class="c-row"><span>Subtotal:</span> <strong id="checkout-subtotal">$0.00</strong></div>
-            <div id="checkout-discount-row" class="c-row text-emerald-400" style="display:none;"><span>Promo Savings:</span> <strong id="checkout-discount">-$0.00</strong></div>
-            <div class="c-row"><span>Shipping:</span> <strong id="checkout-shipping" class="text-emerald-400">FREE</strong></div>
-            <div class="c-row final-checkout-total"><span>Total Due:</span> <strong id="checkout-total">$0.00</strong></div>
+            <div id="checkout-discount-row" class="c-row text-emerald-400" style="display:none;"><span>Promo
+                Savings:</span> <strong id="checkout-discount">-$0.00</strong></div>
+            <div class="c-row"><span>Shipping:</span> <strong id="checkout-shipping"
+                class="text-emerald-400">FREE</strong></div>
+            <div class="c-row final-checkout-total"><span>Total Due:</span> <strong id="checkout-total">$0.00</strong>
+            </div>
           </div>
         </div>
 
@@ -665,14 +707,20 @@
                 <option value="apple_pay_demo">Apple Pay (Test Sandbox)</option>
               </select>
               <div class="select-chevron">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
               </div>
             </div>
           </div>
 
           <button type="submit" class="checkout-submit-btn">
             <span>Complete Order</span>
-            <svg class="submit-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            <svg class="submit-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="2.5" stroke-linecap="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
           </button>
 
           <div class="checkout-trust-footer">
@@ -721,7 +769,8 @@
         </div>
         <div class="form-group">
           <label>Your Review *</label>
-          <textarea name="comment" required rows="3" placeholder="Tell us how the carbonation and flavor felt..."></textarea>
+          <textarea name="comment" required rows="3"
+            placeholder="Tell us how the carbonation and flavor felt..."></textarea>
         </div>
         <button type="submit" class="btn btn-primary w-full">Submit Review</button>
       </form>
@@ -769,7 +818,8 @@
           <span class="logo-text">SODA</span>
         </div>
         <p class="footer-bio">
-          Next-generation sparkling beverage brand engineered for zero sugar, pure botanical purity, and 100% infinitely recyclable aluminum packaging.
+          Next-generation sparkling beverage brand engineered for zero sugar, pure botanical purity, and 100% infinitely
+          recyclable aluminum packaging.
         </p>
         <div class="footer-badges">
           <span>✓ B-Corp Certified</span>
@@ -813,4 +863,5 @@
   <script type="module" src="/js/main.js"></script>
 
 </body>
+
 </html>

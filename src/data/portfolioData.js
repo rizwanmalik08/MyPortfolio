@@ -107,18 +107,18 @@ export const skills = [
   { name: "Tailwind CSS", detail: "Utility-first rapid styling", level: 95, category: "frontend", icon: "Wind" },
   { name: "JavaScript", detail: "ES6+, Async, DOM & tooling", level: 90, category: "frontend", icon: "Code" },
   { name: "HTML/CSS", detail: "Semantic, accessible layouts", level: 95, category: "frontend", icon: "FileCode" },
-  
+
   // Mobile & Backend
   { name: "React Native", detail: "Cross-platform mobile apps", level: 85, category: "mobile", icon: "Smartphone" },
   { name: "Flutter", detail: "Modern mobile UI builds", level: 85, category: "mobile", icon: "Layers" },
   { name: "Node.js", detail: "Server-side RESTful APIs", level: 85, category: "backend", icon: "Server" },
   { name: "MongoDB", detail: "NoSQL document databases", level: 85, category: "backend", icon: "Database" },
   { name: "MySQL", detail: "Relational database schema", level: 90, category: "backend", icon: "HardDrive" },
-  
+
   // Systems & Scripting
   { name: "C/C++", detail: "Algorithms & desktop tools", level: 75, category: "systems", icon: "Terminal" },
   { name: "Python", detail: "Automation, scripts & data", level: 90, category: "systems", icon: "Binary" },
-  
+
   // Design & Marketing
   { name: "UX/UI Designing", detail: "Wireframing & user journeys", level: 95, category: "creative", icon: "Layout" },
   { name: "Graphic Designing", detail: "Brand visuals & collateral", level: 85, category: "creative", icon: "PenTool" },
