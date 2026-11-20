@@ -421,20 +421,22 @@ body.bg-main {
 .hero-top {
   position: relative;
   z-index: 30;
-  padding: 8rem var(--gutter) 0;
+  padding: clamp(5.25rem, 8.5vh, 6.75rem) var(--gutter) 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-start;
+  gap: 2rem;
 }
 
 .hero-roles {
-  font-family: var(--font-display);
-  font-size: var(--fs-h2);
+  font-family: var(--font-sans);
+  font-size: clamp(1.4rem, 2.5vw, 2.15rem);
+  font-weight: 600;
   color: var(--foreground);
-  line-height: 1.05;
+  line-height: 1.08;
   text-transform: uppercase;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.025em;
 }
 
 .role-line {
@@ -454,11 +456,11 @@ body.bg-main {
 }
 
 .hero-desc {
-  max-width: 26rem;
+  max-width: 24rem;
   font-family: var(--font-sans);
-  font-size: var(--fs-body);
+  font-size: clamp(0.85rem, 0.95vw, 0.925rem);
   color: var(--muted);
-  line-height: 1.6;
+  line-height: 1.5;
   text-align: right;
   opacity: 0;
   transform: translateY(16px);
@@ -487,7 +489,7 @@ body.bg-main {
   letter-spacing: -0.01em;
   text-transform: uppercase;
   user-select: none;
-  transform: translateY(6%);
+  transform: translateY(10%);
 }
 
 .hn-line {
